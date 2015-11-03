@@ -36,11 +36,10 @@ Sprite.prototype.drawCentredAt = function (ctx, cx, cy, rotation) {
     ctx.save();
     ctx.translate(cx, cy);
     ctx.rotate(rotation);
-    ctx.scale(this.scale, this.scale);
-    
+    ctx.scale(this.scale, Math.abs(this.scale));
     // drawImage expects "top-left" coords, so we offset our destination
     // coords accordingly, to draw our sprite centred at the origin
-    ctx.drawImage(this.image,-w/2, -h/2);
+    this.drawAt(ctx,-w/2, -h/2);
     
     ctx.restore();
 };  
@@ -70,10 +69,3 @@ Sprite.prototype.drawWrappedVerticalCentredAt = function (ctx, cx, cy, rotation)
     this.drawCentredAt(ctx, cx, cy - sh, rotation);
     this.drawCentredAt(ctx, cx, cy + sh, rotation);
 };
-
-function Animation (image, frameY, frameWidth, frameHeight, numFrames, scale) {
-    this.image = image;
-    this.frameWidth = frameWidth;
-    this.frameHeight = frameHeight;
-    this.scale = scale;
-}

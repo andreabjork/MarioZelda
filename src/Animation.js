@@ -9,18 +9,19 @@
 
 // Construct an animation from a sprite sheet
 function Animation (image, frameY, frameWidth, frameHeight, numFrames, interval, scale) {
-    this.image = image;
-    this.sprites = loadSprites(frameY,frameWidth,frameHeight,numFrames,scale);
+	this.image = image;
+    this.sprites = this.loadSprites(frameY,frameWidth,frameHeight,numFrames,scale);
     this.numFrames = numFrames;
     this.interval = (interval/1000)*SECS_TO_NOMINALS; // The input interval should be in milliseconds
     this.frameTimeLeft = this.interval;
+    this.direction = Math.sign(scale);
 }
 
 // A signal to let the character know that now would be a good time to transition into another animation!
 Animation.prototype.TRANSITION_OPPORTUNITY = 1; //nice to have this truthy!
 // The current frame of animation
 Animation.prototype.frameNum = 0;
-Animation.prototype.updateFrameNum = function(){
+Animation.prototype.updateFrameNum = function(du){
 	var finishedCycle = false
 	while(this.frameTimeLeft <=0){
 		this.frameNum = (this.frameNum+1);
@@ -38,24 +39,25 @@ Animation.prototype.update = function (du) {
 	if(this.updateFrameNum(du)) return this.TRANSITION_OPPORTUNITY;
 };
 
-Animation.prototype.render = function(ctx,cx,cy,0){
-	var frame = sprites[frameNum];
-	frame.drawWrappedCentredAt(cx,cy);
+Animation.prototype.renderAt = function(ctx,cx,cy){
+	var frame = this.sprites[this.frameNum];
+	frame.drawWrappedCentredAt(ctx,cx,cy,0);
 };
 
 Animation.prototype.loadSprites = function(y,w,h,n,s){
 	var sprites = []
 	for (var i = 0; i < n; i++) {
-		var s = Sprite(this.image);
-		s.sx = i*w;
-		s.sy = y;
-		s.width = w;
-		s.height = h;
-		s.scale = s;
-		s.drawAt = function(ctx,x,y){
+		var sprite = new Sprite(this.image);
+		sprite.sx = i*w;
+		sprite.sy = y;
+		sprite.width = w;
+		sprite.height = h;
+		sprite.scale = s;
+		sprite.drawAt = function(ctx,x,y){
 			ctx.drawImage(this.image, this.sx, this.sy, this.width, this.height, x, y, this.width, this.height);
 		};
-		sprites.push(s);
+		console.dir(sprite);
+		sprites.push(sprite);
 	};
 	return sprites;
 };
