@@ -39,6 +39,11 @@ Animation.prototype.update = function (du) {
 	if(this.updateFrameNum(du)) return this.TRANSITION_OPPORTUNITY;
 };
 
+Animation.prototype.reset = function(){
+	this.frameNum = 0;
+	this.frameTimeLeft = this.interval;
+}
+
 Animation.prototype.renderAt = function(ctx,cx,cy){
 	var frame = this.sprites[this.frameNum];
 	frame.drawWrappedCentredAt(ctx,cx,cy,0);

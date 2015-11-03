@@ -24,6 +24,7 @@ function Character(descr) {
     this.sprite = g_sprites.marioTest;
     this._scale = 0.03;
 	this._isAlive = true;
+    this.animation = g_animations.zelda.idleRight;
 };
 // This comes later on when Entity has been implemented: 
 Character.prototype = new Entity();
@@ -52,6 +53,7 @@ Character.prototype.maxVelY = 7;
 Character.prototype.startingHeight = 400;
 Character.prototype.jumpHeight = 30;
 Character.prototype.jumping = false;
+Character.prototype.status = "idleRight";
 
 // Sounds (should be preloaded and initialized in constructor):
 // Character.prototype.warpSound = new Audio(
@@ -146,14 +148,24 @@ Character.prototype.update = function (du) {
 
     this.wrapPosition();
 
-    // TODO: YOUR STUFF HERE! --- Warp if isColliding, otherwise Register
+
+    // figure out our status
+    var nextStatus = null;
+    var dir = (this.velX >= 0)?"Right":"Left";
+    var atMaxVel = (Math.abs(this.velX)>=(this.maxVelX*0.9))
+    if(this.jumping) nextStatus = "inAir"+dir;
+    else if(this.velX === 0) nextStatus = "idle"+(wasMovingLeft?"Left":dir);
+    else if(atMaxVel) nextStatus = "running"+dir;
+    else nextStatus = "walking"+dir;
+
+    if(nextStatus!==this.status){
+        this.status = nextStatus;
+        this.animation = g_animations.zelda[this.status];
+        this.animation.reset();
+    }
+    this.animation.update(du);
 };
 
 Character.prototype.render = function (ctx) {
-        var origScale = this.sprite.scale;
-        // pass my scale into the sprite, for drawing
-        this.sprite.scale = this._scale;
-        this.sprite.drawWrappedCentredAt(
-    	ctx, this.cx, this.cy, 0
-    );
+        this.animation.renderAt(ctx, this.cx, this.cy);
 };

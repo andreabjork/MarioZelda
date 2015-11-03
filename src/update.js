@@ -17,12 +17,15 @@ var g_prevUpdateDu = null;
 //
 var g_isUpdateOdd = false;
 
+// Skip rendering if simulation is paused (to make debugging animations easier)
+var g_shouldSkipRender = false;
 
 function update(dt) {
     
     // Get out if skipping (e.g. due to pause-mode)
     //
-    if (shouldSkipUpdate()) return;
+    g_shouldSkipRender = shouldSkipUpdate();
+    if (g_shouldSkipRender) return;
 
     // Remember this for later
     //
