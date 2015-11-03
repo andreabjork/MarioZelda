@@ -120,17 +120,21 @@ var g_images = {};
 function requestPreloads() {
 
     var requiredImages = {
-        marioTest: "res/images/mario.png"
+        marioTest: "res/images/mario.png",
+        zeldaSpriteSheet: "res/images/zeldass.png"
     };
 
     imagesPreload(requiredImages, g_images, preloadDone);
 }
 
 var g_sprites = {};
+var g_animations = {};
 
 function preloadDone() {
 
     g_sprites.marioTest  = new Sprite(g_images.marioTest);
+    g_animations.zeldaWalkRight = new Animation(g_images.zeldaSpriteSheet,0,30,42,10,100,1);
+    g_animations.zeldaWalkLeft = new Animation(g_images.zeldaSpriteSheet,0,30,42,10,100,-1);
 
     entityManager.init();
 

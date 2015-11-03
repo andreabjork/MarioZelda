@@ -13,10 +13,10 @@ var util = {
 // ======
 
 clampRange: function(value, lowBound, highBound) {
-    if (value < lowBound) {
-	value = lowBound;
+        if (value < lowBound) {
+    	value = lowBound;
     } else if (value > highBound) {
-	value = highBound;
+	value = highBound; 
     }
     return value;
 },
@@ -52,6 +52,14 @@ randRange: function(min, max) {
 square: function(x) {
     return x*x;
 },
+
+sumFirst: function(num, array){
+    var sum = 0;
+    for(var i=0; i< min(num,array.length) ; i++){
+        sum += array[i];
+    }
+    return sum;
+}
 
 
 // DISTANCES

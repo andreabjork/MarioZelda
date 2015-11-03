@@ -70,3 +70,10 @@ Sprite.prototype.drawWrappedVerticalCentredAt = function (ctx, cx, cy, rotation)
     this.drawCentredAt(ctx, cx, cy - sh, rotation);
     this.drawCentredAt(ctx, cx, cy + sh, rotation);
 };
+
+function Animation (image, frameY, frameWidth, frameHeight, numFrames, scale) {
+    this.image = image;
+    this.frameWidth = frameWidth;
+    this.frameHeight = frameHeight;
+    this.scale = scale;
+}
