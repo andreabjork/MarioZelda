@@ -1,0 +1,67 @@
+Animation info:
+
+Row 0: Walking
+Frame Width = 30 px
+Frame Height = 42 px
+Frame Count = 10
+Example interval = 100 ms
+
+Row 1: Running
+Frame Width = 33 px
+Frame Height = 43 px
+Frame Count = 4
+Example interval = 100 ms
+
+Row 2: Flying/Jumping
+Frame Width = 31 px
+Frame Height = 44 px
+Frame Count = 2
+Example interval = 100 ms
+
+Row 3: Turning
+Frame Width = 30 px
+Frame Height = 42 px
+Frame Count = 5
+Example interval = 100 ms
+
+Row 4: Spinning
+Frame Width = 30 px
+Frame Height = 48 px
+Frame Count = 4
+Example interval = 100 ms
+
+Row 5: Tossing Hair
+Frame Width = 33 px
+Frame Height = 43 px
+Frame Count = 5
+Example interval = 100 ms
+
+Row 6: Falling/Crouching
+Frame Width = 31 px
+Frame Height = 44 px
+Frame Count = 3
+Example interval = 200 ms
+
+Row 7: Casting Spell
+Frame Width = 50 px
+Frame Height = 48 px
+Frame Count = 6
+Example interval = 100 ms
+
+Row 8: Dying
+Frame Width = 60 px
+Frame Height = 46 px
+Frame Count = 6
+Example interval = 150 ms
+
+Row 9: Kick in midair
+Frame Width = 64 px
+Frame Height = 39 px
+Frame Count = 2
+Example interval = 200 ms
+
+Row 10: Raising Hands
+Frame Width = 23 px
+Frame Height = 45 px
+Frame Count = 5
+Example interval = 150 ms
