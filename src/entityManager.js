@@ -27,9 +27,9 @@ var entityManager = {
 
 // "PRIVATE" DATA
 
-_character   : {},
+_character   : [],
 _bullets : [],
-_level : {},
+_level : [],
 _enemies   : [],
 _objects    : [],
 
@@ -56,6 +56,7 @@ deferredSetup : function () {
 },
 
 init: function() {
+    this.generateCharacter({cx: 200, cy: 200});
     
 },
 
@@ -71,7 +72,7 @@ fireBullet: function(cx, cy, velX, velY, rotation) {
 },
 
 generateCharacter : function(descr) {
-    this._character = new Character(descr);
+    this._character.push(new Character(descr));
 },
 
 generateEnemy : function(descr) {
@@ -79,7 +80,7 @@ generateEnemy : function(descr) {
 },
 
 generateLevel : function(descr) {
-    this._level = new Level(descr);
+    this._level.push(new Level(descr));
 },
 
 generateObject : function(descr) {
@@ -111,22 +112,16 @@ update: function(du) {
 },
 
 render: function(ctx) {
-
     var debugX = 10, debugY = 100;
 
     for (var c = 0; c < this._categories.length; ++c) {
 
         var aCategory = this._categories[c];
-
-        if (!this._bShowRocks && 
-            aCategory == this._rocks)
-            continue;
+        console.log(aCategory);
+        if ( aCategory == this._character) console.log("HELLO CHARACTER!");
 
         for (var i = 0; i < aCategory.length; ++i) {
-
             aCategory[i].render(ctx);
-            //debug.text(".", debugX + i * 10, debugY);
-
         }
         debugY += 10;
     }

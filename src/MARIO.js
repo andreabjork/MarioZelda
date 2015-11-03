@@ -77,7 +77,7 @@ function updateSimulation(du) {
 var g_allowMixedActions = true;
 var g_renderSpatialDebug = false;
 
-var KEY_MIXED   = keyCode('M');;
+var KEY_MIXED   = keyCode('M');
 var KEY_SPATIAL = keyCode('X');
 
 var KEY_RESET = keyCode('R');
@@ -120,9 +120,7 @@ var g_images = {};
 function requestPreloads() {
 
     var requiredImages = {
-		//setja hér inn allar myndir með link af heimasvæði (eða annarstaðar frá...)
-			//t.d. :    
-			//ship   : "https://notendur.hi.is/~pk/308G/images/ship.png",
+        marioTest: "res/images/mario.png"
     };
 
     imagesPreload(requiredImages, g_images, preloadDone);
@@ -132,15 +130,9 @@ var g_sprites = {};
 
 function preloadDone() {
 
-    g_sprites.ship  = new Sprite(g_images.ship);
-    g_sprites.ship2 = new Sprite(g_images.ship2);
-    g_sprites.rock  = new Sprite(g_images.rock);
-
-    g_sprites.bullet = new Sprite(g_images.ship);
-    g_sprites.bullet.scale = 0.25;
+    g_sprites.marioTest  = new Sprite(g_images.marioTest);
 
     entityManager.init();
-    createInitialShips();
 
     main.init();
 }

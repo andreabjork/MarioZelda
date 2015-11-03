@@ -21,11 +21,12 @@ function Character(descr) {
     //this.rememberResets();
     
     // Default sprite, if not otherwise specified
-    this.sprite = this.sprite || g_sprites.Character;
+    this.sprite = g_sprites.marioTest;
+    this._scale = 0.03;
 	this._isAlive = true;
 };
 // This comes later on when Entity has been implemented: 
-// Character.prototype = new Entity();
+Character.prototype = new Entity();
 
 Character.prototype.rememberResets = function () {
     // Remember my reset positions
@@ -104,10 +105,10 @@ Character.prototype.update = function (du) {
 
     // Perhaps do this in substeps?
 	if (keys[this.KEY_LEFT]) {
-        velX += 5;
+        this.cx -= 5;
     }
 	if (keys[this.KEY_RIGHT]) {
-        velX -= 5;
+        this.cx += 5;
     }
 	if (keys[this.KEY_JUMP]) {
 		this.jump();
@@ -122,10 +123,11 @@ Character.prototype.update = function (du) {
 };
 
 Character.prototype.render = function (ctx) {
-    var origScale = this.sprite.scale;
-    // pass my scale into the sprite, for drawing
-    this.sprite.scale = this._scale;
-    this.sprite.drawWrappedCentredAt(
-	ctx, this.cx, this.cy, this.rotation
+        console.log("Am rendering character");
+        var origScale = this.sprite.scale;
+        // pass my scale into the sprite, for drawing
+        this.sprite.scale = this._scale;
+        this.sprite.drawWrappedCentredAt(
+    	ctx, this.cx, this.cy, this.rotation
     );
 };
