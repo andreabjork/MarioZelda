@@ -32,7 +32,6 @@ Character.prototype.rememberResets = function () {
     // Remember my reset positions
     this.reset_cx = this.cx;
     this.reset_cy = this.cy;
-    this.reset_rotation = this.rotation;
 };
 
 // Keys
@@ -45,10 +44,12 @@ Character.prototype.KEY_SHOOT  = 'X'.charCodeAt(0);
 
 // Initial, inheritable, default values
 Character.prototype.cx = 200;
-Character.prototype.cy = 200;
+Character.prototype.cy = 400;
 Character.prototype.velX = 0;
 Character.prototype.velY = 0;
-Character.prototype.startingHeight = 200;
+Character.prototype.maxVelX = 7;
+Character.prototype.maxVelY = 7;
+Character.prototype.startingHeight = 400;
 Character.prototype.jumpHeight = 30;
 Character.prototype.jumping = false;
 
@@ -59,17 +60,17 @@ Character.prototype.jumping = false;
 
 Character.prototype.jump = function () {
 	this.jumping = true;
+    this.velY = -5;
 };
 
 Character.prototype.updateJump = function() {
-	if(this.cy >= this.startingHeight) {
-		this.jumping = false;
-		return;
-	}else if(this.cy  <= this.startingHeight - this.jumpHeight) {
-		this.cy -= 5;
-	} else {
-		this.cy += 5;
-	}
+	if(this.cy >= this.startingHeight) this.jumping = false;
+};
+
+var NOMINAL_GRAVITY = 0.12;
+
+Character.prototype.computeGravity = function () {
+    return NOMINAL_GRAVITY;
 };
 
 Character.prototype.shoot = function () {
@@ -99,35 +100,60 @@ Character.prototype.reset = function () {
     this.setPos(this.reset_cx, this.reset_cy);
 };
 
+var NOMINAL_FORCE = +0.2;
+var wasMovingRight = false;
+var wasMovingLeft = false;
+Character.prototype.updateVelocity = function(du) {
+    var movingRight = keys[this.KEY_RIGHT];
+    var movingLeft = keys[this.KEY_LEFT];
+    
+    if((movingRight && wasMovingLeft) || (movingLeft && wasMovingRight)) this.velX = 0;
+
+    if(movingRight && this.velX < this.maxVelX) {
+        this.velX += NOMINAL_FORCE*du;
+    } 
+
+    if(movingLeft && this.velX > - this.maxVelX) {
+        this.velX -= NOMINAL_FORCE*du;
+    }
+
+    if(!this.jumping && !(movingRight || movingLeft)) {
+        this.velX = 0;
+    }
+
+    if(this.jumping) {
+        this.velY += NOMINAL_GRAVITY*du;
+    } else {
+        this.velY = 0;
+    }
+
+    wasMovingRight = movingRight;
+    wasMovingLeft = movingLeft;
+
+}
+
 
 Character.prototype.update = function (du) {
-	// if(!this._isAlive) return entityManager.KILL_ME_NOW;
 
-    // Perhaps do this in substeps?
-	if (keys[this.KEY_LEFT]) {
-        this.cx -= 5;
-    }
-	if (keys[this.KEY_RIGHT]) {
-        this.cx += 5;
-    }
-	if (keys[this.KEY_JUMP]) {
-		this.jump();
-	}
-	if (keys[this.KEY_SHOOT]) {
-		this.shoot();
-	}
+    
+    if(!this.jumping && keys[this.KEY_JUMP]) this.jump();
 
-	this.updateJump();
-	this.cx += this.velX*du;
-	this.cy += this.velY*du;
+    this.updateVelocity(du);
+    this.cx += this.velX*du;
+    this.cy += this.velY*du;
+    
+    this.updateJump(du);
+
+    this.wrapPosition();
+
+    // TODO: YOUR STUFF HERE! --- Warp if isColliding, otherwise Register
 };
 
 Character.prototype.render = function (ctx) {
-        console.log("Am rendering character");
         var origScale = this.sprite.scale;
         // pass my scale into the sprite, for drawing
         this.sprite.scale = this._scale;
         this.sprite.drawWrappedCentredAt(
-    	ctx, this.cx, this.cy, this.rotation
+    	ctx, this.cx, this.cy, 0
     );
 };
