@@ -56,8 +56,8 @@ function clearCanvas() {
 
 var g_spriteSheet;
 
-var g_row = 0;
-    
+var g_row = 9;
+var g_interval = 100;
 function preload() {
     g_spriteSheet = new Image();
     g_spriteSheet.onload = callback;
@@ -66,7 +66,7 @@ function preload() {
 
 function loadNext(){
     g_cel = 0;
-    g_row = (g_row+1)%7;
+    g_row = (g_row+1)%11;
     preloadDone();
 }
 
@@ -96,12 +96,14 @@ function sumFirst(num, array){
 
 function preloadDone() {
     
-    var celWidthAll  = [30,33,31,30,30,33,31];
-    var celHeightAll = [42,43,44,42,48,43,44];
-    var numColsAll = [10,4,2,5,4,5,3];
+    var celWidthAll  = [30,33,31,30,30,33,31,50,60,64,23];
+    var celHeightAll = [42,43,44,42,48,43,44,48,46,39,45];
+    var numColsAll = [10,4,2,5,4,5,3,6,6,2,5];
+    var intervals = [100,100,100,100,100,100,200,100,150,200,150];
     var numCols = numColsAll[g_row];
     var celWidth = celWidthAll[g_row];
     var celHeight = celHeightAll[g_row];
+    g_interval = intervals[g_row];
     g_sprites = [];
     var sprite;
     
@@ -150,7 +152,7 @@ function main() {
     if (g_cel === g_sprites.length) g_cel = 0;
     
     // A poor man's cross-browser "requestAnimationFrame"
-    setTimeout(main, 100);
+    setTimeout(main, g_interval);
 }
 
 preload();
