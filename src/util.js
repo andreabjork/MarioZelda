@@ -59,7 +59,7 @@ sumFirst: function(num, array){
         sum += array[i];
     }
     return sum;
-}
+},
 
 
 // DISTANCES

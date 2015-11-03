@@ -16,18 +16,26 @@ function Animation (image, frameY, frameWidth, frameHeight, numFrames, interval,
     this.frameTimeLeft = this.interval;
 }
 
+// A signal to let the character know that now would be a good time to transition into another animation!
+Animation.prototype.TRANSITION_OPPORTUNITY = 1; //nice to have this truthy!
 // The current frame of animation
 Animation.prototype.frameNum = 0;
 Animation.prototype.updateFrameNum = function(){
+	var finishedCycle = false
 	while(this.frameTimeLeft <=0){
-		this.frameNum = (this.frameNum+1)%this.numFrames;
+		this.frameNum = (this.frameNum+1);
+		if(this.frameNum >= this.numFrames){
+			this.frameNum = 0;
+			finishedCycle = true;
+		}
 		this.frameTimeLeft += this.interval;
 	}
+	this.frameTimeLeft -= du;
+	return finishedCycle;
 }
 
 Animation.prototype.update = function (du) {
-	this.updateFrameNum();
-	this.frameTimeLeft -= du;
+	if(this.updateFrameNum(du)) return this.TRANSITION_OPPORTUNITY;
 };
 
 Animation.prototype.render = function(ctx,cx,cy,0){
