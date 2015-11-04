@@ -66,4 +66,6 @@ Projectile.prototype.takeProjectileHit = function () {
 
 Projectile.prototype.render = function (ctx) {
 	// Must-do
+    ctx.fillStyle = "red";
+    ctx.fillRect(this.cx, this.cy, this.radius, this.radius);
 };

@@ -46,18 +46,18 @@ Character.prototype.KEY_SHOOT  = ' '.charCodeAt(0);
 
 // Initial, inheritable, default values
 Character.prototype.cx = 200;
-Character.prototype.cy = 400;
+Character.prototype.cy = 483;
 Character.prototype.velX = 0;
 Character.prototype.velY = 0;
 Character.prototype.maxVelX = 7;
 Character.prototype.maxVelY = 7;
-Character.prototype.startingHeight = 400;
+Character.prototype.startingHeight = 483;
 Character.prototype.maxPushHeight = 120;
 // Vars for identifying character actions:
 Character.prototype.jumping = false;
 Character.prototype.pushing = false;
 Character.prototype.offGround = false;
-
+Character.prototype.casting = false;
 
 Character.prototype.status = "idleRight";
 // idle, walkingRight, walkingLeft, runningRight, runningLeft, inAirRight, inAirLeft
@@ -75,8 +75,9 @@ Character.prototype.jump = function () {
 Character.prototype.updateJump = function() {
 	if(this.cy >= this.startingHeight) {
         this.jumping = false;
-        this.pushing = false;
+        this.pushing = keys[this.KEY_JUMP];
         this.offGround = false;
+        if(!(keys[this.KEY_LEFT] || keys[this.KEY_RIGHT])) this.velX = 0;
     }
     if(this.cy <= this.startingHeight-this.maxPushHeight) {
         this.offGround = true;
@@ -98,7 +99,6 @@ Character.prototype.shoot = function () {
     
     var relVelX = dX;
     var relVelY = dY;
-
     entityManager.fireBullet(
        this.cx + dX * launchDist, this.cy + dY * launchDist,
        7, 0,
@@ -106,6 +106,7 @@ Character.prototype.shoot = function () {
        
 
 };
+
 
 Character.prototype.takeDamage = function () {
 
@@ -161,13 +162,14 @@ Character.prototype.detectStatus = function() {
     var wasMovingLeft = (this.velY < 0);
 
     // figure out our status
-    var nextStatus = null;
+    var nextStatus = this.status;
     var dir = (this.velX >= 0)?"Right":"Left";
     var atMaxVel = (Math.abs(this.velX)>=(this.maxVelX*0.9))
     if(this.jumping) nextStatus = "inAir"+dir;
-    else if(this.velX === 0) nextStatus = "idle"+(wasMovingLeft?"Left":dir);
-    else if(atMaxVel) nextStatus = "running"+dir;
-    else nextStatus = "walking"+dir;
+    else if(this.casting) nextStatus = "magic" + dir;
+    else if(this.velX === 0 && !this.pushing) nextStatus = "idle"+(wasMovingLeft?"Left":dir);
+    else if(atMaxVel && !this.pushing) nextStatus = "running"+dir;
+    else if(!this.pushing) nextStatus = "walking"+dir;
 
     // Update animation
     if(nextStatus!==this.status){
@@ -179,7 +181,11 @@ Character.prototype.detectStatus = function() {
 
 Character.prototype.update = function (du) {
     if(!this.jumping && keys[this.KEY_JUMP]) this.jump();
-    if(keys[this.KEY_SHOOT]) this.shoot();
+    if(keys[this.KEY_SHOOT]) {
+        this.shoot();
+        this.casting = true;
+    }
+    
     this.updateVelocity(du);
     this.cx += this.velX*du;
     this.cy += this.velY*du;

@@ -140,6 +140,8 @@ function makeZeldaAnimation(scale) {
     g_animations.zelda.inAirLeft = new Animation(g_images.zeldaSpriteSheet,85,31,44,2,100,-scale);
     g_animations.zelda.idleRight = new Animation(g_images.zeldaSpriteSheet,129,30,42,1,10,scale);
     g_animations.zelda.idleLeft = new Animation(g_images.zeldaSpriteSheet,129,30,42,1,10,-scale);
+    g_animations.zelda.magicRight = new Animation(g_images.zeldaSpriteSheet,306,50,48,6,100,scale);
+    g_animations.zelda.magicLeft = new Animation(g_images.zeldaSpriteSheet,306,50,48,6,100,-scale);
 }
 
 
