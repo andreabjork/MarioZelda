@@ -18,11 +18,11 @@ function Block(descr) {
     for (var property in descr) {
         this[property] = descr[property];
     }
+	this.sprite = this.sprite || g_sprites.defaultBlock;
 };
 
 Block.prototype._isDeadNow = false;
 Block.prototype._isBreakable = false;
-Block.prototype.sprite = g_sprites.defaultBlock;
 
 Block.prototype.update = function (du) {
 	if(this._isDeadNow) return Level.prototype.BREAK_ME;
@@ -33,7 +33,7 @@ Block.prototype.render = function (ctx,x,y,w,h) {
     var img_h = this.sprite.height;
 	var scale = h/img_h;
 	this.sprite.scale = scale;
-	this.sprite.drawCentredAt(ctx,x+w/2,y+h/2,w,h);
+	this.sprite.drawCentredAt(ctx,x+w/2,y+h/2);
 };
 
 Block.prototype.tryToBreak = function(){
