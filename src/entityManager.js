@@ -57,7 +57,7 @@ deferredSetup : function () {
 
 init: function() {
     this.generateCharacter();
-    
+    this.generateLevel(levelObject.level1);
 },
 
 fireBullet: function(cx, cy, velX, velY, rotation) {

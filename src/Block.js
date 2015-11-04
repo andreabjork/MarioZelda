@@ -14,54 +14,33 @@
 
 // A generic contructor which accepts an arbitrary descriptor object
 function Block(descr) {
-
-    // Common inherited setup logic from Entity
-    this.setup(descr);
-
-      
-    // Default sprite and scale, if not otherwise specified
-    this.sprite = this.sprite || g_sprites.Block;
-    this.scale  = this.scale  || 1;
-
-/*
-    // Diagnostics to check inheritance stuff
-    this._BlockProperty = true;
-    console.dir(this);
-*/
-
+    // Apply all setup properies from the (optional) descriptor
+    for (var property in descr) {
+        this[property] = descr[property];
+    }
 };
 
-Block.prototype = new Entity();
-
+Block.prototype._isDeadNow = false;
+Block.prototype._isBreakable = false;
 
 Block.prototype.update = function (du) {
-
-    // TODO: YOUR STUFF HERE! --- Unregister and check for death
-	spatialManager.unregister(this);
-	
-	if(this._isDeadNow) return entityManager.KILL_ME_NOW;
-		
-
-
-    this.rotation += 1 * this.velRot;
-    this.rotation = util.wrapRange(this.rotation,
-                                   0, consts.FULL_CIRCLE);
-
-	spatialManager.register(this);
-	
-};
-
-//Breyta hit management í x-y kannski... hafa svona í bili
-Block.prototype.getRadius = function () {
-    return this.scale * (this.sprite.width / 2) * 0.9;
+	if(this._isDeadNow) return Level.prototype.BREAK_ME;
 };
 
 
-Block.prototype.render = function (ctx) {
-    var origScale = this.sprite.scale;
-    // pass my scale into the sprite, for drawing
-    this.sprite.scale = this.scale;
-    this.sprite.drawWrappedCentredAt(
-        ctx, this.cx, this.cy, this.rotation
-    );
+Block.prototype.render = function (ctx,x,y,w,h) {
+    ctx.save();
+
+    ctx.fillStyle = "Yellow";
+    ctx.linewidth = 3;
+    ctx.strokeStyle = "Blue"
+    ctx.fillRect(x,y,w,h);
+    ctx.rect(x,y,w,h);
+    ctx.stroke();
+
+    ctx.restore();
 };
+
+Block.prototype.tryToBreak = function(){
+    if(this._isBreakable) this._isDeadNow = true;
+}
