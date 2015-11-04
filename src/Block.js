@@ -31,6 +31,7 @@ Block.prototype.update = function (du) {
 Block.prototype.render = function (ctx,x,y,w,h) {
     ctx.save();
 
+    ctx.beginPath();
     ctx.fillStyle = "Yellow";
     ctx.linewidth = 3;
     ctx.strokeStyle = "Blue"
