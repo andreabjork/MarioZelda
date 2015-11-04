@@ -187,10 +187,24 @@ Character.prototype.update = function (du) {
     
 
     this.updateVelocity(du);
-    if (this.velX < 0 && this.cx > 200) {
-        this.cx += this.velX*du;
-    }  else if (this.velX > 0 && this.cx < 400) {
-        this.cx += this.velX*du;
+    if (this.velX < 0) {
+        if (entityManager._level[0].center === 0) {
+            if (this.cx > 25) {
+                this.cx += this.velX*du;
+            } 
+        } else {
+            if (this.cx > 200) {
+                this.cx += this.velX*du;
+            }
+        }
+    }  else if (this.velX > 0) {
+        if (entityManager._level[0].center <= entityManager._level[0].Blocks[13].length*(-X)+g_canvas.width) {
+            if (this.cx < g_canvas.width-25) {
+                this.cx += this.velX*du;
+            }
+        } else if (this.cx < 400) {
+            this.cx += this.velX*du;
+        }
     }
     this.cy += this.velY*du;
     
