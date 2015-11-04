@@ -28,14 +28,14 @@ Block.prototype.update = function (du) {
 };
 
 
-Block.prototype.render = function (ctx,cx,cy,w,h) {
+Block.prototype.render = function (ctx,x,y,w,h) {
     ctx.save();
 
     ctx.fillStyle = "Yellow";
     ctx.linewidth = 3;
     ctx.strokeStyle = "Blue"
-    ctx.fillRect(cx-w/2,cy-h/2,w,h);
-    ctx.rect(cx-w/2,cy-h/2,w,h);
+    ctx.fillRect(x,y,w,h);
+    ctx.rect(x,y,w,h);
     ctx.stroke();
 
     ctx.restore();
