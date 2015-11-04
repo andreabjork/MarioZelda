@@ -187,7 +187,11 @@ Character.prototype.update = function (du) {
     
 
     this.updateVelocity(du);
-    this.cx += this.velX*du;
+    if (this.velX < 0 && this.cx > 200) {
+        this.cx += this.velX*du;
+    }  else if (this.velX > 0 && this.cx < 400) {
+        this.cx += this.velX*du;
+    }
     this.cy += this.velY*du;
     
     this.updateJump(du);
