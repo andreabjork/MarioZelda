@@ -41,8 +41,8 @@ Character.prototype.KEY_LEFT   = 37; //Left-arrow key code
 Character.prototype.KEY_RIGHT  = 39; //Right-arrow key code
 Character.prototype.KEY_PLUMMET = 36; //Down-arrow key code
 Character.prototype.KEY_JUMP   = 38; //Up-arrow key code
-Character.prototype.KEY_JAB = 'Z'.charCodeAt(0); // Implement method for this?
-Character.prototype.KEY_SHOOT  = 'X'.charCodeAt(0);
+Character.prototype.KEY_SPRINT = 'Z'.charCodeAt(0); // Implement method for this?
+Character.prototype.KEY_SHOOT  = ' '.charCodeAt(0);
 
 // Initial, inheritable, default values
 Character.prototype.cx = 200;
@@ -53,14 +53,11 @@ Character.prototype.maxVelX = 7;
 Character.prototype.maxVelY = 7;
 Character.prototype.startingHeight = 400;
 Character.prototype.maxPushHeight = 120;
-// These types are to detect whether a) character is actually in air
-// and b) whether character is pushing off of the ground. As in original
-// mario, character can push 'longer' to jump higher and 
-// c) whether the character has exceeded his "push" and can therefore not
-// continue pushing in midair.
+// Vars for identifying character actions:
 Character.prototype.jumping = false;
 Character.prototype.pushing = false;
 Character.prototype.offGround = false;
+
 
 Character.prototype.status = "idleRight";
 // idle, walkingRight, walkingLeft, runningRight, runningLeft, inAirRight, inAirLeft
@@ -82,7 +79,6 @@ Character.prototype.updateJump = function() {
         this.offGround = false;
     }
     if(this.cy <= this.startingHeight-this.maxPushHeight) {
-        console.log("Character is OFF GROUND!");
         this.offGround = true;
     }
 
@@ -95,22 +91,20 @@ Character.prototype.computeGravity = function () {
 };
 
 Character.prototype.shoot = function () {
-    if (keys[this.KEY_FIRE]) {
-    
-        var dX = +Math.sin(this.rotation);
-        var dY = -Math.cos(this.rotation);
-        var launchDist = this.getRadius() * 1.2;
-        
-        var relVel = this.launchVel;
-        var relVelX = dX * relVel;
-        var relVelY = dY * relVel;
 
-        entityManager.fireBullet(
-           this.cx + dX * launchDist, this.cy + dY * launchDist,
-           this.velX + relVelX, this.velY + relVelY,
-           this.rotation);
-           
-    }
+    var dX = +1;//+Math.sin(this.rotation);
+    var dY = 0;//Math.cos(this.rotation);
+    var launchDist = this.getRadius() * 1.2;
+    
+    var relVelX = dX;
+    var relVelY = dY;
+
+    entityManager.fireBullet(
+       this.cx + dX * launchDist, this.cy + dY * launchDist,
+       7, 0,
+       0);
+       
+
 };
 
 Character.prototype.takeDamage = function () {
@@ -185,7 +179,7 @@ Character.prototype.detectStatus = function() {
 
 Character.prototype.update = function (du) {
     if(!this.jumping && keys[this.KEY_JUMP]) this.jump();
-
+    if(keys[this.KEY_SHOOT]) this.shoot();
     this.updateVelocity(du);
     this.cx += this.velX*du;
     this.cy += this.velY*du;
