@@ -60,6 +60,10 @@ Entity.prototype.getRadius = function () {
     return 0;
 };
 
+Entity.prototype.getSize = function () {
+    return {sizeX : this.halfWidth, sizeY : this.halfHeight};
+};
+
 Entity.prototype.getSpatialID = function () {
     return this._spatialID;
 };
