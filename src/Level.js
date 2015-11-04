@@ -64,13 +64,21 @@ level2 : [
 };					
 
 Level.prototype.update = function (du) {
+	
+	if (keys[entityManager._character[0].KEY_LEFT]) {
+		if (this.center < 200) this.center += 5;
+	}
+	if (keys[entityManager._character[0].KEY_RIGHT]) {
+		this.center -= 5;
+	}
 
-// Must-do
 };
 
 Level.prototype.BREAK_ME = -2;
 
 Level.prototype.Blocks = [];
+
+Level.prototype.center = 200;
 
 Level.prototype.initLevel = function(curLevel) {
 	for (var i = 0; i < curLevel.length; i++) {
@@ -91,7 +99,7 @@ Level.prototype.render = function (ctx) {
 	for (var i = 0; i < this.Blocks.length; i++) {
 		for (var j = 0; j < this.Blocks[i].length; j++) {
 			if (this.Blocks[i][j]) {
-				this.Blocks[i][j].render(ctx, X*j, Y*i, X, Y);
+				this.Blocks[i][j].render(ctx, X*j-200+this.center, Y*i, X, Y);
 			}
 		}
 	}
