@@ -61,7 +61,7 @@ Animation.prototype.loadSprites = function(y,w,h,n,s){
 		sprite.drawAt = function(ctx,x,y){
 			ctx.drawImage(this.image, this.sx, this.sy, this.width, this.height, x, y, this.width, this.height);
 		};
-		console.dir(sprite);
+		//console.dir(sprite);
 		sprites.push(sprite);
 	};
 	return sprites;

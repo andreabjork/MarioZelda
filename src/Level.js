@@ -70,13 +70,30 @@ Level.prototype.update = function (du) {
 
 Level.prototype.BREAK_ME = -2;
 
-Level.prototype.render = function (ctx) {
-	// Must-do
-	for (var i = 0; i < levelObject.level1.length; i++) {
-		for (var j = 0; j < levelObject.level1[i].length; j++) {
-			if (levelObject.level1[i][j] === 1) {
-				util.fillBox(ctx, (g_canvas.width/20)*j, (g_canvas.height/14)*i, g_canvas.width/20, g_canvas.height/14, 'blue');
+Level.prototype.Blocks = [];
+
+Level.prototype.initLevel = function(curLevel) {
+	for (var i = 0; i < curLevel.length; i++) {
+		var column = [];
+		for (var j = 0; j < curLevel[i].length; j++) {
+			if (curLevel[i][j] === 1) {
+				column[j] = new Block();
 			}
 		}
-	} 
+		this.Blocks[i] = column;
+	}
+}
+
+var X = g_canvas.width/14;
+var Y = g_canvas.height/14;
+
+Level.prototype.render = function (ctx) {
+
+	for (var i = 0; i < this.Blocks.length; i++) {
+		for (var j = 0; j < this.Blocks[i].length; j++) {
+			if (this.Blocks[i][j]) {
+				this.Blocks[i][j].render(ctx, X*j, Y*i, X, Y);
+			}
+		}
+	}
 };
