@@ -129,19 +129,24 @@ function requestPreloads() {
 
 var g_sprites = {};
 var g_animations = {};
+function makeZeldaAnimation(scale) {
+    g_animations.zelda = {}
+    g_animations.zelda.walkingRight = new Animation(g_images.zeldaSpriteSheet,0,30,42,10,100, scale);
+    g_animations.zelda.walkingLeft = new Animation(g_images.zeldaSpriteSheet,0,30,42,10,100,-scale);
+    g_animations.zelda.runningRight = new Animation(g_images.zeldaSpriteSheet,42,33,43,4,100, scale);
+    g_animations.zelda.runningLeft = new Animation(g_images.zeldaSpriteSheet,42,33,43,4,100,-scale);
+    g_animations.zelda.inAirRight = new Animation(g_images.zeldaSpriteSheet,85,31,44,2,100,scale);
+    g_animations.zelda.inAirLeft = new Animation(g_images.zeldaSpriteSheet,85,31,44,2,100,-scale);
+    g_animations.zelda.idleRight = new Animation(g_images.zeldaSpriteSheet,129,30,42,1,10,scale);
+    g_animations.zelda.idleLeft = new Animation(g_images.zeldaSpriteSheet,129,30,42,1,10,-scale);
+}
+
+
 
 function preloadDone() {
 
     g_sprites.marioTest  = new Sprite(g_images.marioTest);
-    g_animations.zelda = {}
-    g_animations.zelda.walkingRight = new Animation(g_images.zeldaSpriteSheet,0,30,42,10,100,1);
-    g_animations.zelda.walkingLeft = new Animation(g_images.zeldaSpriteSheet,0,30,42,10,100,-1);
-    g_animations.zelda.runningRight = new Animation(g_images.zeldaSpriteSheet,42,33,43,4,100,1);
-    g_animations.zelda.runningLeft = new Animation(g_images.zeldaSpriteSheet,42,33,43,4,100,-1);
-    g_animations.zelda.inAirRight = new Animation(g_images.zeldaSpriteSheet,85,31,44,2,100,1);
-    g_animations.zelda.inAirLeft = new Animation(g_images.zeldaSpriteSheet,85,31,44,2,100,-1);
-    g_animations.zelda.idleRight = new Animation(g_images.zeldaSpriteSheet,129,30,42,1,10,1);
-    g_animations.zelda.idleLeft = new Animation(g_images.zeldaSpriteSheet,129,30,42,1,10,-1);
+
 
     entityManager.init();
 
