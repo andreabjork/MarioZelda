@@ -23,8 +23,8 @@ function Character(descr) {
     // Default sprite, if not otherwise specified
     this.sprite = g_sprites.marioTest;
     this._scale = 1.3;
-	this._isAlive = true;
-    makeZeldaAnimation(this._scale);
+	makeZeldaAnimation(this._scale);
+    this._isAlive = true;
     this.animation = g_animations.zelda.idleRight;
 };
 // This comes later on when Entity has been implemented: 
@@ -39,8 +39,8 @@ Character.prototype.rememberResets = function () {
 // Keys
 Character.prototype.KEY_LEFT   = 37; //Left-arrow key code
 Character.prototype.KEY_RIGHT  = 39; //Right-arrow key code
-Character.prototype.KEY_PLUMMET = 38; //Down-arrow key code
-Character.prototype.KEY_JUMP   = ' '.charCodeAt(0);
+Character.prototype.KEY_PLUMMET = 36; //Down-arrow key code
+Character.prototype.KEY_JUMP   = 38; //Up-arrow key code
 Character.prototype.KEY_JAB = 'Z'.charCodeAt(0); // Implement method for this?
 Character.prototype.KEY_SHOOT  = 'X'.charCodeAt(0);
 
@@ -52,8 +52,16 @@ Character.prototype.velY = 0;
 Character.prototype.maxVelX = 7;
 Character.prototype.maxVelY = 7;
 Character.prototype.startingHeight = 400;
-Character.prototype.jumpHeight = 30;
+Character.prototype.maxPushHeight = 120;
+// These types are to detect whether a) character is actually in air
+// and b) whether character is pushing off of the ground. As in original
+// mario, character can push 'longer' to jump higher and 
+// c) whether the character has exceeded his "push" and can therefore not
+// continue pushing in midair.
 Character.prototype.jumping = false;
+Character.prototype.pushing = false;
+Character.prototype.offGround = false;
+
 Character.prototype.status = "idleRight";
 // idle, walkingRight, walkingLeft, runningRight, runningLeft, inAirRight, inAirLeft
 
@@ -64,11 +72,20 @@ Character.prototype.status = "idleRight";
 
 Character.prototype.jump = function () {
 	this.jumping = true;
-    this.velY = -5;
+    this.velY = -3;
 };
 
 Character.prototype.updateJump = function() {
-	if(this.cy >= this.startingHeight) this.jumping = false;
+	if(this.cy >= this.startingHeight) {
+        this.jumping = false;
+        this.pushing = false;
+        this.offGround = false;
+    }
+    if(this.cy <= this.startingHeight-this.maxPushHeight) {
+        console.log("Character is OFF GROUND!");
+        this.offGround = true;
+    }
+
 };
 
 var NOMINAL_GRAVITY = 0.12;
@@ -105,41 +122,68 @@ Character.prototype.reset = function () {
 };
 
 var NOMINAL_FORCE = +0.2;
-var wasMovingRight = false;
-var wasMovingLeft = false;
 Character.prototype.updateVelocity = function(du) {
+    var wasMovingRight = (this.velX > 0);
+    var wasMovingLeft = (this.velX < 0);
     var movingRight = keys[this.KEY_RIGHT];
     var movingLeft = keys[this.KEY_LEFT];
     
+    // Check if the character in still in range of the ground
+    // to be able to push of it (=> jump higher)
+    if(this.jumping && !keys[this.KEY_JUMP]) {
+        this.offGround = true;
+    }
+    this.pushing = keys[this.KEY_JUMP] && !this.offGround;
+    
+    // To be able to change direction in midair:
     if((movingRight && wasMovingLeft) || (movingLeft && wasMovingRight)) this.velX = 0;
 
+    // Increase speed to the right:
     if(movingRight && this.velX < this.maxVelX) {
         this.velX += NOMINAL_FORCE*du;
     } 
 
+    // Increase speed to the left:
     if(movingLeft && this.velX > - this.maxVelX) {
         this.velX -= NOMINAL_FORCE*du;
     }
 
+    // Velocity is zero if we're not moving anywhere or floating in air:
     if(!this.jumping && !(movingRight || movingLeft)) {
         this.velX = 0;
     }
 
-    if(this.jumping) {
+    // Start accelerating down as soon as we've "stopped pushing"
+    if(this.jumping && !this.pushing) {
         this.velY += NOMINAL_GRAVITY*du;
-    } else {
+    } else if(!this.jumping){
         this.velY = 0;
     }
-
-    wasMovingRight = movingRight;
-    wasMovingLeft = movingLeft;
-
 }
 
 
-Character.prototype.update = function (du) {
+Character.prototype.detectStatus = function() {
+    var wasMovingRight = (this.velX >= 0);
+    var wasMovingLeft = (this.velY < 0);
 
-    
+    // figure out our status
+    var nextStatus = null;
+    var dir = (this.velX >= 0)?"Right":"Left";
+    var atMaxVel = (Math.abs(this.velX)>=(this.maxVelX*0.9))
+    if(this.jumping) nextStatus = "inAir"+dir;
+    else if(this.velX === 0) nextStatus = "idle"+(wasMovingLeft?"Left":dir);
+    else if(atMaxVel) nextStatus = "running"+dir;
+    else nextStatus = "walking"+dir;
+
+    // Update animation
+    if(nextStatus!==this.status){
+        this.status = nextStatus;
+        this.animation = g_animations.zelda[this.status];
+        this.animation.reset();
+    }    
+}
+
+Character.prototype.update = function (du) {
     if(!this.jumping && keys[this.KEY_JUMP]) this.jump();
 
     this.updateVelocity(du);
@@ -151,20 +195,7 @@ Character.prototype.update = function (du) {
     this.wrapPosition();
 
 
-    // figure out our status
-    var nextStatus = null;
-    var dir = (this.velX >= 0)?"Right":"Left";
-    var atMaxVel = (Math.abs(this.velX)>=(this.maxVelX*0.9))
-    if(this.jumping) nextStatus = "inAir"+dir;
-    else if(this.velX === 0) nextStatus = "idle"+(wasMovingLeft?"Left":dir);
-    else if(atMaxVel) nextStatus = "running"+dir;
-    else nextStatus = "walking"+dir;
-
-    if(nextStatus!==this.status){
-        this.status = nextStatus;
-        this.animation = g_animations.zelda[this.status];
-        this.animation.reset();
-    }
+    this.detectStatus();
     this.animation.update(du);
 };
 
