@@ -157,6 +157,7 @@ function preloadDone() {
     main.init();
     
     entityManager._level[0].initLevel(levelObject.level1);
+    console.log(levelObject.level1);
 }
 
 // Kick it off
