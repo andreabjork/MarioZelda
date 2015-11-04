@@ -188,7 +188,7 @@ Character.prototype.update = function (du) {
 
     this.updateVelocity(du);
     if (this.velX < 0) {
-        if (entityManager._level[0].center === 0) {
+        if (entityManager._level[0].center >= 0) {
             if (this.cx > 25) {
                 this.cx += this.velX*du;
             } 
