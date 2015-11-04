@@ -121,7 +121,8 @@ function requestPreloads() {
 
     var requiredImages = {
         marioTest: "res/images/mario.png",
-        zeldaSpriteSheet: "res/images/zeldass.png"
+        zeldaSpriteSheet: "res/images/zeldass.png",
+		defaultBlock: "res/images/blockPlaceholder.png"
     };
 
     imagesPreload(requiredImages, g_images, preloadDone);
@@ -146,6 +147,7 @@ function makeZeldaAnimation(scale) {
 function preloadDone() {
 
     g_sprites.marioTest  = new Sprite(g_images.marioTest);
+    g_sprites.defaultBlock  = new Sprite(g_images.defaultBlock);
 
 
     entityManager.init();

@@ -22,6 +22,7 @@ function Block(descr) {
 
 Block.prototype._isDeadNow = false;
 Block.prototype._isBreakable = false;
+Block.prototype.sprite = g_sprites.defaultBlock;
 
 Block.prototype.update = function (du) {
 	if(this._isDeadNow) return Level.prototype.BREAK_ME;
@@ -29,16 +30,10 @@ Block.prototype.update = function (du) {
 
 
 Block.prototype.render = function (ctx,x,y,w,h) {
-    ctx.save();
-
-    ctx.fillStyle = "Yellow";
-    ctx.linewidth = 3;
-    ctx.strokeStyle = "Blue"
-    ctx.fillRect(x,y,w,h);
-    ctx.rect(x,y,w,h);
-    ctx.stroke();
-
-    ctx.restore();
+    var img_h = this.sprite.height;
+	var scale = h/img_h;
+	this.sprite.scale = scale;
+	this.sprite.drawCentredAt(ctx,x+w/2,y+h/2,w,h);
 };
 
 Block.prototype.tryToBreak = function(){
