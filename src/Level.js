@@ -18,6 +18,8 @@ function Level(descr) {
     this.setup(descr);
 }
 
+Level.prototype = new Entity();
+
     
 // Initial, inheritable, default values
 Level.prototype.height = 14 //dæmi um hversu mörg block canvazið getur tekið.
