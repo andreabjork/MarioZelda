@@ -88,7 +88,6 @@ var X = g_canvas.width/14;
 var Y = g_canvas.height/14;
 
 Level.prototype.render = function (ctx) {
-
 	for (var i = 0; i < this.Blocks.length; i++) {
 		for (var j = 0; j < this.Blocks[i].length; j++) {
 			if (this.Blocks[i][j]) {

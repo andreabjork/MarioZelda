@@ -18,6 +18,7 @@ function Block(descr) {
     for (var property in descr) {
         this[property] = descr[property];
     }
+	this.sprite = this.sprite || g_sprites.defaultBlock;
 };
 
 Block.prototype._isDeadNow = false;
@@ -29,16 +30,10 @@ Block.prototype.update = function (du) {
 
 
 Block.prototype.render = function (ctx,x,y,w,h) {
-    ctx.save();
-
-    ctx.fillStyle = "Yellow";
-    ctx.linewidth = 3;
-    ctx.strokeStyle = "Blue"
-    ctx.fillRect(x,y,w,h);
-    ctx.rect(x,y,w,h);
-    ctx.stroke();
-
-    ctx.restore();
+    var img_h = this.sprite.height;
+	var scale = h/img_h;
+	this.sprite.scale = scale;
+	this.sprite.drawCentredAt(ctx,x+w/2,y+h/2);
 };
 
 Block.prototype.tryToBreak = function(){
