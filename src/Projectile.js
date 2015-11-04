@@ -57,7 +57,7 @@ Projectile.prototype.update = function (du) {
 };
 
 Projectile.prototype.getRadius = function () {
-    return this.redius;
+    return this.radius;
 };
 
 Projectile.prototype.takeProjectileHit = function () {
