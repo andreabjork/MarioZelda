@@ -22,8 +22,9 @@ function Character(descr) {
     
     // Default sprite, if not otherwise specified
     this.sprite = g_sprites.marioTest;
-    this._scale = 0.03;
+    this._scale = 1.3;
 	this._isAlive = true;
+    makeZeldaAnimation(this._scale);
     this.animation = g_animations.zelda.idleRight;
 };
 // This comes later on when Entity has been implemented: 
@@ -54,6 +55,7 @@ Character.prototype.startingHeight = 400;
 Character.prototype.jumpHeight = 30;
 Character.prototype.jumping = false;
 Character.prototype.status = "idleRight";
+// idle, walkingRight, walkingLeft, runningRight, runningLeft, inAirRight, inAirLeft
 
 // Sounds (should be preloaded and initialized in constructor):
 // Character.prototype.warpSound = new Audio(
