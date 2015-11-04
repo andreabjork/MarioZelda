@@ -58,7 +58,6 @@ Character.prototype.jumping = false;
 Character.prototype.pushing = false;
 Character.prototype.offGround = false;
 Character.prototype.casting = false;
-
 Character.prototype.status = "idleRight";
 // idle, walkingRight, walkingLeft, runningRight, runningLeft, inAirRight, inAirLeft
 
@@ -181,11 +180,12 @@ Character.prototype.detectStatus = function() {
 
 Character.prototype.update = function (du) {
     if(!this.jumping && keys[this.KEY_JUMP]) this.jump();
-    if(keys[this.KEY_SHOOT]) {
+    if(keys[this.KEY_SHOOT] && !this.casting) {
         this.shoot();
         this.casting = true;
     }
     
+
     this.updateVelocity(du);
     this.cx += this.velX*du;
     this.cy += this.velY*du;
@@ -196,7 +196,11 @@ Character.prototype.update = function (du) {
 
 
     this.detectStatus();
-    this.animation.update(du);
+    var animFinished = this.animation.update(du);
+    if(this.casting && animFinished===1) {
+
+        this.casting = false;
+    }
 };
 
 Character.prototype.render = function (ctx) {
