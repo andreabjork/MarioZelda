@@ -24,7 +24,7 @@ Block.prototype._isDeadNow = false;
 Block.prototype._isBreakable = false;
 
 Block.prototype.update = function (du) {
-	if(this._isDeadNow) return level.BREAK_ME;
+	if(this._isDeadNow) return Level.prototype.BREAK_ME;
 };
 
 
