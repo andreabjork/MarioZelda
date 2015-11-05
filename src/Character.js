@@ -22,7 +22,7 @@ function Character(descr) {
     
     // Default sprite, if not otherwise specified
     this.sprite = g_sprites.marioTest;
-    this._scale = 1.3;
+    this._scale = 1.5;
 	makeZeldaAnimation(this._scale);
     this._isAlive = true;
     this.animation = g_animations.zelda.idleRight;
@@ -179,6 +179,7 @@ Character.prototype.detectStatus = function() {
 }
 
 Character.prototype.update = function (du) {
+	spatialManager.unregister(this);
     if(!this.jumping && keys[this.KEY_JUMP]) this.jump();
     if(keys[this.KEY_SHOOT] && !this.casting) {
         this.shoot();
@@ -219,8 +220,19 @@ Character.prototype.update = function (du) {
 
         this.casting = false;
     }
+	spatialManager.register(this);
 };
 
 Character.prototype.render = function (ctx) {
         this.animation.renderAt(ctx, this.cx, this.cy);
 };
+
+Character.prototype.getPos = function(){
+	var pos = {posX:this.cx-8*this._scale,posY:this.cy-21*this._scale};
+	return pos;
+}
+
+Character.prototype.getSize = function(){
+	var size = {sizeX:16*this._scale,sizeY:42*this._scale};
+	return size;
+}

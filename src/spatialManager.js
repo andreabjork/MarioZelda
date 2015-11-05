@@ -59,10 +59,10 @@ unregister: function(entity) {
 	this._entities[spatialID] = undefined;
 },
 
-findEntityInRange: function(posX, posY, sizeX, sizeY, radius) {
+findEntityInRange: function(posX, posY, sizeX, sizeY) {
 	var posX2,
 		posY2,
-		sizeX2;
+		sizeX2,
 		sizeY2;
 	for(var i = 1 ; i < this._entities.length; i++){
 		if(this._entities[i]){
@@ -83,4 +83,25 @@ findEntityInRange: function(posX, posY, sizeX, sizeY, radius) {
 	}
 },
 
+render: function(ctx){
+	ctx.save();
+	ctx.beginPath();
+	ctx.strokeStyle = "red";
+	var posX,posY,sizeX,sizeY;
+	for(var i=1; i < this._entities.length; i++){
+		if(this._entities[i]){
+			console.log("Entity nr. "+i);
+			var pos = this._entities[i].getPos();
+			posX = pos.posX;
+			posY = pos.posY;
+			var size = this._entities[i].getSize();
+			sizeX = size.sizeX;
+			sizeY = size.sizeY;
+			ctx.rect(posX,posY,sizeX,sizeY);
+			ctx.stroke();
+		}	
+	}
+	ctx.restore();
+	ctx.beginPath();
+}
 }

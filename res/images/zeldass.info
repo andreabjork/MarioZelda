@@ -1,3 +1,5 @@
+Collision box: 16x42 px around center
+
 Animation info:
 
 Row 0: Walking
@@ -51,7 +53,7 @@ Example interval = 200 ms
 
 Row 7: Casting Spell
 Top edge = 320 px
-Frame Width = 50 px
+Frame Width = 51 px
 Frame Height = 48 px
 Frame Count = 6
 Example interval = 100 ms
@@ -72,7 +74,7 @@ Example interval = 200 ms
 
 Row 10: Raising Hands
 Top edge = 459 px
-Frame Width = 23 px
+Frame Width = 24 px
 Frame Height = 45 px
 Frame Count = 5
 Example interval = 150 ms

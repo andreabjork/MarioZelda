@@ -29,6 +29,8 @@ Projectile.prototype.cy = 200;
 Projectile.prototype.velX = 1;
 Projectile.prototype.velY = 1;
 
+//
+
 // Convert times from milliseconds to "nominal" time units.
 Projectile.prototype.lifeSpan = 3000 / NOMINAL_UPDATE_INTERVAL;
 
@@ -56,8 +58,12 @@ Projectile.prototype.update = function (du) {
 
 };
 
-Projectile.prototype.getRadius = function () {
-    return this.radius;
+Projectile.prototype.getPos = function () {
+    return {posX: this.cx-1, posY: this.cy-1};
+};
+
+Projectile.prototype.getSize = function () {
+    return {sizeX: 2, sizeY: 2};
 };
 
 Projectile.prototype.takeProjectileHit = function () {
