@@ -109,6 +109,23 @@ fillBox: function (ctx, x, y, w, h, style) {
     ctx.fillStyle = style;
     ctx.fillRect(x, y, w, h);
     ctx.fillStyle = oldStyle;
+},
+
+strokeBox: function (ctx, x, y, w, h, style) {
+    ctx.save();
+    
+    ctx.strokeStyle = style;
+    ctx.beginPath();
+    ctx.moveTo(x,y);
+    ctx.lineTo(x,y+h);
+    ctx.lineTo(x+w,y+h);
+    ctx.lineTo(x+w,y);
+    ctx.lineTo(x,y);
+    
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    
+    ctx.restore();
 }
 
 };

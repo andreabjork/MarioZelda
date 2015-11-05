@@ -64,15 +64,31 @@ level2 : [
 };					
 
 Level.prototype.update = function (du) {
+	var start = 0;
+	var end = this.Blocks[13].length*(-X)+g_canvas.width;
+	var charX = entityManager._character[0].cx;
+	var charVel = entityManager._character[0].velX;
+	var Left = entityManager._character[0].KEY_LEFT;
+	var Right = entityManager._character[0].KEY_RIGHT;
 	
-	if (keys[entityManager._character[0].KEY_LEFT] && entityManager._character[0].cx < 200) {
-		if (this.center < 0) {
-			this.center -= entityManager._character[0].velX;
+	if (keys[Left] && charX < 200) {
+		if (this.center < start) {
+			var nextC = this.center - charVel;
+			if (nextC > start) {
+				this.center = start;
+			} else {
+				this.center = nextC;
+			}
 		}
 	}
-	if (keys[entityManager._character[0].KEY_RIGHT] && entityManager._character[0].cx > 400) {
-		if (this.center > this.Blocks[13].length*(-X)+g_canvas.width) {
-			this.center -= entityManager._character[0].velX;
+	if (keys[Right] && charX > 400) {
+		if (this.center > end) {
+			nextC = this.center - charVel;
+			if (nextC < end) {
+				this.center = end
+			} else {
+				this.center = nextC;
+			}
 		}
 	}
 
@@ -104,6 +120,9 @@ Level.prototype.render = function (ctx) {
 		for (var j = 0; j < this.Blocks[i].length; j++) {
 			if (this.Blocks[i][j]) {
 				this.Blocks[i][j].render(ctx, X*j + this.center, Y*i, X, Y);
+				if (g_renderSpatialDebug) {
+					util.strokeBox(ctx, X*j + this.center, Y*i, X, Y, 'red');
+				}
 			}
 		}
 	}
