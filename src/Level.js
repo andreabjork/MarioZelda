@@ -212,18 +212,26 @@ Level.prototype.findBlocks = function (Char) {
 	}
 	//blocked on left?
 	if (this.Blocks[row][col-1] || this.Blocks[row+1][col-1]) {
-			if((X*(col-1) + this.center + X/2 - posX - sizeX + Char.velX) >= Y/4) leftB = true;					
+			if((X*(col-1) + this.center + X/2 - posX + sizeX - Char.velX) >= -Y/4) leftB = true;					
 	}
+	
 	if(row > 0) if(this.Blocks[row-1][col-1] && Char.offGround)
-		if((X*(col-1) + this.center + X/2 - posX - sizeX + Char.velX) >= 0) leftB = true;
+		if((X*(col-1) + this.center + X/2 - posX + sizeX - Char.velX) >= 0) leftB = true;
+	
+	if(row < 14 && row > 0) if(this.Blocks[row+2][col-1] && Char.offGround)
+		if((X*(col-1) + this.center + X/2 - posX + sizeX - Char.velX) >= 0) leftB = true;
 	
 	//blocked on right?
 	if (this.Blocks[row][col+1] || this.Blocks[row+1][col+1]) {
 			if((X*(col+1) + this.center - X/2 - posX - sizeX - Char.velX) <= -Y/4) rightB = true;					
 	}
-	console.log(Char.velX);
 	if(row > 0) if(this.Blocks[row-1][col+1] && Char.offGround)
 		if((X*(col+1) + this.center - X/2 - posX - sizeX - Char.velX) <= 0) rightB = true;
+	
+	if(row < 14) if(this.Blocks[row+2][col+1] && Char.offGround)
+		if((X*(col+1) + this.center + X/2 - posX - sizeX - Char.velX) <= 0) leftB = true
+	
+	
 	
 	var blocks ={
 				left: leftB,
