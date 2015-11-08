@@ -49,9 +49,9 @@ Character.prototype.cx = 200;
 Character.prototype.cy = 483;
 Character.prototype.velX = 0;
 Character.prototype.velY = 0;
-Character.prototype.maxVelX = 7;
-Character.prototype.maxVelY = 7;
-Character.prototype.startingHeight = 483;
+Character.prototype.maxVelX = 4.5;
+Character.prototype.maxVelY = 6.5;
+Character.prototype.tempMaxJumpHeight = 0;
 Character.prototype.maxPushHeight = 120;
 // Vars for identifying character actions:
 Character.prototype.jumping = false;
@@ -69,19 +69,28 @@ Character.prototype.status = "idleRight";
 Character.prototype.jump = function () {
 	this.jumping = true;
     this.velY = -3;
+	this.tempMaxJumpHeight = this.cy - this.maxPushHeight; 
 };
 
-Character.prototype.updateJump = function() {
-	if(this.cy >= this.startingHeight) {
+Character.prototype.updateJump = function(roof, isTB, topBlock) {
+	var groundHeight = entityManager._level[0].findGround(this); 
+	
+	if(this.cy >= groundHeight) {
         this.jumping = false;
         this.pushing = keys[this.KEY_JUMP];
         this.offGround = false;
         if(!(keys[this.KEY_LEFT] || keys[this.KEY_RIGHT])) this.velX = 0;
     }
-    if(this.cy <= this.startingHeight-this.maxPushHeight) {
+	else {this.jumping = true;}
+	
+    if(this.cy <= this.tempMaxJumpHeight) {
         this.offGround = true;
     }
-
+	
+	if(this.cy - 42*this._scale <= roof) {
+        this.velY *= -1;
+		if(isTB)topBlock.activate();
+    }
 };
 
 var NOMINAL_GRAVITY = 0.12;
@@ -186,30 +195,33 @@ Character.prototype.update = function (du) {
         this.casting = true;
     }
     
-
+	var blocks = entityManager._level[0].findBlocks(this);
+	
+	
     this.updateVelocity(du);
     if (this.velX < 0) {
         if (entityManager._level[0].center >= 0) {
-            if (this.cx > 25) {
+            if (this.cx > 25 && !blocks.left) {
                 this.cx += this.velX*du;
             } 
         } else {
-            if (this.cx > 200) {
+            if (this.cx > 200 && !blocks.left) {
                 this.cx += this.velX*du;
             }
         }
     }  else if (this.velX > 0) {
         if (entityManager._level[0].center <= entityManager._level[0].Blocks[13].length*(-X)+g_canvas.width) {
-            if (this.cx < g_canvas.width-25) {
+            if (this.cx < g_canvas.width-25 && !blocks.right) {
                 this.cx += this.velX*du;
             }
-        } else if (this.cx < 400) {
+        } else if (this.cx < 400 && !blocks.right) {
             this.cx += this.velX*du;
         }
     }
     this.cy += this.velY*du;
     
-    this.updateJump(du);
+	
+    this.updateJump(blocks.top, blocks.isTB, blocks.topBlock);
 
     this.wrapPosition();
 

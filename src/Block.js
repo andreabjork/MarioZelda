@@ -20,7 +20,6 @@ function Block(descr) {
     }
 	this.sprite = this.sprite || g_sprites.defaultBlock;
 };
-
 Block.prototype._isDeadNow = false;
 Block.prototype._isBreakable = false;
 
@@ -34,6 +33,19 @@ Block.prototype.render = function (ctx,x,y,w,h) {
 	var scale = h/img_h;
 	this.sprite.scale = scale;
 	this.sprite.drawCentredAt(ctx,x+w/2,y+h/2);
+};
+
+Block.prototype.activate = function (Char) {
+    //char bumped into this block. will he die/get money?
+	console.log("hola hola, get dola $$");
+};
+
+
+Block.prototype.collide = function ( Char , hitValue) {
+    // this function is to let blocks interact with characters, f.ex. water/spikes
+	// if they are just solid and collidable return the top value, and if not,
+	// interact with character and then return (will finish description when this is ready)stuff stuff
+		return hitValue;
 };
 
 Block.prototype.tryToBreak = function(){

@@ -31,15 +31,15 @@ var levelObject =  {
 	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,0,1,0,0,0,0,0,0],
 	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0],
-	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0],
-	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+	[0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0],
+	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0],
+	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,1,0,0,0],
 	[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
 	[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1] // 60 rows
 ],
@@ -71,6 +71,7 @@ Level.prototype.update = function (du) {
 	var Left = entityManager._character[0].KEY_LEFT;
 	var Right = entityManager._character[0].KEY_RIGHT;
 	
+
 	if (keys[Left] && charX < 200) {
 		if (this.center < start) {
 			var nextC = this.center - charVel;
@@ -115,6 +116,9 @@ Level.prototype.initLevel = function(curLevel) {
 var Y = g_canvas.height/14;
 var X = Y;
 
+var testx = 0;
+var testy = 0; 
+
 Level.prototype.render = function (ctx) {
 	for (var i = 0; i < this.Blocks.length; i++) {
 		for (var j = 0; j < this.Blocks[i].length; j++) {
@@ -126,4 +130,108 @@ Level.prototype.render = function (ctx) {
 			}
 		}
 	}
+	util.strokeBox(ctx, X*this.testx + this.center, Y*this.testy, X, Y, 'red');
+};
+
+Level.prototype.findGround = function ( Char) {
+	var pos = Char.getPos();
+	var posX = pos.posX;
+	var posY = pos.posY;
+	var size = Char.getSize();
+	var sizeY = size.sizeY;
+	var col = 0;
+	var row = 0;
+	//find what column I'm in 
+	for(var j = 0; j < this.Blocks[13].length; j++)
+		if(Math.abs(X*j + this.center - posX) <= X/2)
+			col = j;
+	//starting point in array to search for ground
+	for(var i = 0; i < this.Blocks.length; i++)
+		if(Math.abs(Y*i - posY) <= Y/2)
+			row = i;
+		
+	//Character is traweling downwards so we check for ground
+	for (var i = row; i < this.Blocks.length; i++) {
+		if (this.Blocks[i][col]) {
+			return this.Blocks[i][col].collide(Char, Y*i - 0.81*Y);
+		}
+	}
+		
+	//no hittable blocks were found in this column
+	return 1337;
+};
+
+Level.prototype.findBlocks = function (Char) {
+	var pos = Char.getPos();
+	var posX = pos.posX;
+	var posY = pos.posY - Y/2;
+	var size = Char.getSize();
+	var sizeY = size.sizeY;
+	var sizeX = size.sizeX;
+	var col = 0;
+	var row = 0;
+	//find what column I'm in 
+	for(var j = 0; j < this.Blocks[13].length; j++)
+		if(Math.abs(X*j + this.center - posX) <= X/2)
+			col = j;
+	//starting point in array to search for roof
+	for(var i = 0; i < this.Blocks.length; i++)
+		if(Math.abs(Y*i - posY) <= Y/2)
+			row = i;
+	
+	
+	this.testy = row;
+	this.testx = col;
+	
+	var topB = false,
+		leftB = false,
+		rightB = false;
+	var theBAbove;
+	var roof = -1337;
+	//block on top?
+	if(row > 0){
+		//is there a block directly above?, and if so, save it
+		if (this.Blocks[row - 1][col]) {
+			topB = true;
+			theBAbove = this.Blocks[row - 1][col];
+			roof = Y*(row-1) + Y/2; 
+		}
+		
+		//is there a block in the way of the image that would make silly clips? :)
+		if((X*col + this.center - posX) < -Y/4){
+			if (this.Blocks[row - 1][col+ 1]) {
+				//topB = true;
+				roof = Y*(row-1) + Y/2; 
+			}
+		} else if((X*col + this.center - posX) > Y/4){
+			if (this.Blocks[row - 1][col-1]) {
+				//topB = true;
+				roof = Y*(row-1) + Y/2; 
+			}
+		}
+	}
+	//blocked on left?
+	if (this.Blocks[row][col-1] || this.Blocks[row+1][col-1]) {
+			if((X*(col-1) + this.center + X/2 - posX - sizeX + Char.velX) >= Y/4) leftB = true;					
+	}
+	if(row > 0) if(this.Blocks[row-1][col-1] && Char.offGround)
+		if((X*(col-1) + this.center + X/2 - posX - sizeX + Char.velX) >= 0) leftB = true;
+	
+	//blocked on right?
+	if (this.Blocks[row][col+1] || this.Blocks[row+1][col+1]) {
+			if((X*(col+1) + this.center - X/2 - posX - sizeX - Char.velX) <= -Y/4) rightB = true;					
+	}
+	console.log(Char.velX);
+	if(row > 0) if(this.Blocks[row-1][col+1] && Char.offGround)
+		if((X*(col+1) + this.center - X/2 - posX - sizeX - Char.velX) <= 0) rightB = true;
+	
+	var blocks ={
+				left: leftB,
+				right: rightB,
+				top: roof,
+				isTB: topB,
+				topBlock : theBAbove
+				};
+	return blocks;
+	//basicly means no hittable blocks were found in this column
 };
