@@ -66,31 +66,42 @@ level2 : [
 Level.prototype.update = function (du) {
 	var start = 0;
 	var end = this.Blocks[13].length*(-X)+g_canvas.width;
-	var charX = entityManager._character[0].cx;
-	var charVel = entityManager._character[0].velX;
+	var charPos = entityManager._character[0].getPos();
+	var charVelX = entityManager._character[0].velX;
+	var charVelY = entityManager._character[0].velY;
 	var Left = entityManager._character[0].KEY_LEFT;
 	var Right = entityManager._character[0].KEY_RIGHT;
 	
 
-	if (keys[Left] && charX < 200) {
-		if (this.center < start) {
-			var nextC = this.center - charVel;
+	if (keys[Left] && charPos.posX < 200) {
+		if (this.center.cx < start) {
+			var nextC = this.center.cx - charVelX;
 			if (nextC > start) {
-				this.center = start;
+				this.center.cx = start;
 			} else {
-				this.center = nextC;
+				this.center.cx = nextC;
 			}
 		}
 	}
-	if (keys[Right] && charX > 400) {
-		if (this.center > end) {
-			nextC = this.center - charVel;
+	if (keys[Right] && charPos.posX > 385) {
+		if (this.center.cx > end) {
+			nextC = this.center.cx - charVelX;
 			if (nextC < end) {
-				this.center = end
+				this.center.cx = end
 			} else {
-				this.center = nextC;
+				this.center.cx = nextC;
 			}
 		}
+	}
+	if (charPos.posY <= 100) {
+		if (this.center.cy + charVelY > 0) {
+			this.center.cy = 0;
+		} else {
+			this.center.cy += charVelY;
+			console.log(this.center.cy);
+		}
+	} else {
+		this.center.cy = 0;
 	}
 
 };
@@ -99,7 +110,7 @@ Level.prototype.BREAK_ME = -2;
 
 Level.prototype.Blocks = [];
 
-Level.prototype.center = 0;
+Level.prototype.center = {cx : 0, cy : 0};
 
 Level.prototype.initLevel = function(curLevel) {
 	for (var i = 0; i < curLevel.length; i++) {
@@ -123,14 +134,14 @@ Level.prototype.render = function (ctx) {
 	for (var i = 0; i < this.Blocks.length; i++) {
 		for (var j = 0; j < this.Blocks[i].length; j++) {
 			if (this.Blocks[i][j]) {
-				this.Blocks[i][j].render(ctx, X*j + this.center, Y*i, X, Y);
+				this.Blocks[i][j].render(ctx, X*j + this.center.cx, Y*i - this.center.cy, X, Y);
 				if (g_renderSpatialDebug) {
-					util.strokeBox(ctx, X*j + this.center, Y*i, X, Y, 'red');
+					util.strokeBox(ctx, X*j + this.center.cx, Y*i - this.center.cy, X, Y, 'red');
 				}
 			}
 		}
 	}
-	util.strokeBox(ctx, X*this.testx + this.center, Y*this.testy, X, Y, 'red');
+	util.strokeBox(ctx, X*this.testx + this.center.cx, Y*this.testy, X, Y, 'red');
 };
 
 Level.prototype.findGround = function ( Char) {
@@ -143,11 +154,11 @@ Level.prototype.findGround = function ( Char) {
 	var row = 0;
 	//find what column I'm in 
 	for(var j = 0; j < this.Blocks[13].length; j++)
-		if(Math.abs(X*j + this.center - posX) <= X/2)
+		if(Math.abs(X*j + this.center.cx - posX) <= X/2)
 			col = j;
 	//starting point in array to search for ground
 	for(var i = 0; i < this.Blocks.length; i++)
-		if(Math.abs(Y*i - posY) <= Y/2)
+		if(Math.abs(Y*i + this.center.cy - posY) <= Y/2)
 			row = i;
 		
 	//Character is traweling downwards so we check for ground
@@ -172,7 +183,7 @@ Level.prototype.findBlocks = function (Char) {
 	var row = 0;
 	//find what column I'm in 
 	for(var j = 0; j < this.Blocks[13].length; j++)
-		if(Math.abs(X*j + this.center - posX) <= X/2)
+		if(Math.abs(X*j + this.center.cx - posX) <= X/2)
 			col = j;
 	//starting point in array to search for roof
 	for(var i = 0; i < this.Blocks.length; i++)
@@ -198,12 +209,12 @@ Level.prototype.findBlocks = function (Char) {
 		}
 		
 		//is there a block in the way of the image that would make silly clips? :)
-		if((X*col + this.center - posX) < -Y/4){
+		if((X*col + this.center.cx - posX) < -Y/4){
 			if (this.Blocks[row - 1][col+ 1]) {
 				//topB = true;
 				roof = Y*(row-1) + Y/2; 
 			}
-		} else if((X*col + this.center - posX) > Y/4){
+		} else if((X*col + this.center.cx - posX) > Y/4){
 			if (this.Blocks[row - 1][col-1]) {
 				//topB = true;
 				roof = Y*(row-1) + Y/2; 
@@ -212,24 +223,24 @@ Level.prototype.findBlocks = function (Char) {
 	}
 	//blocked on left?
 	if (this.Blocks[row][col-1] || this.Blocks[row+1][col-1]) {
-			if((X*(col-1) + this.center + X/2 - posX + sizeX - Char.velX) >= -Y/4) leftB = true;					
+			if((X*(col-1) + this.center.cx + X/2 - posX + sizeX - Char.velX) >= -Y/4) leftB = true;					
 	}
 	
 	if(row > 0) if(this.Blocks[row-1][col-1] && Char.offGround)
-		if((X*(col-1) + this.center + X/2 - posX + sizeX - Char.velX) >= 0) leftB = true;
+		if((X*(col-1) + this.center.cx + X/2 - posX + sizeX - Char.velX) >= 0) leftB = true;
 	
 	if(row < 14 && row > 0) if(this.Blocks[row+2][col-1] && Char.offGround)
-		if((X*(col-1) + this.center + X/2 - posX + sizeX - Char.velX) >= 0) leftB = true;
+		if((X*(col-1) + this.center.cx + X/2 - posX + sizeX - Char.velX) >= 0) leftB = true;
 	
 	//blocked on right?
 	if (this.Blocks[row][col+1] || this.Blocks[row+1][col+1]) {
-			if((X*(col+1) + this.center - X/2 - posX - sizeX - Char.velX) <= -Y/4) rightB = true;					
+			if((X*(col+1) + this.center.cx - X/2 - posX - sizeX - Char.velX) <= -Y/4) rightB = true;					
 	}
 	if(row > 0) if(this.Blocks[row-1][col+1] && Char.offGround)
-		if((X*(col+1) + this.center - X/2 - posX - sizeX - Char.velX) <= 0) rightB = true;
+		if((X*(col+1) + this.center.cx - X/2 - posX - sizeX - Char.velX) <= 0) rightB = true;
 	
 	if(row < 14) if(this.Blocks[row+2][col+1] && Char.offGround)
-		if((X*(col+1) + this.center + X/2 - posX - sizeX - Char.velX) <= 0) leftB = true
+		if((X*(col+1) + this.center.cx + X/2 - posX - sizeX - Char.velX) <= 0) leftB = true
 	
 	
 	
