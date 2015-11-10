@@ -141,7 +141,7 @@ Level.prototype.render = function (ctx) {
 			}
 		}
 	}
-	//util.strokeBox(ctx, X*this.testx + this.center.cx, Y*this.testy, X, Y, 'red');
+	util.strokeBox(ctx, X*this.testx + this.center.cx, Y*this.testy, X, Y, 'red');
 };
 
 Level.prototype.findGround = function (Char) {
@@ -201,7 +201,7 @@ Level.prototype.findBlocks = function (Char) {
 		rightB = false;
 	var theBAbove;
 	var roof = -1337;
-	
+	/*
 	//block on top?
 	if(row > 0){
 		//is there a block directly above?, and if so, save it
@@ -245,7 +245,7 @@ Level.prototype.findBlocks = function (Char) {
 	if(row < 14) if(this.Blocks[row+2][col+1] && Char.offGround)
 		if((X*(col+1) + this.center.cx + X/2 - posX - sizeX - Char.velX) <= 0) leftB = true
 	
-	
+	*/
 	
 	var blocks ={
 				left: leftB,
