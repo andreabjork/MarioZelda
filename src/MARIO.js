@@ -104,10 +104,15 @@ function processDiagnostics() {
 // GAME-SPECIFIC RENDERING
 
 function renderSimulation(ctx) {
+    
+    ctx.save();
+    var viewPort = entityManager._level[0].center;
 
+    ctx.translate(viewPort.cx,viewPort.cy);
     entityManager.render(ctx);
 
     if (g_renderSpatialDebug) spatialManager.render(ctx);
+    ctx.restore();
 }
 
 
