@@ -42,6 +42,7 @@ Zelda.prototype.cx = 200;
 Zelda.prototype.cy = 483;
 Zelda.prototype.velX = 0;
 Zelda.prototype.velY = 0;
+Zelda.prototype.HP = 1;
 Zelda.prototype.maxVelX = 3.9;
 Zelda.prototype.maxVelY = 6.5;
 Zelda.prototype.tempMaxJumpHeight = 0;
@@ -109,12 +110,6 @@ Zelda.prototype.shoot = function () {
 };
 
 
-Zelda.prototype.takeDamage = function () {
-
-};
-
-
-
 var NOMINAL_FORCE = +0.15;
 Zelda.prototype.updateVelocity = function(du) {
     var wasMovingRight = (this.velX > 0);
@@ -180,16 +175,17 @@ Zelda.prototype.detectStatus = function() {
 
 Zelda.prototype.update = function (du) {
 	spatialManager.unregister(this);
+
+	// Handle jumping:
     if(!this.jumping && keys[this.KEY_JUMP]) this.jump();
+    // Handle casting:
     if(keys[this.KEY_SHOOT] && !this.casting) {
         this.shoot();
         this.casting = true;
     }
-    
-	var blocks = entityManager._level[0].findBlocks(this);
-	
-	
     this.updateVelocity(du);
+	
+	var blocks = entityManager._level[0].findBlocks(this);
     if (this.velX < 0) {
         if (entityManager._level[0].center.cx >= 0) {
             if (this.cx > 25 && !blocks.left) {
@@ -219,9 +215,26 @@ Zelda.prototype.update = function (du) {
     
 	
     this.updateJump(blocks.top, blocks.isTB, blocks.topBlock);
+    
+    if(this.isColliding()) {
+    	console.log("detecting collision");
+    	var hitEntity = this.findHitEntity();
+    	// naive collision check, will do it better later 
+    	// once collision for tiles has been done correctly
+    	var entPos = hitEntity.getPos();
+    	var entSize = hitEntity.getSize();
+    	var entityLeft = entPos.posX-entSize.sizeX;
+    	var entityRight = entPos.posX+entSize.sizeX;
+    	if(this.cx < entityRight && this.cx > entityLeft) {
+    		console.log("entity should take hit");
+    		hitEntity.takeHit();
+    	}else {
+    		console.log("I should take hit");
+    		this.takeHit();
+    	}
+    }
 
-    this.wrapPosition();
-
+    if(this._isDeadNow) return entityManager.KILL_ME_NOW;
 
     this.detectStatus();
     var animFinished = this.animation.update(du);

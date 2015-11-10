@@ -34,6 +34,11 @@ Character.prototype.reset = function () {
     this.setPos(this.reset_cx, this.reset_cy);
 };
 
+Character.prototype.takeHit = function () {
+    this.HP--;
+    if(this.HP <= 0) this.kill();
+};
+
 Character.prototype.render = function (ctx) {
         this.animation.renderAt(ctx, this.cx, this.cy);
 };
