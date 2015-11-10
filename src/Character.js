@@ -39,11 +39,11 @@ Character.prototype.render = function (ctx) {
 };
 
 Character.prototype.getPos = function(){
-	var pos = {posX:this.cx,posY:this.cy};
-	return pos;
+    var pos = {posX:this.cx,posY:this.cy};
+    return pos;
 }
 
 Character.prototype.getSize = function(){
-	var size = {sizeX:16*this._scale,sizeY:42*this._scale};
-	return size;
+    var size = {sizeX:16*this._scale,sizeY:42*this._scale};
+    return size;
 }
