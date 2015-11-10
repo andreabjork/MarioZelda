@@ -57,6 +57,7 @@ deferredSetup : function () {
 
 init: function() {
     this.generateCharacter();
+    this.generateEnemy();
     this.generateLevel(levelObject.level1);
 },
 
@@ -72,7 +73,7 @@ fireBullet: function(cx, cy, velX, velY, rotation) {
 },
 
 generateCharacter : function(descr) {
-    this._character.push(new Character(descr));
+    this._character.push(new Zelda(descr));
 },
 
 generateEnemy : function(descr) {

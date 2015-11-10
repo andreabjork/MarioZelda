@@ -141,7 +141,7 @@ Level.prototype.render = function (ctx) {
 			}
 		}
 	}
-	util.strokeBox(ctx, X*this.testx + this.center.cx, Y*this.testy, X, Y, 'red');
+	//util.strokeBox(ctx, X*this.testx + this.center.cx, Y*this.testy, X, Y, 'red');
 };
 
 Level.prototype.findGround = function ( Char) {
