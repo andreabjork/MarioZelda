@@ -64,53 +64,12 @@ level2 : [
 };					
 
 Level.prototype.update = function (du) {
-	var start = 0;
-	var end = this.Blocks[13].length*(-X)+g_canvas.width;
-	var charPos = entityManager._character[0].getPos();
-	var charVelX = entityManager._character[0].velX;
-	var charVelY = entityManager._character[0].velY;
-	var Left = entityManager._character[0].KEY_LEFT;
-	var Right = entityManager._character[0].KEY_RIGHT;
-	
-
-	if (keys[Left] && charPos.posX < 200) {
-		if (this.center.cx < start) {
-			var nextC = this.center.cx - charVelX;
-			if (nextC > start) {
-				this.center.cx = start;
-			} else {
-				this.center.cx = nextC;
-			}
-		}
-	}
-	if (keys[Right] && charPos.posX > 385) {
-		if (this.center.cx > end) {
-			nextC = this.center.cx - charVelX;
-			if (nextC < end) {
-				this.center.cx = end
-			} else {
-				this.center.cx = nextC;
-			}
-		}
-	}
-	if (charPos.posY <= 100) {
-		if (this.center.cy + charVelY > 0) {
-			this.center.cy = 0;
-		} else {
-			this.center.cy += charVelY;
-			console.log(this.center.cy);
-		}
-	} else {
-		this.center.cy = 0;
-	}
-
+	this.width = X*this.Blocks[13].length;
 };
 
 Level.prototype.BREAK_ME = -2;
 
 Level.prototype.Blocks = [];
-
-Level.prototype.center = {cx : 0, cy : 0};
 
 Level.prototype.initLevel = function(curLevel) {
 	for (var i = 0; i < curLevel.length; i++) {
@@ -134,14 +93,14 @@ Level.prototype.render = function (ctx) {
 	for (var i = 0; i < this.Blocks.length; i++) {
 		for (var j = 0; j < this.Blocks[i].length; j++) {
 			if (this.Blocks[i][j]) {
-				this.Blocks[i][j].render(ctx, X*j + this.center.cx, Y*i - this.center.cy, X, Y);
+				this.Blocks[i][j].render(ctx, X*j, Y*i, X, Y);
 				if (g_renderSpatialDebug) {
-					util.strokeBox(ctx, X*j + this.center.cx, Y*i - this.center.cy, X, Y, 'red');
+					util.strokeBox(ctx, X*j, Y*i, X, Y, 'red');
 				}
 			}
 		}
 	}
-	util.strokeBox(ctx, X*this.testx + this.center.cx, Y*this.testy, X, Y, 'red');
+	util.strokeBox(ctx, X*this.testx, Y*this.testy, X, Y, 'red');
 };
 
 Level.prototype.findGround = function (Char) {
@@ -154,11 +113,11 @@ Level.prototype.findGround = function (Char) {
 	var row = 0;
 	//find what column I'm in 
 	for(var j = 0; j < this.Blocks[13].length; j++)
-		if(Math.abs(X*j + this.center.cx - posX) <= X/2)
+		if(Math.abs(X*j - posX) <= X/2)
 			col = j;
 	//starting point in array to search for ground
 	for(var i = 0; i < this.Blocks.length; i++)
-		if(Math.abs(Y*i + this.center.cy - posY) <= Y/2)
+		if(Math.abs(Y*i - posY) <= Y/2)
 			row = i;
 		
 	//Character is traweling downwards so we check for ground
@@ -183,7 +142,7 @@ Level.prototype.findBlocks = function (Char) {
 	var row = 0;
 	//find what column I'm in 
 	for(var j = 0; j < this.Blocks[13].length; j++)
-		if( posX - X*j + this.center.cx >= 0 && X*(j+1) + this.center.cx - posX >= 0){
+		if( posX - X*j >= 0 && X*(j+1) - posX >= 0){
 			col = j;
 			break;
 		}
