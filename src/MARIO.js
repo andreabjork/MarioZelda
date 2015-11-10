@@ -106,9 +106,9 @@ function processDiagnostics() {
 function renderSimulation(ctx) {
     
     ctx.save();
-    var viewPort = entityManager._level[0].center;
+    var viewPort = entityManager._character[0];
 
-    ctx.translate(viewPort.cx,viewPort.cy);
+    ctx.translate(-viewPort.cx+g_canvas.width/2,0);
     entityManager.render(ctx);
 
     if (g_renderSpatialDebug) spatialManager.render(ctx);

@@ -190,37 +190,14 @@ Zelda.prototype.update = function (du) {
 	
 	
     this.updateVelocity(du);
-    if (this.velX < 0) {
-        if (entityManager._level[0].center.cx >= 0) {
-            if (this.cx > 25 && !blocks.left) {
-                this.cx += this.velX*du;
-            } 
-        } else {
-            if (this.cx > 200 && !blocks.left) {
-                this.cx += this.velX*du;
-            }
-        }
-    }  else if (this.velX > 0) {
-        if (entityManager._level[0].center.cx <= entityManager._level[0].Blocks[13].length*(-X)+g_canvas.width) {
-            if (this.cx < g_canvas.width-25 && !blocks.right) {
-                this.cx += this.velX*du;
-            }
-        } else if (this.cx < 400 && !blocks.right) {
-            this.cx += this.velX*du;
-        }
-    }
-    var nextY = this.cy + this.velY*du
-    if (nextY < 100) {
-        this.cy = 100;
-    } else if (!(nextY < 100 && this.velY < 0)) {
-        this.cy = nextY;
-    }
+    this.cx += this.velX*du;
+    this.cy += this.velY*du;
     
     
 	
     this.updateJump(blocks.top, blocks.isTB, blocks.topBlock);
 
-    this.wrapPosition();
+    //this.wrapPosition();
 
 
     this.detectStatus();
