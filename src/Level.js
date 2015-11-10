@@ -144,7 +144,7 @@ Level.prototype.render = function (ctx) {
 	util.strokeBox(ctx, X*this.testx + this.center.cx, Y*this.testy, X, Y, 'red');
 };
 
-Level.prototype.findGround = function ( Char) {
+Level.prototype.findGround = function (Char) {
 	var pos = Char.getPos();
 	var posX = pos.posX;
 	var posY = pos.posY;
@@ -175,7 +175,7 @@ Level.prototype.findGround = function ( Char) {
 Level.prototype.findBlocks = function (Char) {
 	var pos = Char.getPos();
 	var posX = pos.posX;
-	var posY = pos.posY - Y/2;
+	var posY = pos.posY;
 	var size = Char.getSize();
 	var sizeY = size.sizeY;
 	var sizeX = size.sizeX;
@@ -183,11 +183,13 @@ Level.prototype.findBlocks = function (Char) {
 	var row = 0;
 	//find what column I'm in 
 	for(var j = 0; j < this.Blocks[13].length; j++)
-		if(Math.abs(X*j + this.center.cx - posX) <= X/2)
+		if( posX - X*j + this.center.cx >= 0 && X*(j+1) + this.center.cx - posX >= 0){
 			col = j;
+			break;
+		}
 	//starting point in array to search for roof
 	for(var i = 0; i < this.Blocks.length; i++)
-		if(Math.abs(Y*i - posY) <= Y/2)
+		if( Y*(i+1) - (posY + sizeY/2) >= 0  && (posY + sizeY/2) - Y*i >= 0)
 			row = i;
 	
 	
@@ -199,6 +201,7 @@ Level.prototype.findBlocks = function (Char) {
 		rightB = false;
 	var theBAbove;
 	var roof = -1337;
+	
 	//block on top?
 	if(row > 0){
 		//is there a block directly above?, and if so, save it

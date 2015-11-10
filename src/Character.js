@@ -246,7 +246,7 @@ Character.prototype.render = function (ctx) {
 };
 
 Character.prototype.getPos = function(){
-	var pos = {posX:this.cx-8*this._scale,posY:this.cy-21*this._scale};
+	var pos = {posX:this.cx,posY:this.cy};
 	return pos;
 }
 
