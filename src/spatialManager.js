@@ -97,7 +97,7 @@ render: function(ctx){
 			var size = this._entities[i].getSize();
 			sizeX = size.sizeX;
 			sizeY = size.sizeY;
-			ctx.rect(posX,posY,sizeX,sizeY);
+			ctx.rect(posX-sizeX/2,posY-sizeY/2,sizeX,sizeY);
 			ctx.stroke();
 		}	
 	}
