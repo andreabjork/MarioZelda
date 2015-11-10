@@ -18,8 +18,8 @@ function Enemy(descr) {
     // Default sprite, if not otherwise specified
     this.sprite = g_sprites.marioTest;
     this._scale = 1;
-	makeZeldaAnimation(this._scale);
-    this.animation = g_animations.zelda.idleRight;
+	this.animations = makeZeldaAnimation(this._scale);
+	this.animation = this.animations['idleRight'];
 };
 
 // This comes later on when Entity has been implemented: 
@@ -28,12 +28,12 @@ Enemy.prototype = new Character();
 // Initial, inheritable, default values
 Enemy.prototype.cx = 200;
 Enemy.prototype.cy = 483;
-Enemy.prototype.velX = 5;
+Enemy.prototype.velX = 3;
 
 
 Enemy.prototype.update = function(du) {
-	if(this.cx > 300 && this.velX > 0) this.velX = -this.velX;
-	else if(this.cx < 100 & this.velX < 0) this.velX = +this.velX;
+	if(this.cx > 600 && this.velX > 0) this.velX *= -1;
+	else if(this.cx < 100 & this.velX < 0) this.velX *= -1;
 
-	this.cx = this.velX*du;
+	this.cx += this.velX*du;
 }

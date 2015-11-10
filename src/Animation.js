@@ -46,7 +46,7 @@ Animation.prototype.reset = function(){
 
 Animation.prototype.renderAt = function(ctx,cx,cy){
 	var frame = this.sprites[this.frameNum];
-	frame.drawWrappedCentredAt(ctx,cx,cy,0);
+	frame.drawCentredAt(ctx,cx,cy,0);
 };
 
 Animation.prototype.loadSprites = function(y,w,h,n,s){

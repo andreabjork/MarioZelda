@@ -1,5 +1,5 @@
 // ==========
-// Character STUFF
+// Zelda STUFF
 // ==========
 
 "use strict";
@@ -22,50 +22,50 @@ function Zelda(descr) {
     // Default sprite, if not otherwise specified
     this.sprite = g_sprites.marioTest;
     this._scale = 1.5;
-	makeZeldaAnimation(this._scale);
-    this.animation = g_animations.zelda.idleRight;
+	this.animations = makeZeldaAnimation(this._scale);
+	this.animation = this.animations['idleRight'];
 };
 
 Zelda.prototype = new Character();
 
 
 // Keys
-Character.prototype.KEY_LEFT   = 37; //Left-arrow key code
-Character.prototype.KEY_RIGHT  = 39; //Right-arrow key code
-Character.prototype.KEY_PLUMMET = 36; //Down-arrow key code
-Character.prototype.KEY_JUMP   = 38; //Up-arrow key code
-Character.prototype.KEY_SPRINT = 'Z'.charCodeAt(0); // Implement method for this?
-Character.prototype.KEY_SHOOT  = ' '.charCodeAt(0);
+Zelda.prototype.KEY_LEFT   = 37; //Left-arrow key code
+Zelda.prototype.KEY_RIGHT  = 39; //Right-arrow key code
+Zelda.prototype.KEY_PLUMMET = 36; //Down-arrow key code
+Zelda.prototype.KEY_JUMP   = 38; //Up-arrow key code
+Zelda.prototype.KEY_SPRINT = 'Z'.charCodeAt(0); // Implement method for this?
+Zelda.prototype.KEY_SHOOT  = ' '.charCodeAt(0);
 
 // Initial, inheritable, default values
-Character.prototype.cx = 200;
-Character.prototype.cy = 483;
-Character.prototype.velX = 0;
-Character.prototype.velY = 0;
-Character.prototype.maxVelX = 3.9;
-Character.prototype.maxVelY = 6.5;
-Character.prototype.tempMaxJumpHeight = 0;
-Character.prototype.maxPushHeight = 120;
-// Vars for identifying character actions:
-Character.prototype.jumping = false;
-Character.prototype.pushing = false;
-Character.prototype.offGround = false;
-Character.prototype.casting = false;
-Character.prototype.status = "idleRight";
+Zelda.prototype.cx = 200;
+Zelda.prototype.cy = 483;
+Zelda.prototype.velX = 0;
+Zelda.prototype.velY = 0;
+Zelda.prototype.maxVelX = 3.9;
+Zelda.prototype.maxVelY = 6.5;
+Zelda.prototype.tempMaxJumpHeight = 0;
+Zelda.prototype.maxPushHeight = 120;
+// Vars for identifying Zelda actions:
+Zelda.prototype.jumping = false;
+Zelda.prototype.pushing = false;
+Zelda.prototype.offGround = false;
+Zelda.prototype.casting = false;
+Zelda.prototype.status = "idleRight";
 // idle, walkingRight, walkingLeft, runningRight, runningLeft, inAirRight, inAirLeft
 
 // Sounds (should be preloaded and initialized in constructor):
-// Character.prototype.warpSound = new Audio(
-//    "sounds/CharacterWarp.ogg");
+// Zelda.prototype.warpSound = new Audio(
+//    "sounds/ZeldaWarp.ogg");
 
 
-Character.prototype.jump = function () {
+Zelda.prototype.jump = function () {
 	this.jumping = true;
     this.velY = -6;
 	this.tempMaxJumpHeight = this.cy - this.maxPushHeight; 
 };
 
-Character.prototype.updateJump = function(roof, isTB, topBlock) {
+Zelda.prototype.updateJump = function(roof, isTB, topBlock) {
 	var groundHeight = entityManager._level[0].findGround(this); 
 	
 	if(this.cy >= groundHeight) {
@@ -88,11 +88,11 @@ Character.prototype.updateJump = function(roof, isTB, topBlock) {
 
 var NOMINAL_GRAVITY = 0.52;
 
-Character.prototype.computeGravity = function () {
+Zelda.prototype.computeGravity = function () {
     return NOMINAL_GRAVITY;
 };
 
-Character.prototype.shoot = function () {
+Zelda.prototype.shoot = function () {
 
     var dX = +1;//+Math.sin(this.rotation);
     var dY = 0;//Math.cos(this.rotation);
@@ -109,20 +109,20 @@ Character.prototype.shoot = function () {
 };
 
 
-Character.prototype.takeDamage = function () {
+Zelda.prototype.takeDamage = function () {
 
 };
 
 
 
 var NOMINAL_FORCE = +0.15;
-Character.prototype.updateVelocity = function(du) {
+Zelda.prototype.updateVelocity = function(du) {
     var wasMovingRight = (this.velX > 0);
     var wasMovingLeft = (this.velX < 0);
     var movingRight = keys[this.KEY_RIGHT];
     var movingLeft = keys[this.KEY_LEFT];
     
-    // Check if the character in still in range of the ground
+    // Check if the Zelda in still in range of the ground
     // to be able to push of it (=> jump higher)
     if(this.jumping && !keys[this.KEY_JUMP]) {
         this.offGround = true;
@@ -156,7 +156,7 @@ Character.prototype.updateVelocity = function(du) {
 }
 
 
-Character.prototype.detectStatus = function() {
+Zelda.prototype.detectStatus = function() {
     var wasMovingRight = (this.velX >= 0);
     var wasMovingLeft = (this.velX < 0);
 
@@ -173,12 +173,12 @@ Character.prototype.detectStatus = function() {
     // Update animation
     if(nextStatus!==this.status){
         this.status = nextStatus;
-        this.animation = g_animations.zelda[this.status];
+        this.animation = this.animations[this.status];
         this.animation.reset();
     }    
 }
 
-Character.prototype.update = function (du) {
+Zelda.prototype.update = function (du) {
 	spatialManager.unregister(this);
     if(!this.jumping && keys[this.KEY_JUMP]) this.jump();
     if(keys[this.KEY_SHOOT] && !this.casting) {

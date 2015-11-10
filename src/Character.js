@@ -43,6 +43,10 @@ Character.prototype.getPos = function(){
     return pos;
 }
 
+Character.prototype.getNextPos = function(du) {
+    return {nextX: this.cx+this.velX*du, nextY: this.cy+this.velY*du}
+}
+
 Character.prototype.getSize = function(){
     var size = {sizeX:16*this._scale,sizeY:42*this._scale};
     return size;
