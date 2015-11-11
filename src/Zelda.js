@@ -200,7 +200,7 @@ Zelda.prototype.update = function (du) {
     	var entSize = hitEntity.getSize();
     	var entityLeft = entPos.posX-entSize.sizeX;
     	var entityRight = entPos.posX+entSize.sizeX;
-    	if(this.cx < entityRight && this.cx > entityLeft) {
+    	if(this.cx-this.getSize().sizeX < entityRight && this.cx+this.getSize().sizeX > entityLeft) {
     		console.log("entity should take hit");
     		hitEntity.takeHit();
     	}else {
