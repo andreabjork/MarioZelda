@@ -119,7 +119,7 @@ function renderSimulation(ctx) {
 	var lvlLength = entityManager._level[0].Blocks[13].length*(g_canvas.height/14) - g_canvas.width;
     
 	g_sprites.BG1.drawAt(ctx, 0,0, g_canvas.width, g_canvas.height);
-    g_sprites.BG2.drawAt(ctx, -(dx / lvlLength) * g_canvas.width ,0, g_canvas.width*2, g_canvas.height);
+    g_sprites.BG2.drawAt(ctx, -(dx / lvlLength) * g_canvas.width ,g_canvas.height/2, g_canvas.width*2, g_canvas.height);
     
     ctx.translate(-dx,-dy);
     entityManager.render(ctx);
@@ -148,8 +148,8 @@ function requestPreloads() {
         ground: "res/images/Ground1.png",
         dungeon: "res/images/dungeonBrick.png",
 		cloud: "res/images/shitty_cloud.png",
-		background1: "res/images/shitty_fjoll.jpg",
-		background2: "res/images/shitty_fjoll2.png"
+		background1: "res/images/MainBackground.png",
+		background2: "res/images/Hills1.png"
     };
 
     imagesPreload(requiredImages, g_images, preloadDone);
