@@ -184,20 +184,34 @@ Zelda.prototype.update = function (du) {
 
     var blocks = entityManager._level[0].findBlocks(this, du);
     
+    var nextX = this.cx + this.velX*du;
+    var lvlEdgeL = this.getSize().sizeY/2;
+    var lvlEdgeR = entityManager._level[0].Blocks[13].length*(g_canvas.height/14) - this.getSize().sizeY/2;
+    
 	if(this.velX > 0)
-		if(!blocks.R) 
-			this.cx += this.velX*du;
-		else
+		if(!blocks.R) {
+            if (nextX <= lvlEdgeR) {
+			     this.cx = nextX;
+            } else {
+                this.cx  = lvlEdgeR;
+            }
+        } else {
 			this.velX = 0;
-	else
-		if(!blocks.L) 
-			this.cx += this.velX*du;
-		else
+	} else {
+		if(!blocks.L) {
+            if (nextX >= lvlEdgeL) {
+			     this.cx = nextX;
+            } else {
+                this.cx = lvlEdgeL;
+            }
+        } else {
 			this.velX = 0;
-	if(this.velY > 0){
-		if(!blocks.B)
+        }
+    } 
+    if(this.velY > 0){
+		if(!blocks.B) {
 			this.cy += this.velY*du;
-		else {
+        } else {
 			this.tempMaxJumpHeight = this.cy - this.maxPushHeight; 
 			this.cy = blocks.height*(g_canvas.height/14)-this.getSize().sizeY/2 - 1;
 		}
@@ -247,8 +261,10 @@ Zelda.prototype.update = function (du) {
 };
 
 Zelda.prototype.updateViewport = function(){
+    console.log('zelda cx er ' + this.cx);
     var nextView = this.cx - g_canvas.width/2;
-    var lvlLength = entityManager._level[0].Blocks[13].length*(g_canvas.width/14) - g_canvas.width;
+    var lvlLength = entityManager._level[0].Blocks[13].length*(g_canvas.height/14) - g_canvas.width;
+        console.log('lvlLength er ' + lvlLength);
     if (nextView < 0) {
         g_viewPort.x = 0;
     } else if (nextView > lvlLength) {
