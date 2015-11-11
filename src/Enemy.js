@@ -32,6 +32,7 @@ Enemy.prototype.velX = -1.5;
 Enemy.prototype.velY = 0;
 Enemy.prototype.HP = 1;
 Enemy.prototype.inAir = true;
+Enemy.prototype.initialized = false;
 
 
 Enemy.prototype.update = function(du) {
@@ -78,4 +79,5 @@ Enemy.prototype.update = function(du) {
 	
 
 	spatialManager.register(this);
+
 }

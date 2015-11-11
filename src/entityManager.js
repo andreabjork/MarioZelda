@@ -57,7 +57,6 @@ deferredSetup : function () {
 
 init: function() {
     this.generateCharacter();
-    this.generateEnemy();
     this.generateLevel(levelObject.level1);
 },
 

@@ -45,6 +45,7 @@ Block.prototype.activate = function (Char, direction) {
 	}
 	if(this.type === 2){
 	console.log("take damage by these scary spikes or smt like dat...");
+	Char.takeHit();
 	}
 	if(this.type === 3 && direction === 1){
 		console.log("get money");
