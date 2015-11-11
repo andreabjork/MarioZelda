@@ -48,8 +48,9 @@ Projectile.prototype.update = function (du) {
 
     var hitEntity = this.findHitEntity();
     if (hitEntity) {
-        var canTakeHit = hitEntity.takeProjectileHit;
-        if (canTakeHit) canTakeHit.call(hitEntity); 
+        //var canTakeHit = hitEntity.takeProjectileHit;
+        //if (canTakeHit) canTakeHit.call(hitEntity);
+        hitEntity.takeHit(); 
         return entityManager.KILL_ME_NOW;
     }
     

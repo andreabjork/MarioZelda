@@ -112,7 +112,7 @@ function renderSimulation(ctx) {
 	var dy = g_viewPort.y;
 
     g_sprites.background.drawAt(ctx, 0,0, g_canvas.width, g_canvas.height);
-    
+
     ctx.translate(-dx,-dy);
     entityManager.render(ctx);
 
@@ -169,7 +169,7 @@ function preloadDone() {
 
     main.init();
     
-    entityManager._level[0].initLevel(levelObject.level1);
+    //entityManager._level[0].initLevel(levelObject.level1);
 }
 
 // Kick it off

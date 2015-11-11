@@ -14,14 +14,14 @@
 
 // A generic contructor which accepts an arbitrary descriptor object
 function Block(descr) {
-    // Apply all setup properies from the (optional) descriptor
-    for (var property in descr) {
-        this[property] = descr[property];
-    }
+	this.setup(descr);
 	this.sprite = this.sprite || g_sprites.defaultBlock;
 };
 Block.prototype._isDeadNow = false;
 Block.prototype._isBreakable = false;
+Block.prototype.dim = g_canvas.height/14;
+
+Block.prototype = new Entity();
 
 Block.prototype.update = function (du) {
 	if(this._isDeadNow) return Level.prototype.BREAK_ME;
@@ -36,8 +36,7 @@ Block.prototype.render = function (ctx,x,y,w,h) {
 };
 
 Block.prototype.activate = function (Char) {
-    //char bumped into this block. will he die/get money?
-	console.log("hola hola, get dola $$");
+
 };
 
 

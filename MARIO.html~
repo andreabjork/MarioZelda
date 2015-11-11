@@ -33,7 +33,7 @@
     <script src="src/Zelda.js"></script>
     <script src="src/Enemy.js"></script>    
 
-	<script src="src/World.js"></script>
+	<script src="src/Level.js"></script>
 	
     <script src="src/update.js"></script>
     <script src="src/render.js"></script>

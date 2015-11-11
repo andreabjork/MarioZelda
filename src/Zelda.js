@@ -1,6 +1,6 @@
-// ==========
-// Zelda STUFF
-// ==========
+// =============
+//    ZELDA
+// =============
 
 "use strict";
 
@@ -11,14 +11,16 @@
 12345678901234567890123456789012345678901234567890123456789012345678901234567890
 */
 
+// ===============
+// ZELDA PROTOTYPE
+// ===============
+
+
 // A generic contructor which accepts an arbitrary descriptor object
 function Zelda(descr) {
-
     // Common inherited setup logic from Entity
     this.setup(descr);
 
-    //this.rememberResets();
-    
     // Default sprite, if not otherwise specified
     this.sprite = g_sprites.marioTest;
     this._scale = 1.5;
@@ -26,6 +28,7 @@ function Zelda(descr) {
 	this.animation = this.animations['idleRight'];
 };
 
+// INHERIT FROM CHARACTER:
 Zelda.prototype = new Character();
 
 
@@ -35,7 +38,7 @@ Zelda.prototype.KEY_RIGHT  = 39; //Right-arrow key code
 Zelda.prototype.KEY_PLUMMET = 36; //Down-arrow key code
 Zelda.prototype.KEY_JUMP   = 38; //Up-arrow key code
 Zelda.prototype.KEY_SPRINT = 'Z'.charCodeAt(0); // Implement method for this?
-Zelda.prototype.KEY_SHOOT  = ' '.charCodeAt(0);
+Zelda.prototype.KEY_CAST  = ' '.charCodeAt(0);
 
 // Initial, inheritable, default values
 Zelda.prototype.cx = 200;
@@ -47,71 +50,114 @@ Zelda.prototype.maxVelX = 3.9;
 Zelda.prototype.maxVelY = 6.5;
 Zelda.prototype.tempMaxJumpHeight = 0;
 Zelda.prototype.maxPushHeight = 120;
-// Vars for identifying Zelda actions:
-Zelda.prototype.jumping = false;
-Zelda.prototype.pushing = false;
-Zelda.prototype.offGround = false;
-Zelda.prototype.casting = false;
+Zelda.prototype.state = {jumping: false, pushing: false, offGround: false, casting: false, onGround: true, idle: true, right: true, left: false}
 Zelda.prototype.status = "idleRight";
 // idle, walkingRight, walkingLeft, runningRight, runningLeft, inAirRight, inAirLeft
 
-// Sounds (should be preloaded and initialized in constructor):
-// Zelda.prototype.warpSound = new Audio(
-//    "sounds/ZeldaWarp.ogg");
+// ===============
+// ZELDA ABILITIES
+// ===============
 
 
-Zelda.prototype.jump = function () {
-	this.jumping = true;
-    this.velY = -6;
-	this.tempMaxJumpHeight = this.cy - this.maxPushHeight; 
+Zelda.prototype.handleJump = function () {
+    if(this.state['jumping']) { return; }
+    else {
+    	this.state['jumping'] = true;
+        this.velY = -6;
+    	this.tempMaxJumpHeight = this.cy - this.maxPushHeight; 
+    }
 };
+
+Zelda.prototype.handleCasting = function () {
+    if(this.state['casting']) return;
+    else {
+        this.state['casting'] = true;
+        var dX = +1;//+Math.sin(this.rotation);
+        var dY = 0;//Math.cos(this.rotation);
+        var launchDist = this.getSize().sizeX * 1.2;
+        
+        var relVelX = dX;
+        var relVelY = dY;
+        entityManager.fireBullet(
+           this.cx + dX * launchDist, this.cy + dY * launchDist,
+           7, 0,
+           0);
+    }
+};
+
+// =====================
+// ZELDA COLLISION LOGIC
+// =====================
+
+Zelda.prototype.handleEnemyCollision = function() {
+    if(this.isColliding()) {
+        console.log("detecting collision");
+        var hitEntity = this.findHitEntity();
+        // naive collision check, will do it better later 
+        // once collision for tiles has been done correctly
+        var entPos = hitEntity.getPos();
+        var entSize = hitEntity.getSize();
+        var entityLeft = entPos.posX-entSize.sizeX;
+        var entityRight = entPos.posX+entSize.sizeX;
+        if(this.cx-this.getSize().sizeX < entityRight && this.cx+this.getSize().sizeX > entityLeft) {
+            console.log("entity should take hit");
+            hitEntity.takeHit();
+        }else {
+            console.log("I should take hit");
+            this.takeHit();
+        }
+    }
+}
+
+Zelda.prototype.handleBoxCollision = function(prevX, prevY, nextX, nextY) {
+    this.unregisterBlocks();
+    this.findProxBlocks(prevX, prevY, nextX, nextY);
+    this.registerBlocks();
+}
+
+Zelda.prototype.putToGround  = function(y) {
+    this.cy = y+this.getSize().sizeY;
+    this.velX = 0;
+    this.velY = 0;
+    this.state['onGround'] = true;
+    this.state['jumping'] = false;
+}
+
+Zelda.prototype.handleCollisions = function(prevX, prevY, nextX, nextY) {
+    this.handleEnemyCollision();
+    this.handleBoxCollision(prevX, prevY, nextX, nextY);
+}
+// ==================
+// ZELDA UPDATE LOGIC
+// ==================
+
 
 Zelda.prototype.updateJump = function(roof, isTB, topBlock) {
 	var groundHeight = entityManager._level[0].findGround(this); 
 	
-	if(this.cy >= groundHeight) {
-        this.jumping = false;
-        this.pushing = keys[this.KEY_JUMP];
-        this.offGround = false;
+	if(this.state['onGround']) {
+        this.state['jumping'] = false;
+        this.state['pushing'] = keys[this.KEY_JUMP];
+        this.state['offGround'] = false;
         if(!(keys[this.KEY_LEFT] || keys[this.KEY_RIGHT])) this.velX = 0;
     }
-	else {this.jumping = true;}
+	else {this.state['jumping'] = true;}
 	
     if(this.cy <= this.tempMaxJumpHeight) {
-        this.offGround = true;
+        this.state['offGround'] = true;
     }
-	
+    /*    	
 	if(this.cy - 42*this._scale <= roof) {
         this.velY *= -1;
 		if(isTB)topBlock.activate();
-    }
-};
-
-var NOMINAL_GRAVITY = 0.52;
-
-Zelda.prototype.computeGravity = function () {
-    return NOMINAL_GRAVITY;
-};
-
-Zelda.prototype.shoot = function () {
-
-    var dX = +1;//+Math.sin(this.rotation);
-    var dY = 0;//Math.cos(this.rotation);
-    var launchDist = this.getRadius() * 1.2;
-    
-    var relVelX = dX;
-    var relVelY = dY;
-    entityManager.fireBullet(
-       this.cx + dX * launchDist, this.cy + dY * launchDist,
-       7, 0,
-       0);
-       
-
+    }*/
 };
 
 
-var NOMINAL_FORCE = +0.15;
 Zelda.prototype.updateVelocity = function(du) {
+    var NOMINAL_FORCE = +0.15;
+    var NOMINAL_GRAVITY = 0.52;
+
     var wasMovingRight = (this.velX > 0);
     var wasMovingLeft = (this.velX < 0);
     var movingRight = keys[this.KEY_RIGHT];
@@ -119,10 +165,10 @@ Zelda.prototype.updateVelocity = function(du) {
     
     // Check if the Zelda in still in range of the ground
     // to be able to push of it (=> jump higher)
-    if(this.jumping && !keys[this.KEY_JUMP]) {
-        this.offGround = true;
+    if(this.state['jumping'] && !keys[this.KEY_JUMP]) {
+        this.state['offGround'] = true;
     }
-    this.pushing = keys[this.KEY_JUMP] && !this.offGround;
+    this.state['pushing'] = keys[this.KEY_JUMP] && !this.state['offGround'];
     
     // To be able to change direction in midair:
     if((movingRight && wasMovingLeft) || (movingLeft && wasMovingRight)) this.velX = 0;
@@ -138,20 +184,25 @@ Zelda.prototype.updateVelocity = function(du) {
     }
 
     // Velocity is zero if we're not moving anywhere or floating in air:
-    if(!this.jumping && !(movingRight || movingLeft)) {
+    if(!this.state['jumping'] && !(movingRight || movingLeft)) {
         this.velX = 0;
     }
 
-    // Start accelerating down as soon as we've "stopped pushing"
-    if(this.jumping && !this.pushing) {
+    // Start accelerating down as soon as we've "stopped state['pushing']"
+    if(this.state['jumping'] && !this.state['pushing']) {
         this.velY += NOMINAL_GRAVITY*du;
-    } else if(!this.jumping){
+    } else if(!this.state['jumping']){
         this.velY = 0;
     }
 }
 
+Zelda.prototype.updateLocation = function(du) {
+    this.cx += this.velX*du;
+    this.cy += this.velY*du;
+}
 
-Zelda.prototype.detectStatus = function() {
+
+Zelda.prototype.updateStatus = function() {
     var wasMovingRight = (this.velX >= 0);
     var wasMovingLeft = (this.velX < 0);
 
@@ -159,11 +210,11 @@ Zelda.prototype.detectStatus = function() {
     var nextStatus = this.status;
     var dir = (this.velX >= 0)?"Right":"Left";
     var atMaxVel = (Math.abs(this.velX)>=(this.maxVelX*0.9))
-    if(this.jumping) nextStatus = "inAir"+dir;
-    else if(this.casting) nextStatus = "magic" + dir;
-    else if(this.velX === 0 && !this.pushing) nextStatus = "idle"+(wasMovingLeft?"Left":dir);
-    else if(atMaxVel && !this.pushing) nextStatus = "running"+dir;
-    else if(!this.pushing) nextStatus = "walking"+dir;
+    if(this.state['jumping']) nextStatus = "inAir"+dir;
+    else if(this.state['casting']) nextStatus = "magic" + dir;
+    else if(this.velX === 0 && !this.state['pushing']) nextStatus = "idle"+(wasMovingLeft?"Left":dir);
+    else if(atMaxVel && !this.state['pushing']) nextStatus = "running"+dir;
+    else if(!this.state['pushing']) nextStatus = "walking"+dir;
 
     // Update animation
     if(nextStatus!==this.status){
@@ -173,54 +224,46 @@ Zelda.prototype.detectStatus = function() {
     }    
 }
 
+
+
 Zelda.prototype.update = function (du) {
+    // TEMP SOLUTION??? Seems kind of silly to make zelda 'find' the blocks.
+    //var blocks = entityManager._level[0].findBlocks(this);
+
 	spatialManager.unregister(this);
 
-	// Handle jumping:
-    if(!this.jumping && keys[this.KEY_JUMP]) this.jump();
+	// Handle state['jumping']:
+    if(keys[this.KEY_JUMP]) this.handleJump();
     // Handle casting:
-    if(keys[this.KEY_SHOOT] && !this.casting) {
-        this.shoot();
-        this.casting = true;
+    if(keys[this.KEY_CAST]) {
+        this.handleCasting();
     }
+
+    // Update speed/location and handle jumps/collisions
     this.updateVelocity(du);
 
-    this.cx += this.velX*du;
-    this.cy += this.velY*du;
-	
-	var blocks = entityManager._level[0].findBlocks(this);
-    this.updateJump(blocks.top, blocks.isTB, blocks.topBlock);
-    
-    if(this.isColliding()) {
-    	console.log("detecting collision");
-    	var hitEntity = this.findHitEntity();
-    	// naive collision check, will do it better later 
-    	// once collision for tiles has been done correctly
-    	var entPos = hitEntity.getPos();
-    	var entSize = hitEntity.getSize();
-    	var entityLeft = entPos.posX-entSize.sizeX;
-    	var entityRight = entPos.posX+entSize.sizeX;
-    	if(this.cx-this.getSize().sizeX < entityRight && this.cx+this.getSize().sizeX > entityLeft) {
-    		console.log("entity should take hit");
-    		hitEntity.takeHit();
-    	}else {
-    		console.log("I should take hit");
-    		this.takeHit();
-    	}
-    }
+    this.handleCollisions(this.cx, this.cy, this.cx+this.velX*du, this.cy+this.velY*du);
 
+    this.updateLocation(du);
+    //this.updateJump(blocks.top, blocks.isTB, blocks.topBlock);
+
+    // Check for death:
     if(this._isDeadNow) return entityManager.KILL_ME_NOW;
 
-    this.detectStatus();
+    // Finally, update status:
+    this.updateStatus();
     var animFinished = this.animation.update(du);
-    if(this.casting && animFinished===1) {
+    if(this.state['casting'] && animFinished===1) {
 
-        this.casting = false;
+        this.state['casting'] = false;
     }
+
 	spatialManager.register(this);
-	this.updateViewport();
+
+    this.updateViewport();
 };
 
+// Make sure Zelda is always center of the screen:
 Zelda.prototype.updateViewport = function(){
 	g_viewPort.x = Math.max(0,this.cx-g_canvas.width/2);
 	g_viewPort.y = 0;

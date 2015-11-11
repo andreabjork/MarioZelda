@@ -22,8 +22,7 @@ Level.prototype = new Entity();
 
     
 // Initial, inheritable, default values
-Level.prototype.height = 14 //dæmi um hversu mörg block canvazið getur tekið.
-							//geri ráð fyrir að Mario sé 2 blocks á hæð...
+Level.prototype.height = 14 //Able to fit 14 blocks on the height of the canvas. Zelda's height is around 2 blocks.
 
 var levelObject =  {
 	
@@ -31,13 +30,13 @@ var levelObject =  {
 	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,0,1,0,0,0,0,0,0],
-	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,0,1,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-	[0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0],
+	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+	[0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0],
 	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0],
 	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,1,0,0,0],
 	[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
@@ -182,51 +181,6 @@ Level.prototype.findBlocks = function (Char) {
 	var theBAbove;
 	var roof = -1337;
 
-
-	/*
-	//block on top?
-	if(row > 0){
-		//is there a block directly above?, and if so, save it
-		if (this.Blocks[row - 1][col]) {
-			topB = true;
-			theBAbove = this.Blocks[row - 1][col];
-			roof = Y*(row-1) + Y/2; 
-		}
-		
-		//is there a block in the way of the image that would make silly clips? :)
-		if((X*col + this.center.cx - posX) < -Y/4){
-			if (this.Blocks[row - 1][col+ 1]) {
-				//topB = true;
-				roof = Y*(row-1) + Y/2; 
-			}
-		} else if((X*col + this.center.cx - posX) > Y/4){
-			if (this.Blocks[row - 1][col-1]) {
-				//topB = true;
-				roof = Y*(row-1) + Y/2; 
-			}
-		}
-	}
-	//blocked on left?
-	if (this.Blocks[row][col-1] || this.Blocks[row+1][col-1]) {
-			if((X*(col-1) + this.center.cx + X/2 - posX + sizeX - Char.velX) >= -Y/4) leftB = true;					
-	}
-	
-	if(row > 0) if(this.Blocks[row-1][col-1] && Char.offGround)
-		if((X*(col-1) + this.center.cx + X/2 - posX + sizeX - Char.velX) >= 0) leftB = true;
-	
-	if(row < 14 && row > 0) if(this.Blocks[row+2][col-1] && Char.offGround)
-		if((X*(col-1) + this.center.cx + X/2 - posX + sizeX - Char.velX) >= 0) leftB = true;
-	
-	//blocked on right?
-	if (this.Blocks[row][col+1] || this.Blocks[row+1][col+1]) {
-			if((X*(col+1) + this.center.cx - X/2 - posX - sizeX - Char.velX) <= -Y/4) rightB = true;					
-	}
-	if(row > 0) if(this.Blocks[row-1][col+1] && Char.offGround)
-		if((X*(col+1) + this.center.cx - X/2 - posX - sizeX - Char.velX) <= 0) rightB = true;
-	
-	if(row < 14) if(this.Blocks[row+2][col+1] && Char.offGround)
-		if((X*(col+1) + this.center.cx + X/2 - posX - sizeX - Char.velX) <= 0) leftB = true
-	*/
 	
 	this.findAjacentBlocks(col, row, row - rowHeight, 0);
 	
@@ -239,6 +193,7 @@ Level.prototype.findBlocks = function (Char) {
 				};
 	return blocks;
 };
+
 Level.prototype.findAjacentBlocks = function (col, row, hight, attVisir) {
 	if(attVisir === 0){
 	

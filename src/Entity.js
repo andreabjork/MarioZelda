@@ -80,6 +80,13 @@ Entity.prototype.findHitEntity = function () {
     );
 };
 
+// given that we actually are colliding:
+Entity.prototype.getCollisionType = function(posX, posY, hitEntity) {
+    var entX = hitEntity.getSize().sizeX;
+    var entY = hitEntity.getSize().sizeY;
+    return {top: posY <= entY, right: posX >= entX, left: posX <= entX, bottom: posY >= entY}
+}
+
 // This is just little "convenience wrapper"
 Entity.prototype.isColliding = function () {
     return this.findHitEntity();
@@ -88,4 +95,8 @@ Entity.prototype.isColliding = function () {
 Entity.prototype.wrapPosition = function () {
     this.cx = util.wrapRange(this.cx, 0, g_canvas.width);
     this.cy = util.wrapRange(this.cy, 0, g_canvas.height);
+};
+
+Entity.prototype.takeHit = function () {
+    console.log("hitting something that can't die")
 };

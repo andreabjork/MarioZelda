@@ -29,7 +29,8 @@ var entityManager = {
 
 _character   : [],
 _bullets : [],
-_level : [],
+_world: [],
+_collisionBlocks : [],
 _enemies   : [],
 _objects    : [],
 
@@ -52,13 +53,13 @@ KILL_ME_NOW : -1,
 // i.e. thing which need `this` to be defined.
 //
 deferredSetup : function () {
-    this._categories = [this._character, this._bullets, this._level, this._enemies, this._objects];
+    this._categories = [this._world, this._collisionBlocks, this._character, this._bullets, this._enemies, this._objects];
 },
 
 init: function() {
     this.generateCharacter();
     this.generateEnemy();
-    this.generateLevel(levelObject.level1);
+    this.generateLevel();
 },
 
 fireBullet: function(cx, cy, velX, velY, rotation) {
@@ -81,11 +82,37 @@ generateEnemy : function(descr) {
 },
 
 generateLevel : function(descr) {
-    this._level.push(new Level(descr));
+    this._world.push(new World(descr));
 },
 
 generateObject : function(descr) {
     this._objects.push(new Object(descr));
+},
+
+// entities and centres have same dimensions, max 2
+setBoxCentres: function(entities, centres) {
+    for(var i=0; i<entities.length; i++){
+        for(var j=0; j<entities[i].length; j++){
+            if(entities[i][j]){
+                entities[i][j].cx = centres[i][j][0];
+                entities[i][j].cy = centres[i][j][1];
+                entities[i][j].halfWidth = this._world[0].blockDim;
+                entities[i][j].halfHeight = this._world[0].blockDim;
+            }
+        }
+    }
+},
+
+// entities and centres have same dimensions, max 2
+setDims: function(entities, dims) {
+    for(var i=0; i<entities.length; i++){
+        for(var j=0; j<entities[i].length; j++){
+            if(entities[i][j]){
+                entities[i][j].cx = centres[i][j][0];
+                entities[i][j].cy = centres[i][j][1];
+            }
+        }
+    }
 },
 
 update: function(du) {
