@@ -187,7 +187,8 @@ Zelda.prototype.update = function (du) {
 
     this.cx += this.velX*du;
     this.cy += this.velY*du;
-    var blocks = entityManager._level[0].findBlocks(this);
+	
+	var blocks = entityManager._level[0].findBlocks(this);
     this.updateJump(blocks.top, blocks.isTB, blocks.topBlock);
     
     if(this.isColliding()) {
@@ -217,4 +218,10 @@ Zelda.prototype.update = function (du) {
         this.casting = false;
     }
 	spatialManager.register(this);
+	this.updateViewport();
 };
+
+Zelda.prototype.updateViewport = function(){
+	g_viewPort.x = Math.max(0,this.cx-g_canvas.width/2);
+	g_viewPort.y = 0;
+}
