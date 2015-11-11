@@ -187,7 +187,8 @@ Zelda.prototype.update = function (du) {
 
     this.cx += this.velX*du;
     this.cy += this.velY*du;
-
+	
+	var blocks = entityManager._level[0].findBlocks(this);
     this.updateJump(blocks.top, blocks.isTB, blocks.topBlock);
     
     if(this.isColliding()) {
