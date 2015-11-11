@@ -116,9 +116,10 @@ function renderSimulation(ctx) {
 	var dx = g_viewPort.x;
 	var dy = g_viewPort.y;
 
-	//var levelbreidd = entityManager.
-    g_sprites.BG1.drawAt(ctx, 0,0, g_canvas.width, g_canvas.height);
-    //g_sprites.BG2.drawAt(ctx, dx ,0, g_canvas.width*2, g_canvas.height);
+	var lvlLength = entityManager._level[0].Blocks[13].length*(g_canvas.height/14) - g_canvas.width;
+    
+	g_sprites.BG1.drawAt(ctx, 0,0, g_canvas.width, g_canvas.height);
+    g_sprites.BG2.drawAt(ctx, -(dx / lvlLength) * g_canvas.width ,0, g_canvas.width*2, g_canvas.height);
     
     ctx.translate(-dx,-dy);
     entityManager.render(ctx);

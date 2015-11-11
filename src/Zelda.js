@@ -261,10 +261,8 @@ Zelda.prototype.update = function (du) {
 };
 
 Zelda.prototype.updateViewport = function(){
-    console.log('zelda cx er ' + this.cx);
     var nextView = this.cx - g_canvas.width/2;
     var lvlLength = entityManager._level[0].Blocks[13].length*(g_canvas.height/14) - g_canvas.width;
-        console.log('lvlLength er ' + lvlLength);
     if (nextView < 0) {
         g_viewPort.x = 0;
     } else if (nextView > lvlLength) {
