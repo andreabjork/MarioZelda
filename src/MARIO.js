@@ -116,7 +116,9 @@ function renderSimulation(ctx) {
 	var dx = g_viewPort.x;
 	var dy = g_viewPort.y;
 
-    g_sprites.background.drawAt(ctx, 0,0, g_canvas.width, g_canvas.height);
+	//var levelbreidd = entityManager.
+    g_sprites.BG1.drawAt(ctx, 0,0, g_canvas.width, g_canvas.height);
+    //g_sprites.BG2.drawAt(ctx, dx ,0, g_canvas.width*2, g_canvas.height);
     
     ctx.translate(-dx,-dy);
     entityManager.render(ctx);
@@ -143,7 +145,10 @@ function requestPreloads() {
 		coinBox: "res/images/Coin_Box.png",
 		water: "res/images/water.png",
         ground: "res/images/Ground1.png",
-        dungeon: "res/images/dungeonBrick.png"
+        dungeon: "res/images/dungeonBrick.png",
+		cloud: "res/images/shitty_cloud.png",
+		background1: "res/images/shitty_fjoll.jpg",
+		background2: "res/images/shitty_fjoll2.png"
     };
 
     imagesPreload(requiredImages, g_images, preloadDone);
@@ -179,6 +184,9 @@ function preloadDone() {
 	g_sprites.water = new Sprite(g_images.water);
     g_sprites.ground = new Sprite(g_images.ground);
     g_sprites.dungeon = new Sprite(g_images.dungeon);
+	g_sprites.BG1 = new Sprite(g_images.background1);
+	g_sprites.BG2 = new Sprite(g_images.background2);
+	g_sprites.cloud = new Sprite(g_images.cloud);
 	
     entityManager.init();
 
