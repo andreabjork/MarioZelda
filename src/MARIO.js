@@ -109,6 +109,7 @@ function renderSimulation(ctx) {
     var viewPort = entityManager._character[0];
 
     ctx.translate(Math.max(Math.min(0,-viewPort.cx+g_canvas.width/2),-(entityManager._level[0].width)),0);
+    g_sprites.background.drawAt(ctx, 0,0, g_canvas.width, g_canvas.height);
     entityManager.render(ctx);
 
     if (g_renderSpatialDebug) spatialManager.render(ctx);
@@ -127,7 +128,8 @@ function requestPreloads() {
     var requiredImages = {
         marioTest: "res/images/mario.png",
         zeldaSpriteSheet: "res/images/zeldass.png",
-		defaultBlock: "res/images/blockPlaceholder.png"
+		defaultBlock: "res/images/blockPlaceholder.png",
+        background: "res/images/background.jpg"
     };
 
     imagesPreload(requiredImages, g_images, preloadDone);
@@ -157,7 +159,7 @@ function preloadDone() {
 
     g_sprites.marioTest  = new Sprite(g_images.marioTest);
     g_sprites.defaultBlock  = new Sprite(g_images.defaultBlock);
-
+    g_sprites.background = new Sprite(g_images.background);
 
     entityManager.init();
 
