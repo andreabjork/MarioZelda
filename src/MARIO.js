@@ -109,6 +109,8 @@ function processDiagnostics() {
 
 // GAME-SPECIFIC RENDERING
 
+var g_lvlLength;
+
 function renderSimulation(ctx) {
     
     ctx.save();
@@ -116,10 +118,12 @@ function renderSimulation(ctx) {
 	var dx = g_viewPort.x;
 	var dy = g_viewPort.y;
 
-	var lvlLength = entityManager._level[0].Blocks[13].length*(g_canvas.height/14) - g_canvas.width;
-    
+	
+	g_lvlLength = entityManager._level[0].Blocks[13].length*(g_canvas.height/14) - g_canvas.width;
+
+	
 	g_sprites.BG1.drawAt(ctx, 0,0, g_canvas.width, g_canvas.height);
-    g_sprites.BG2.drawAt(ctx, -(dx / lvlLength) * g_canvas.width ,0, g_canvas.width*2, g_canvas.height);
+    g_sprites.BG2.drawAt(ctx, -(dx / g_lvlLength) * g_canvas.width ,0, g_canvas.width*2, g_canvas.height);
     
     ctx.translate(-dx,-dy);
     entityManager.render(ctx);
@@ -157,6 +161,7 @@ function requestPreloads() {
 
 var g_sprites = {};
 var g_animations = {};
+
 function makeZeldaAnimation(scale) {
     var zelda = {};
     zelda.walkingRight = new Animation(g_images.zeldaSpriteSheet,0,30,42,10,100, scale);
@@ -172,8 +177,6 @@ function makeZeldaAnimation(scale) {
 
     return zelda;
 }
-
-
 
 function preloadDone() {
 

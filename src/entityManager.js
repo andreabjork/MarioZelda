@@ -12,6 +12,7 @@ with suitable 'data' and 'methods'.
 
 */
 
+var g_NUMBER_OF_CLOUDS = 4;
 
 "use strict";
 
@@ -52,12 +53,16 @@ KILL_ME_NOW : -1,
 // i.e. thing which need `this` to be defined.
 //
 deferredSetup : function () {
-    this._categories = [this._character, this._bullets, this._level, this._enemies, this._objects];
+    this._categories = [this._objects, this._character, this._bullets, this._level, this._enemies];
 },
+
 
 init: function() {
     this.generateCharacter();
     this.generateLevel(levelObject.level1);
+    for(var i = 0; i < g_NUMBER_OF_CLOUDS; i++)
+		this.generateObject();
+	console.log(this._categories[0]);
 },
 
 fireBullet: function(cx, cy, velX, velY, rotation) {
@@ -84,7 +89,7 @@ generateLevel : function(descr) {
 },
 
 generateObject : function(descr) {
-    this._objects.push(new Object(descr));
+    this._objects.push(new Cloud(descr));
 },
 
 update: function(du) {
