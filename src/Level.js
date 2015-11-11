@@ -177,7 +177,7 @@ Level.prototype.findBlocks = function (Char) {
 
 	var topB = false,
 		leftB = false,
-		rightB = false;
+		rightB = false,
 		bottomB = false;
 	var theBAbove;
 	var roof = -1337;
@@ -240,7 +240,7 @@ Level.prototype.findBlocks = function (Char) {
 	return blocks;
 };
 Level.prototype.findAjacentBlocks = function (col, row, hight, attVisir) {
-	if(attvisir === 0){
+	if(attVisir === 0){
 	
 	}
 };
