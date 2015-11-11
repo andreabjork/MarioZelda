@@ -217,4 +217,10 @@ Zelda.prototype.update = function (du) {
         this.casting = false;
     }
 	spatialManager.register(this);
+	this.updateViewport();
 };
+
+Zelda.prototype.updateViewport = function(){
+	g_viewPort.x = Math.max(0,this.cx-g_canvas.width/2);
+	g_viewPort.y = 0;
+}

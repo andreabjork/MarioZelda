@@ -76,6 +76,7 @@ function updateSimulation(du) {
 
 var g_allowMixedActions = true;
 var g_renderSpatialDebug = false;
+var g_viewPort = {x:0, y:0};
 
 var KEY_MIXED   = keyCode('M');
 var KEY_SPATIAL = keyCode('X');
@@ -106,9 +107,11 @@ function processDiagnostics() {
 function renderSimulation(ctx) {
     
     ctx.save();
-    var viewPort = entityManager._character[0];
+	
+	var dx = g_viewPort.x;
+	var dy = g_viewPort.y;
 
-    ctx.translate(Math.max(Math.min(0,-viewPort.cx+g_canvas.width/2),-(entityManager._level[0].width)),0);
+    ctx.translate(-dx,-dy);
     entityManager.render(ctx);
 
     if (g_renderSpatialDebug) spatialManager.render(ctx);
