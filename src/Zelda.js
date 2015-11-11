@@ -197,9 +197,7 @@ Zelda.prototype.update = function (du) {
 		else {
 			this.tempMaxJumpHeight = this.cy - this.maxPushHeight; 
 			
-            // Place her on top of the bottom block, the '-1' is so that 
-            // she doesn't actually touch it and destroy it
-            this.cy = blocks.height*(g_canvas.height/14)-this.getSize().sizeY/2 - 1;
+			this.cy = blocks.height*(g_canvas.height/14)-this.getSize().sizeY/2 - 1;
 		}
 	}
 	else	
@@ -215,21 +213,15 @@ Zelda.prototype.update = function (du) {
 	
     
     if(this.isColliding()) {
-    	console.log("detecting collision");
-    	var hitEntity = this.findHitEntity();
-    	// naive collision check, will do it better later 
-    	// once collision for tiles has been done correctly
-    	var entPos = hitEntity.getPos();
-    	var entSize = hitEntity.getSize();
-    	var entityLeft = entPos.posX-entSize.sizeX;
-    	var entityRight = entPos.posX+entSize.sizeX;
-    	if(this.cx-this.getSize().sizeX < entityRight && this.cx+this.getSize().sizeX > entityLeft) {
-    		console.log("entity should take hit");
-    		hitEntity.takeHit();
-    	}else {
-    		console.log("I should take hit");
-    		this.takeHit();
-    	}
+		//þarf að setja inn fleiri skilyrði til að deyja við collision. temp er bara velY
+		if(this.velY <= 0){
+			this.takeHit();
+		} else {
+		console.log("detecting collision");
+		var hitEntity = this.findHitEntity();
+		var canTakeHit = hitEntity.takeHit;
+        if (canTakeHit) canTakeHit.call(hitEntity);
+		}
     }
 	if(this.cy > g_canvas.height){
 		console.log("ur dead, scruuuub, f5 to win at life");

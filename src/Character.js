@@ -14,13 +14,12 @@
 
 // A generic contructor which accepts an arbitrary descriptor object
 function Character(descr) {
-
     // Common inherited setup logic from Entity
     this.setup(descr);
     this.rememberResets();
     this._isAlive = true;
-
 };
+
 // This comes later on when Entity has been implemented: 
 Character.prototype = new Entity();
 

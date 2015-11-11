@@ -28,17 +28,54 @@ Enemy.prototype = new Character();
 // Initial, inheritable, default values
 Enemy.prototype.cx = 500;
 Enemy.prototype.cy = 483;
-Enemy.prototype.velX = 1.5;
+Enemy.prototype.velX = -1.5;
+Enemy.prototype.velY = 0;
 Enemy.prototype.HP = 1;
+Enemy.prototype.inAir = true;
+
 
 Enemy.prototype.update = function(du) {
 	spatialManager.unregister(this);
-	if(this.cx > 600 && this.velX > 0) this.velX *= -1;
-	else if(this.cx < 100 & this.velX < 0) this.velX *= -1;
 
-	this.cx += this.velX*du;
-
-	if(this._isDeadNow) return entityManager.KILL_ME_NOW;
+	var blocks = entityManager._level[0].findBlocks(this, du);
+    
+	if(this.velX > 0)
+		if(!blocks.R) 
+			this.cx += this.velX*du;
+		else
+			this.velX *= -1;
+	else
+		if(!blocks.L) 
+			this.cx += this.velX*du;
+		else
+			this.velX *= -1;
+	if(this.inAir){
+		if(!blocks.B){
+			this.cy += this.velY*du;
+			this.velY = this.velY*1.1 + 0.1;
+		} else {
+			this.velY = 0;
+			this.inAir = false;
+			this.cy = blocks.height*(g_canvas.height/14)-this.getSize().sizeY/2 - 1;
+		}
+	}
+	
+    if(this.isColliding()) {
+    }
+	
+	if(entityManager._level[0].emtySpaceBelow(this)){
+		this.inAir = true;	
+	}
+	
+	if(this.cy > g_canvas.height){
+		this._isDeadNow = true;
+	}
+	
+	if(this._isDeadNow){ 
+						return entityManager.KILL_ME_NOW;
+						console.log("wow, you killed a basic unit. so impressed...");
+	}
+	
 
 	spatialManager.register(this);
 }

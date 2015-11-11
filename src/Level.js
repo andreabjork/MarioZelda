@@ -103,6 +103,7 @@ Level.prototype.initLevel = function(curLevel) {
 										type: curLevel[i][j],
 										sprite : g_sprites.water,
 										_isPassable : true
+										
 									});
 				} else if (type === 5) {
 					//make ground
