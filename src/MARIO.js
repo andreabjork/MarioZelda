@@ -141,8 +141,9 @@ function requestPreloads() {
         background: "res/images/background.jpg",
 		spikes: "res/images/SpikeBall.gif",
 		coinBox: "res/images/Coin_Box.png",
-		water: "res/images/water.jpg",
-        ground: "res/images/Ground1.png"
+		water: "res/images/water.png",
+        ground: "res/images/Ground1.png",
+        dungeon: "res/images/dungeonBrick.png"
     };
 
     imagesPreload(requiredImages, g_images, preloadDone);
@@ -177,6 +178,7 @@ function preloadDone() {
 	g_sprites.coinBox = new Sprite(g_images.coinBox);
 	g_sprites.water = new Sprite(g_images.water);
     g_sprites.ground = new Sprite(g_images.ground);
+    g_sprites.dungeon = new Sprite(g_images.dungeon);
 	
     entityManager.init();
 
