@@ -104,6 +104,12 @@ Level.prototype.initLevel = function(curLevel) {
 										sprite : g_sprites.water,
 										_isPassable : true
 									});
+				} else if (type === 5) {
+					//make ground
+					column[j] = new Block({
+										type : curLevel[i][j],
+										sprite : g_sprites.ground
+									});
 				} else{
 					//make a normal block
 					column[j] = new Block({
