@@ -76,9 +76,12 @@ Zelda.prototype.updateJump = function(blocks) {
     if(this.cy <= this.tempMaxJumpHeight) {
         this.offGround = true;
     }
+	if(this.jumping && this.velY === 0)this.offGround = true; 
 	if(entityManager._level[0].emtySpaceBelow(this)){
-		this.jumping = true;	
+		this.jumping = true;
+		//this.offGround = true;
 	}
+	
 };
 
 var NOMINAL_GRAVITY = 0.52;
