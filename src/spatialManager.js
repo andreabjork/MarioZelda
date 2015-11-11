@@ -91,7 +91,6 @@ render: function(ctx){
 	var posX,posY,sizeX,sizeY;
 	for(var i=1; i < this._entities.length; i++){
 		if(this._entities[i]){
-			console.log("Entity nr. "+i);
 			var pos = this._entities[i].getPos();
 			posX = pos.posX;
 			posY = pos.posY;

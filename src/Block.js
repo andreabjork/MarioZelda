@@ -22,9 +22,13 @@ function Block(descr) {
 };
 Block.prototype._isDeadNow = false;
 Block.prototype._isBreakable = false;
+Block.prototype._isPassable = false;
+
+
 
 Block.prototype.update = function (du) {
-	if(this._isDeadNow) return Level.prototype.BREAK_ME;
+	if(this._isDeadNow) return true;
+	else return false;
 };
 
 
@@ -35,9 +39,24 @@ Block.prototype.render = function (ctx,x,y,w,h) {
 	this.sprite.drawCentredAt(ctx,x+w/2,y+h/2);
 };
 
-Block.prototype.activate = function (Char) {
-    //char bumped into this block. will he die/get money?
-	console.log("hola hola, get dola $$");
+Block.prototype.activate = function (Char, direction) {
+    if(direction === 1){
+	this.tryToBreak();
+	}
+	if(this.type === 2){
+	console.log("take damage by these scary spikes or smt like dat...");
+	}
+	if(this.type === 3 && direction === 1){
+		console.log("get money");
+	}
+	if(this.type === 4){
+		console.log("le swimming");
+		Char.tempMaxJumpHeight = Char.cy - Char.maxPushHeight/5;
+        this.offGround = false;		
+		if(keys[Char.KEY_JUMP])
+		Char.velY = -1;
+	}
+	
 };
 
 

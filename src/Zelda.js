@@ -39,7 +39,7 @@ Zelda.prototype.KEY_SHOOT  = ' '.charCodeAt(0);
 
 // Initial, inheritable, default values
 Zelda.prototype.cx = 200;
-Zelda.prototype.cy = 483;
+Zelda.prototype.cy = 430;
 Zelda.prototype.velX = 0;
 Zelda.prototype.velY = 0;
 Zelda.prototype.HP = 1;
@@ -66,25 +66,19 @@ Zelda.prototype.jump = function () {
 	this.tempMaxJumpHeight = this.cy - this.maxPushHeight; 
 };
 
-Zelda.prototype.updateJump = function(roof, isTB, topBlock) {
-	var groundHeight = entityManager._level[0].findGround(this); 
-	
-	if(this.cy >= groundHeight) {
+Zelda.prototype.updateJump = function(blocks) {
+	if(blocks.B) {
         this.jumping = false;
         this.pushing = keys[this.KEY_JUMP];
         this.offGround = false;
         if(!(keys[this.KEY_LEFT] || keys[this.KEY_RIGHT])) this.velX = 0;
     }
-	else {this.jumping = true;}
-	
     if(this.cy <= this.tempMaxJumpHeight) {
         this.offGround = true;
     }
-	
-	if(this.cy - 42*this._scale <= roof) {
-        this.velY *= -1;
-		if(isTB)topBlock.activate();
-    }
+	if(entityManager._level[0].emtySpaceBelow(this)){
+		this.jumping = true;	
+	}
 };
 
 var NOMINAL_GRAVITY = 0.52;
@@ -185,11 +179,40 @@ Zelda.prototype.update = function (du) {
     }
     this.updateVelocity(du);
 
-    this.cx += this.velX*du;
-    this.cy += this.velY*du;
+    var blocks = entityManager._level[0].findBlocks(this, du);
+    
+	if(this.velX > 0)
+		if(!blocks.R) 
+			this.cx += this.velX*du;
+		else
+			this.velX = 0;
+	else
+		if(!blocks.L) 
+			this.cx += this.velX*du;
+		else
+			this.velX = 0;
+	if(this.velY > 0){
+		if(!blocks.B)
+			this.cy += this.velY*du;
+		else {
+			this.tempMaxJumpHeight = this.cy - this.maxPushHeight; 
+			//Á að minka bilið ef zelda lendir og langt í jörðina, en virkar ekki...
+			//Y = g_canvas.height/14;
+			//if(((this.cy + 42*this._scale) % Y) > 4) this.jumping = true;
+			//console.log(Y - (this.cy + 42*this._scale) % Y);
+		}
+	}
+	else	
+		if(!blocks.T) 
+			this.cy += this.velY*du;
+		else
+			this.velY *= -1;
+		
+	this.updateJump(blocks);
 	
-	var blocks = entityManager._level[0].findBlocks(this);
-    this.updateJump(blocks.top, blocks.isTB, blocks.topBlock);
+	//console.log(" " + " vinstrihlið: " + blocks.L + " hægri: " + blocks.T + " ground: " 
+	//	+ blocks.B + "og hæð: " + blocks.T + " jumping: " + this.jumping + " cy og cx: " + this.cy + " " +this.cx);
+	
     
     if(this.isColliding()) {
     	console.log("detecting collision");
@@ -208,7 +231,11 @@ Zelda.prototype.update = function (du) {
     		this.takeHit();
     	}
     }
-
+	if(this.cy > g_canvas.height){
+		console.log("ur dead, scruuuub, f5 to win at life");
+		this._isDeadNow = true;
+	}
+	
     if(this._isDeadNow) return entityManager.KILL_ME_NOW;
 
     this.detectStatus();
@@ -217,6 +244,7 @@ Zelda.prototype.update = function (du) {
 
         this.casting = false;
     }
+	
 	spatialManager.register(this);
 	this.updateViewport();
 };

@@ -133,7 +133,10 @@ function requestPreloads() {
         marioTest: "res/images/mario.png",
         zeldaSpriteSheet: "res/images/zeldass.png",
 		defaultBlock: "res/images/blockPlaceholder.png",
-        background: "res/images/background.jpg"
+        background: "res/images/background.jpg",
+		spikes: "res/images/SpikeBall.gif",
+		coinBox: "res/images/Coin_Box.png",
+		water: "res/images/water.jpg"
     };
 
     imagesPreload(requiredImages, g_images, preloadDone);
@@ -164,7 +167,10 @@ function preloadDone() {
     g_sprites.marioTest  = new Sprite(g_images.marioTest);
     g_sprites.defaultBlock  = new Sprite(g_images.defaultBlock);
     g_sprites.background = new Sprite(g_images.background);
-
+    g_sprites.spikes = new Sprite(g_images.spikes);
+	g_sprites.coinBox = new Sprite(g_images.coinBox);
+	g_sprites.water = new Sprite(g_images.water);
+	
     entityManager.init();
 
     main.init();

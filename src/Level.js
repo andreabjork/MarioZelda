@@ -31,17 +31,17 @@ var levelObject =  {
 	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,0,1,0,0,0,0,0,0],
-	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-	[0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0],
-	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0],
-	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,1,0,0,0],
-	[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-	[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1] // 60 rows
+	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,4,4,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,0,1,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+	[0,0,0,0,0,0,0,0,1,0,1,0,3,0,0,0,0,0,0,0,0,1,0,0,2,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0],
+	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,4,4,4,4,4,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0],
+	[2,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,1,4,4,4,1,3,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,1,0,0,0],
+	[1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+	[1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1] // 60 rows
 ],
 
 level2 : [
@@ -65,6 +65,13 @@ level2 : [
 
 Level.prototype.update = function (du) {
 	this.width = X*this.Blocks[13].length;
+	for (var i = 0; i < this.Blocks.length; i++) {
+		for (var j = 0; j < this.Blocks[i].length; j++) {
+			if (this.Blocks[i][j]) {
+				if(this.Blocks[i][j].update()) this.Blocks[i][j] = undefined; 
+			}
+		}
+	}
 };
 
 Level.prototype.BREAK_ME = -2;
@@ -75,8 +82,35 @@ Level.prototype.initLevel = function(curLevel) {
 	for (var i = 0; i < curLevel.length; i++) {
 		var column = [];
 		for (var j = 0; j < curLevel[i].length; j++) {
-			if (curLevel[i][j] === 1) {
-				column[j] = new Block();
+			var type = curLevel[i][j];
+			if (type > 0) {
+				
+				if(type === 2) {
+					//make spikes
+					column[j] = new Block({
+										type: curLevel[i][j],
+										sprite : g_sprites.spikes
+									});
+				} else if(type === 3) {
+					//make a coinbox
+					column[j] = new Block({
+										type: curLevel[i][j],
+										sprite : g_sprites.coinBox
+									});
+				} else if(type === 4) {
+					//make water?
+					column[j] = new Block({
+										type: curLevel[i][j],
+										sprite : g_sprites.water,
+										_isPassable : true
+									});
+				} else{
+					//make a normal block
+					column[j] = new Block({
+										type: curLevel[i][j],
+										_isBreakable : true
+									});
+				}
 			}
 		}
 		this.Blocks[i] = column;
@@ -87,6 +121,7 @@ var Y = g_canvas.height/14;
 var X = Y;
 
 var testx = 0;
+var testx2 = 0;
 var testy = 0; 
 var testy2 = 0; 
 
@@ -103,11 +138,14 @@ Level.prototype.render = function (ctx) {
 	}
 	//character bottom and top box
 	if (g_renderSpatialDebug){ 
-		util.strokeBox(ctx, X*this.testx + this.center.cx, Y*this.testy, X, Y, 'red');
-		util.strokeBox(ctx, X*this.testx + this.center.cx, Y*this.testy2, X, Y, 'blue');
+		util.strokeBox(ctx, X*this.testx, Y*this.testy, X, Y, 'red');
+		util.strokeBox(ctx, X*this.testx2, Y*this.testy, X, Y, 'green');
+		util.strokeBox(ctx, X*this.testx, Y*this.testy2, X, Y, 'blue');
+		
 	}
 };
 
+/*
 Level.prototype.findGround = function (Char) {
  //Mun verða fjarlægt er bara hér þar til ég get fiktað í ykkar 
 	var col = testx;
@@ -142,105 +180,201 @@ Level.prototype.findGround = function (Char) {
 	//no hittable blocks were found in this column
 	return 1337;
 };
+*/
+Level.prototype.charLevelPosition = function (posX,posY,sizeX,sizeY) {
+	var colL = 0;
+	var colR = 0;
+	var row = 0;
+	var rowHeight = 0;
 
-Level.prototype.findBlocks = function (Char) {
+
+	//find what column The left side of the character is in 
+	for(var j = 0; j < this.Blocks[13].length; j++)
+		if( (posX - sizeX/2) - X*j >= 0 && X*(j+1) - (posX - sizeX/2) >= 0){
+			colL = j;
+		}
+
+	//find what column The left right of the character is in 
+	for(var j = 0; j < this.Blocks[13].length; j++)
+		if( (posX + sizeX/2) - X*j >= 0 && X*(j+1) - (posX + sizeX/2) >= 0){
+			colR = j;
+		}
+		
+	//starting point aka ground uses middle X-point as reference
+	for(var i = 0; i < this.Blocks.length; i++)
+		if( Y*(i+1) - (posY + sizeY/2) >= 0  && (posY + sizeY/2) - Y*i >= 0){
+			row = i;
+		}
+	//reference height of the char to see how many rows of blocks we need to check
+	for(var i = 0; i < this.Blocks.length; i++)
+		if( Y*(i+1) - (posY - sizeY/2) >= 0  && (posY - sizeY/2) - Y*i >= 0){
+			rowHeight = i;
+		}
+		
+	
+	if (g_renderSpatialDebug){ 
+	//to  show what cell character is allocated as.
+	this.testy = row;
+	this.testy2 = rowHeight;
+	this.testx = colL;
+	this.testx2 = colR;
+	}	
+	
+	var LPos ={
+				xL: colL,
+				xR: colR,
+				yT: rowHeight,
+				yB: row,
+				};
+				
+	return LPos;
+}
+
+Level.prototype.emtySpaceBelow = function (Char){
 	var pos = Char.getPos();
 	var posX = pos.posX;
 	var posY = pos.posY;
 	var size = Char.getSize();
 	var sizeY = size.sizeY;
 	var sizeX = size.sizeX;
-	var col = 0;
-	var row = 0;
-	var rowHeight = 0;
-	//find what column I'm in 
-	for(var j = 0; j < this.Blocks[13].length; j++)
-		if( posX - X*j >= 0 && X*(j+1) - posX >= 0){
-			col = j;
-			break;
-		}
-	//starting point in array to search for roof
-	for(var i = 0; i < this.Blocks.length; i++)
-		if( Y*(i+1) - (posY + sizeY/2) >= 0  && (posY + sizeY/2) - Y*i >= 0)
-			row = i;
-
-	//reference height of the char to see how many rows of blocks we need to check
-	for(var i = 0; i < this.Blocks.length; i++)
-		if( Y*(i+1) - (posY - sizeY/2) >= 0  && (posY - sizeY/2) - Y*i >= 0)
-			rowHeight = i;
-
-	//to  show what cell character is allocated as.
-	this.testy = row;
-	this.testy2 = rowHeight;
-	this.testx = col;
-
-
-	var topB = false,
-		leftB = false,
-		rightB = false;
-		bottomB = false;
-	var theBAbove;
-	var roof = -1337;
-
-
-	/*
-	//block on top?
-	if(row > 0){
-		//is there a block directly above?, and if so, save it
-		if (this.Blocks[row - 1][col]) {
-			topB = true;
-			theBAbove = this.Blocks[row - 1][col];
-			roof = Y*(row-1) + Y/2; 
-		}
-		
-		//is there a block in the way of the image that would make silly clips? :)
-		if((X*col + this.center.cx - posX) < -Y/4){
-			if (this.Blocks[row - 1][col+ 1]) {
-				//topB = true;
-				roof = Y*(row-1) + Y/2; 
+	var Lpos = this.charLevelPosition(posX, posY, sizeX, sizeY);
+	var fall = true;
+	if(Lpos.yB < 13){
+		if(this.Blocks[Lpos.yB + 1][Lpos.xL]){
+			if(!this.Blocks[Lpos.yB + 1][Lpos.xL]._isPassable){
+				fall = false;				
 			}
-		} else if((X*col + this.center.cx - posX) > Y/4){
-			if (this.Blocks[row - 1][col-1]) {
-				//topB = true;
-				roof = Y*(row-1) + Y/2; 
+		}
+		if(this.Blocks[Lpos.yB + 1][Lpos.xR]){
+			if(!this.Blocks[Lpos.yB + 1][Lpos.xR]._isPassable){
+				fall = false;				
 			}
 		}
 	}
-	//blocked on left?
-	if (this.Blocks[row][col-1] || this.Blocks[row+1][col-1]) {
-			if((X*(col-1) + this.center.cx + X/2 - posX + sizeX - Char.velX) >= -Y/4) leftB = true;					
+	return fall;
+}
+
+Level.prototype.findBlocks = function (Char, du) {
+	var pos = Char.getPos();
+	var posX = pos.posX;
+	var posY = pos.posY;
+	var pos2 = Char.getNextPos(du);
+	var posX2 = pos2.nextX;
+	var posY2 = pos2.nextY;
+	var size = Char.getSize();
+	var sizeY = size.sizeY;
+	var sizeX = size.sizeX;
+	
+	//level positions
+	var Lpos = this.charLevelPosition(posX, posY, sizeX, sizeY);
+	var Lpos2 = this.charLevelPosition(posX2, posY2, sizeX, sizeY);
+	return this.dealWithLevelCollision(Lpos,Lpos2, Char);
+	
+};
+
+Level.prototype.dealWithLevelCollision = function (Lpos, Lpos2, Char) {
+	var lEdge = (Lpos.xL != Lpos2.xL);
+	var rEdge = (Lpos.xR != Lpos2.xR);
+	var tEdge = (Lpos.yT != Lpos2.yT);
+	var bEdge = (Lpos.yB != Lpos2.yB);
+	
+	var blockR = false;
+	var blockL = false;
+	var blockT = false;
+	var blockB = false;
+	
+	//verður column breyting hægra meginn?
+	if(rEdge){
+		//skoða alla relevant kubba hægra meginn
+		for(var i = Lpos.yT; i <= Lpos.yB; i++){
+			if (this.Blocks[i][Lpos2.xR]) {
+				if(this.Blocks[i][Lpos2.xR]._isPassable){
+					this.Blocks[i][Lpos2.xR].activate(Char,2);
+				} else {
+					this.Blocks[i][Lpos2.xR].activate(Char,2);
+					blockR = true;
+				}
+			}
+		}
+	}
+	//verður column breyting vinstra meginn?
+	if(lEdge){
+		//skoða alla relevant kubba vinstra meginn
+		for(var i = Lpos.yT; i <= Lpos.yB; i++){
+			if (this.Blocks[i][Lpos2.xL]) {
+				if(this.Blocks[i][Lpos2.xL]._isPassable){
+					this.Blocks[i][Lpos2.xL].activate(Char,0);
+				} else {
+					this.Blocks[i][Lpos2.xL].activate(Char,0);
+					blockL = true;
+				}
+			}
+		}
+	}
+	//verður breyting í hæð uppi?
+	if(tEdge){
+		if(this.Blocks[Lpos2.yT][Lpos.xL]){
+			if(this.Blocks[Lpos2.yT][Lpos.xL]._isPassable){
+				this.Blocks[Lpos2.yT][Lpos.xL].activate(Char,1);
+			} else {
+				this.Blocks[Lpos2.yT][Lpos.xL].activate(Char,1);
+				blockT = true;
+			}
+		}
+		if(this.Blocks[Lpos2.yT][Lpos2.xL]){
+			if(!this.Blocks[Lpos2.yT][Lpos2.xL]._isPassable){
+				blockT = true;
+			}
+		}
+		if(this.Blocks[Lpos2.yT][Lpos.xR]){
+			if(this.Blocks[Lpos2.yT][Lpos.xR]._isPassable){
+				this.Blocks[Lpos2.yT][Lpos.xR].activate(Char,1);
+			} else {
+				this.Blocks[Lpos2.yT][Lpos.xR].activate(Char,1);
+				blockT = true;
+			}
+		}
+		if(this.Blocks[Lpos2.yT][Lpos2.xR]){
+			if(!this.Blocks[Lpos2.yT][Lpos2.xR]._isPassable){
+				blockT = true;
+			}
+		}
+	}
+	//verður breyting í hæð niðri?
+	if(bEdge){
+		if(this.Blocks[Lpos2.yB][Lpos.xL]){
+			if(this.Blocks[Lpos2.yB][Lpos.xL]._isPassable){
+				this.Blocks[Lpos2.yB][Lpos.xL].activate(Char,3);
+			} else {
+				this.Blocks[Lpos2.yB][Lpos.xL].activate(Char,3);
+				blockB = true;				
+			}
+		}
+		if(this.Blocks[Lpos2.yB][Lpos2.xL]){
+			if(!this.Blocks[Lpos2.yB][Lpos2.xL]._isPassable){
+				blockB = true;
+			}
+		}
+		if(this.Blocks[Lpos2.yB][Lpos.xR]){
+			if(this.Blocks[Lpos2.yB][Lpos.xR]._isPassable){
+				this.Blocks[Lpos2.yB][Lpos.xR].activate(Char,3);
+			} else {
+				this.Blocks[Lpos2.yB][Lpos.xR].activate(Char,3);
+				blockB = true;
+			}
+		}
+		if(this.Blocks[Lpos2.yB][Lpos2.xR]){
+			if(!this.Blocks[Lpos2.yB][Lpos2.xR]._isPassable){
+				blockB = true;
+			}
+		}
 	}
 	
-	if(row > 0) if(this.Blocks[row-1][col-1] && Char.offGround)
-		if((X*(col-1) + this.center.cx + X/2 - posX + sizeX - Char.velX) >= 0) leftB = true;
-	
-	if(row < 14 && row > 0) if(this.Blocks[row+2][col-1] && Char.offGround)
-		if((X*(col-1) + this.center.cx + X/2 - posX + sizeX - Char.velX) >= 0) leftB = true;
-	
-	//blocked on right?
-	if (this.Blocks[row][col+1] || this.Blocks[row+1][col+1]) {
-			if((X*(col+1) + this.center.cx - X/2 - posX - sizeX - Char.velX) <= -Y/4) rightB = true;					
-	}
-	if(row > 0) if(this.Blocks[row-1][col+1] && Char.offGround)
-		if((X*(col+1) + this.center.cx - X/2 - posX - sizeX - Char.velX) <= 0) rightB = true;
-	
-	if(row < 14) if(this.Blocks[row+2][col+1] && Char.offGround)
-		if((X*(col+1) + this.center.cx + X/2 - posX - sizeX - Char.velX) <= 0) leftB = true
-	*/
-	
-	this.findAjacentBlocks(col, row, row - rowHeight, 0);
-	
-	var blocks ={
-				left: leftB,
-				right: rightB,
-				top: roof,
-				isTB: topB,
-				topBlock : theBAbove
+	var blocks = {
+				L : blockL,
+				R : blockR,
+				T : blockT,
+				B : blockB
 				};
 	return blocks;
-};
-Level.prototype.findAjacentBlocks = function (col, row, hight, attVisir) {
-	if(attvisir === 0){
-	
-	}
 };
