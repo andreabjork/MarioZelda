@@ -353,12 +353,14 @@ Level.prototype.dealWithLevelCollision = function (Lpos, Lpos2, Char) {
 				this.Blocks[Lpos2.yB][Lpos.xL].activate(Char,3);
 			} else {
 				this.Blocks[Lpos2.yB][Lpos.xL].activate(Char,3);
-				blockB = true;				
+				blockB = true;
+				var height = Lpos2.yB;				
 			}
 		}
 		if(this.Blocks[Lpos2.yB][Lpos2.xL]){
 			if(!this.Blocks[Lpos2.yB][Lpos2.xL]._isPassable){
 				blockB = true;
+				height = Lpos2.yB;
 			}
 		}
 		if(this.Blocks[Lpos2.yB][Lpos.xR]){
@@ -367,11 +369,13 @@ Level.prototype.dealWithLevelCollision = function (Lpos, Lpos2, Char) {
 			} else {
 				this.Blocks[Lpos2.yB][Lpos.xR].activate(Char,3);
 				blockB = true;
+				height = Lpos2.yB;
 			}
 		}
 		if(this.Blocks[Lpos2.yB][Lpos2.xR]){
 			if(!this.Blocks[Lpos2.yB][Lpos2.xR]._isPassable){
 				blockB = true;
+				height = Lpos2.yB;
 			}
 		}
 	}
@@ -404,7 +408,8 @@ Level.prototype.dealWithLevelCollision = function (Lpos, Lpos2, Char) {
 				L : blockL,
 				R : blockR,
 				T : blockT,
-				B : blockB
+				B : blockB,
+				height : height
 				};
 	return blocks;
 };

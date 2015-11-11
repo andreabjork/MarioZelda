@@ -196,10 +196,10 @@ Zelda.prototype.update = function (du) {
 			this.cy += this.velY*du;
 		else {
 			this.tempMaxJumpHeight = this.cy - this.maxPushHeight; 
-			//Á að minka bilið ef zelda lendir og langt í jörðina, en virkar ekki...
-			//Y = g_canvas.height/14;
-			//if(((this.cy + 42*this._scale) % Y) > 4) this.jumping = true;
-			//console.log(Y - (this.cy + 42*this._scale) % Y);
+			
+            // Place her on top of the bottom block, the '-1' is so that 
+            // she doesn't actually touch it and destroy it
+            this.cy = blocks.height*(g_canvas.height/14)-this.getSize().sizeY/2 - 1;
 		}
 	}
 	else	
