@@ -199,7 +199,6 @@ Zelda.prototype.update = function (du) {
 			this.cy += this.velY*du;
 		else {
 			this.tempMaxJumpHeight = this.cy - this.maxPushHeight; 
-			
 			this.cy = blocks.height*(g_canvas.height/14)-this.getSize().sizeY/2 - 1;
 		}
 	}
@@ -223,7 +222,10 @@ Zelda.prototype.update = function (du) {
 		console.log("detecting collision");
 		var hitEntity = this.findHitEntity();
 		var canTakeHit = hitEntity.takeHit;
-        if (canTakeHit) canTakeHit.call(hitEntity);
+        if (canTakeHit){ 
+			canTakeHit.call(hitEntity);
+			this.velY = -9;
+		}
 		}
     }
 	if(this.cy > g_canvas.height){

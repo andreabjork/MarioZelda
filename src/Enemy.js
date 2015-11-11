@@ -28,7 +28,7 @@ Enemy.prototype = new Character();
 // Initial, inheritable, default values
 Enemy.prototype.cx = 500;
 Enemy.prototype.cy = 483;
-Enemy.prototype.velX = -1.5;
+Enemy.prototype.velX = -1;
 Enemy.prototype.velY = 0;
 Enemy.prototype.HP = 1;
 Enemy.prototype.inAir = true;

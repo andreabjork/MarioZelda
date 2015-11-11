@@ -41,19 +41,22 @@ Block.prototype.render = function (ctx,x,y,w,h) {
 
 Block.prototype.activate = function (Char, direction) {
     if(direction === 1){
+		//try to break blocks hit from below
 	this.tryToBreak();
 	}
 	if(this.type === 2){
-	console.log("take damage by these scary spikes or smt like dat...");
+		//hit by spikes
 	Char.takeHit();
 	}
 	if(this.type === 3 && direction === 1){
+		// $.$
 		console.log("get money");
 	}
 	if(this.type === 4 && direction === 4){
-		console.log("le swimming");
+		//is in water
 		Char.tempMaxJumpHeight = Char.cy - Char.maxPushHeight/5;
-        this.offGround = false;		
+        Char.velX *= 0.9;
+		Char.velY *= 0.9;
 		if(keys[Char.KEY_JUMP])
 		Char.velY = -1;
 	}
