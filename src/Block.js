@@ -49,7 +49,7 @@ Block.prototype.activate = function (Char, direction) {
 	if(this.type === 3 && direction === 1){
 		console.log("get money");
 	}
-	if(this.type === 4){
+	if(this.type === 4 && direction === 4){
 		console.log("le swimming");
 		Char.tempMaxJumpHeight = Char.cy - Char.maxPushHeight/5;
         this.offGround = false;		

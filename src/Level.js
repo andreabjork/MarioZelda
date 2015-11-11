@@ -375,6 +375,30 @@ Level.prototype.dealWithLevelCollision = function (Lpos, Lpos2, Char) {
 			}
 		}
 	}
+	//Er inní block? ef þá activatea það
+	if(Lpos.yB > 0){
+		if(this.Blocks[Lpos.yB -1][Lpos.xL]){
+			if(this.Blocks[Lpos.yB-1][Lpos.xL]._isPassable){
+				this.Blocks[Lpos.yB-1][Lpos.xL].activate(Char,4);
+			}
+		} else if(this.Blocks[Lpos.yB - 1][Lpos.xR]){
+			if(this.Blocks[Lpos.yB - 1][Lpos.xR]._isPassable){
+				this.Blocks[Lpos.yB - 1][Lpos.xR].activate(Char,4);
+			}
+		}
+	}
+	if(this.Blocks[Lpos.yB][Lpos.xL]){
+		if(this.Blocks[Lpos.yB][Lpos.xL]._isPassable){
+			this.Blocks[Lpos.yB][Lpos.xL].activate(Char,4);
+		}
+	} else if(this.Blocks[Lpos.yB][Lpos.xR]){
+		if(this.Blocks[Lpos.yB][Lpos.xR]._isPassable){
+			this.Blocks[Lpos.yB][Lpos.xR].activate(Char,4);
+		}
+	}
+	
+	
+	
 	
 	var blocks = {
 				L : blockL,
