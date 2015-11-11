@@ -76,10 +76,12 @@ function updateSimulation(du) {
 
 var g_allowMixedActions = true;
 var g_renderSpatialDebug = false;
+var g_renderExtraDebug = false;
 var g_viewPort = {x:0, y:0};
 
 var KEY_MIXED   = keyCode('M');
 var KEY_SPATIAL = keyCode('X');
+var KEY_EXTRA_INFO = keyCode('V');
 
 var KEY_RESET = keyCode('R');
 
@@ -93,6 +95,9 @@ function processDiagnostics() {
 
     if (eatKey(KEY_SPATIAL)) 
 		g_renderSpatialDebug = !g_renderSpatialDebug;
+
+    if (eatKey(KEY_EXTRA_INFO)) 
+		g_renderExtraDebug = !g_renderExtraDebug;
 
     if (eatKey(KEY_RESET)) entityManager.resetAll();
 }

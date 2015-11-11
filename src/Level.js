@@ -130,14 +130,14 @@ Level.prototype.render = function (ctx) {
 		for (var j = 0; j < this.Blocks[i].length; j++) {
 			if (this.Blocks[i][j]) {
 				this.Blocks[i][j].render(ctx, X*j, Y*i, X, Y);
-				if (g_renderSpatialDebug) {
+				if (g_renderExtraDebug) {
 					util.strokeBox(ctx, X*j, Y*i, X, Y, 'red');
 				}
 			}
 		}
 	}
 	//character bottom and top box
-	if (g_renderSpatialDebug){ 
+	if (g_renderExtraDebug){ 
 		util.strokeBox(ctx, X*this.testx, Y*this.testy, X, Y, 'red');
 		util.strokeBox(ctx, X*this.testx2, Y*this.testy, X, Y, 'green');
 		util.strokeBox(ctx, X*this.testx, Y*this.testy2, X, Y, 'blue');
@@ -212,7 +212,7 @@ Level.prototype.charLevelPosition = function (posX,posY,sizeX,sizeY) {
 		}
 		
 	
-	if (g_renderSpatialDebug){ 
+	if (g_renderExtraDebug){ 
 	//to  show what cell character is allocated as.
 	this.testy = row;
 	this.testy2 = rowHeight;

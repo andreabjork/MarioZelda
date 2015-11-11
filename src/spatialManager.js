@@ -1,5 +1,4 @@
 /*
-
 spatialManager.js
 
 A module which handles spatial lookup, as required for...
@@ -37,7 +36,6 @@ _entities : [],
 // "PRIVATE" METHODS
 //
 // <none yet>
-
 
 // PUBLIC METHODS
 
@@ -83,13 +81,12 @@ findEntityInRange: function(posX, posY, sizeX, sizeY) {
 	}
 },
 
-
 render: function(ctx){
 	ctx.save();
 	ctx.beginPath();
 	ctx.strokeStyle = "red";
 	var posX,posY,sizeX,sizeY;
-	for(var i=1; i < this._entities.length; i++){
+	for	(var i=1; i < this._entities.length; i++){
 		if(this._entities[i]){
 			var pos = this._entities[i].getPos();
 			posX = pos.posX;
@@ -99,7 +96,7 @@ render: function(ctx){
 			sizeY = size.sizeY;
 			ctx.rect(posX-sizeX/2,posY-sizeY/2,sizeX,sizeY);
 			ctx.stroke();
-		}	
+		}
 	}
 	ctx.restore();
 	ctx.beginPath();
