@@ -83,6 +83,7 @@ findEntityInRange: function(posX, posY, sizeX, sizeY) {
 	}
 },
 
+
 render: function(ctx){
 	ctx.save();
 	ctx.beginPath();

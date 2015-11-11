@@ -26,14 +26,19 @@ function Enemy(descr) {
 Enemy.prototype = new Character();
 
 // Initial, inheritable, default values
-Enemy.prototype.cx = 200;
+Enemy.prototype.cx = 500;
 Enemy.prototype.cy = 483;
-Enemy.prototype.velX = 3;
-
+Enemy.prototype.velX = 1.5;
+Enemy.prototype.HP = 1;
 
 Enemy.prototype.update = function(du) {
+	spatialManager.unregister(this);
 	if(this.cx > 600 && this.velX > 0) this.velX *= -1;
 	else if(this.cx < 100 & this.velX < 0) this.velX *= -1;
 
 	this.cx += this.velX*du;
+
+	if(this._isDeadNow) return entityManager.KILL_ME_NOW;
+
+	spatialManager.register(this);
 }
