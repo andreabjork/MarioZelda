@@ -152,7 +152,7 @@ function requestPreloads() {
 		water: "res/images/water.png",
         ground: "res/images/Ground1.png",
         dungeon: "res/images/dungeonBrick.png",
-		cloud: "res/images/shitty_cloud.png",
+		cloud: "res/images/Cloud1.png",
 		background1: "res/images/MainBackground.png",
 		background2: "res/images/Hills1.png"
     };
