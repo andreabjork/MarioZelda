@@ -129,6 +129,7 @@ var X = Y;
 
 var testx = 0;
 var testy = 0; 
+var testy2 = 0; 
 
 Level.prototype.render = function (ctx) {
 	for (var i = 0; i < this.Blocks.length; i++) {
@@ -141,25 +142,17 @@ Level.prototype.render = function (ctx) {
 			}
 		}
 	}
-	util.strokeBox(ctx, X*this.testx + this.center.cx, Y*this.testy, X, Y, 'red');
+	//character bottom box
+	if (g_renderSpatialDebug){ 
+		util.strokeBox(ctx, X*this.testx + this.center.cx, Y*this.testy, X, Y, 'red');
+		util.strokeBox(ctx, X*this.testx + this.center.cx, Y*this.testy2, X, Y, 'blue');
+	}
 };
 
 Level.prototype.findGround = function (Char) {
-	var pos = Char.getPos();
-	var posX = pos.posX;
-	var posY = pos.posY;
-	var size = Char.getSize();
-	var sizeY = size.sizeY;
-	var col = 0;
-	var row = 0;
-	//find what column I'm in 
-	for(var j = 0; j < this.Blocks[13].length; j++)
-		if(Math.abs(X*j + this.center.cx - posX) <= X/2)
-			col = j;
-	//starting point in array to search for ground
-	for(var i = 0; i < this.Blocks.length; i++)
-		if(Math.abs(Y*i + this.center.cy - posY) <= Y/2)
-			row = i;
+ //Mun verða fjarlægt er bara hér þar til ég get fiktað í ykkar 
+	var col = testx;
+	var row = testy;
 		
 	//Character is traweling downwards so we check for ground
 	for (var i = row; i < this.Blocks.length; i++) {
@@ -181,6 +174,7 @@ Level.prototype.findBlocks = function (Char) {
 	var sizeX = size.sizeX;
 	var col = 0;
 	var row = 0;
+	var rowHeight = 0;
 	//find what column I'm in 
 	for(var j = 0; j < this.Blocks[13].length; j++)
 		if( posX - X*j + this.center.cx >= 0 && X*(j+1) + this.center.cx - posX >= 0){
@@ -191,16 +185,26 @@ Level.prototype.findBlocks = function (Char) {
 	for(var i = 0; i < this.Blocks.length; i++)
 		if( Y*(i+1) - (posY + sizeY/2) >= 0  && (posY + sizeY/2) - Y*i >= 0)
 			row = i;
-	
-	
+
+	//reference height of the char to see how many rows of blocks we need to check
+	for(var i = 0; i < this.Blocks.length; i++)
+		if( Y*(i+1) - (posY - sizeY/2) >= 0  && (posY - sizeY/2) - Y*i >= 0)
+			rowHeight = i;
+
+	//to  show what cell character is allocated as.
 	this.testy = row;
+	this.testy2 = rowHeight;
 	this.testx = col;
-	
+
+
 	var topB = false,
 		leftB = false,
 		rightB = false;
+		bottomB = false;
 	var theBAbove;
 	var roof = -1337;
+
+
 	/*
 	//block on top?
 	if(row > 0){
@@ -244,8 +248,9 @@ Level.prototype.findBlocks = function (Char) {
 	
 	if(row < 14) if(this.Blocks[row+2][col+1] && Char.offGround)
 		if((X*(col+1) + this.center.cx + X/2 - posX - sizeX - Char.velX) <= 0) leftB = true
-	
 	*/
+	
+	this.findAjacentBlocks(col, row, row - rowHeight, 0);
 	
 	var blocks ={
 				left: leftB,
@@ -255,5 +260,9 @@ Level.prototype.findBlocks = function (Char) {
 				topBlock : theBAbove
 				};
 	return blocks;
-	//basicly means no hittable blocks were found in this column
+};
+Level.prototype.findAjacentBlocks = function (col, row, hight, attVisir) {
+	if(attvisir === 0){
+	
+	}
 };
