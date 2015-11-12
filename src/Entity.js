@@ -80,12 +80,15 @@ Entity.prototype.findHitEntity = function () {
     );
 };
 
-// given that we actually are colliding:
-Entity.prototype.getCollisionType = function(posX, posY, hitEntity) {
-    var entX = hitEntity.getSize().sizeX;
-    var entY = hitEntity.getSize().sizeY;
-    return {top: posY <= entY, right: posX >= entX, left: posX <= entX, bottom: posY >= entY}
-}
+
+
+Entity.prototype.findHitEntities = function () {
+    var pos = this.getPos();
+    var size = this.getSize();
+    return spatialManager.findEntitiesInRange(
+        pos.posX, pos.posY, size.sizeX, size.sizeY , this.getRadius()
+    );
+};
 
 // This is just little "convenience wrapper"
 Entity.prototype.isColliding = function () {

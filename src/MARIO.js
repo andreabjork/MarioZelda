@@ -103,7 +103,6 @@ function processDiagnostics() {
 // =================
 
 // GAME-SPECIFIC RENDERING
-
 function renderSimulation(ctx) {
     
     ctx.save();
@@ -111,8 +110,11 @@ function renderSimulation(ctx) {
 	var dx = g_viewPort.x;
 	var dy = g_viewPort.y;
 
-    g_sprites.background.drawAt(ctx, 0,0, g_canvas.width, g_canvas.height);
-
+    var lvlLength;
+    lvlLength = entityManager._world[0].blocks[13].length*(g_canvas.height/14) - g_canvas.width;
+    g_sprites.BG1.drawAt(ctx, 0,0, g_canvas.width, g_canvas.height);
+    g_sprites.BG2.drawAt(ctx, -(dx / lvlLength) * g_canvas.width ,g_canvas.height/2, g_canvas.width*2, g_canvas.height);
+    
     ctx.translate(-dx,-dy);
     entityManager.render(ctx);
 
@@ -133,7 +135,15 @@ function requestPreloads() {
         marioTest: "res/images/mario.png",
         zeldaSpriteSheet: "res/images/zeldass.png",
 		defaultBlock: "res/images/blockPlaceholder.png",
-        background: "res/images/background.jpg"
+        background: "res/images/background.jpg",
+        spikes: "res/images/SpikeBall.gif",
+        coinBox: "res/images/Coin_Box.png",
+        water: "res/images/water.png",
+        ground: "res/images/Ground1.png",
+        dungeon: "res/images/dungeonBrick.png",
+        cloud: "res/images/Cloud1.png",
+        background1: "res/images/MainBackground.png",
+        background2: "res/images/Hills1.png"
     };
 
     imagesPreload(requiredImages, g_images, preloadDone);
@@ -165,11 +175,20 @@ function preloadDone() {
     g_sprites.defaultBlock  = new Sprite(g_images.defaultBlock);
     g_sprites.background = new Sprite(g_images.background);
 
+    g_sprites.spikes = new Sprite(g_images.spikes);
+    g_sprites.coinBox = new Sprite(g_images.coinBox);
+    g_sprites.water = new Sprite(g_images.water);
+    g_sprites.ground = new Sprite(g_images.ground);
+    g_sprites.dungeon = new Sprite(g_images.dungeon);
+    g_sprites.BG1 = new Sprite(g_images.background1);
+    g_sprites.BG2 = new Sprite(g_images.background2);
+    g_sprites.cloud = new Sprite(g_images.cloud);
+
     entityManager.init();
 
     main.init();
     
-    //entityManager._level[0].initLevel(levelObject.level1);
+    //entityManager._world[0].initLevel(levelObject.level1);
 }
 
 // Kick it off

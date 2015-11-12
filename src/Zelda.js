@@ -124,6 +124,14 @@ Zelda.prototype.putToGround  = function(y) {
 }
 
 Zelda.prototype.handleCollisions = function(prevX, prevY, nextX, nextY) {
+
+        /*var hitEntity = this.findHitEntity();
+        var canTakeHit = hitEntity.takeHit;
+        if (canTakeHit){ 
+            canTakeHit.call(hitEntity);
+            this.velY = -9;
+        }*/
+
     this.handleEnemyCollision();
     this.handleBoxCollision(prevX, prevY, nextX, nextY);
 }
@@ -132,10 +140,10 @@ Zelda.prototype.handleCollisions = function(prevX, prevY, nextX, nextY) {
 // ==================
 
 
-Zelda.prototype.updateJump = function(roof, isTB, topBlock) {
-	var groundHeight = entityManager._level[0].findGround(this); 
+Zelda.prototype.updateJump = function(bEdge) {
+	var groundHeight = entityManager._world[0].findGround(this); 
 	
-	if(this.state['onGround']) {
+	if(this.state['onGround'] && bEdge) { // this should happen when blocks.B, whatever that means
         this.state['jumping'] = false;
         this.state['pushing'] = keys[this.KEY_JUMP];
         this.state['offGround'] = false;
@@ -146,6 +154,14 @@ Zelda.prototype.updateJump = function(roof, isTB, topBlock) {
     if(this.cy <= this.tempMaxJumpHeight) {
         this.state['offGround'] = true;
     }
+
+    if(this.jumping && this.velY === 0)this.offGround = true; 
+    if(!bEdge){
+        console.log("this is triggering");
+        this.jumping = true;
+        //this.offGround = true;
+    }
+
     /*    	
 	if(this.cy - 42*this._scale <= roof) {
         this.velY *= -1;
@@ -228,7 +244,7 @@ Zelda.prototype.updateStatus = function() {
 
 Zelda.prototype.update = function (du) {
     // TEMP SOLUTION??? Seems kind of silly to make zelda 'find' the blocks.
-    //var blocks = entityManager._level[0].findBlocks(this);
+    //var blocks = entityManager._world[0].findBlocks(this);
 
 	spatialManager.unregister(this);
 
@@ -242,10 +258,58 @@ Zelda.prototype.update = function (du) {
     // Update speed/location and handle jumps/collisions
     this.updateVelocity(du);
 
-    this.handleCollisions(this.cx, this.cy, this.cx+this.velX*du, this.cy+this.velY*du);
+    //this.handleCollisions(this.cx, this.cy, this.cx+this.velX*du, this.cy+this.velY*du);
+    this.handleBoxCollision(this.cx, this.cy, this.cx+this.velX*du, this.cy+this.velY*du);
+    //
+
+// TO BE FIDDLED WITH ---------------------------------------------------------------------
+    var bEdge;
+    if(this.isColliding()) {
+        var hitEntities = this.findHitEntities();
+        for(var hit in hitEntities) {
+            var hitEntity = hitEntities[hit];
+            if(hitEntity instanceof Block) {
+                var zeldaCoords = entityManager._world[0].getBlockCoords(this.cx, this.cy);
+                var hitCoords = [hitEntity.i, hitEntity.j];
+
+                var lEdge = (hitCoords[1] < zeldaCoords[1] && (hitCoords[0] == zeldaCoords[0] || hitCoords[0] == zeldaCoords[0]-1) );
+                var rEdge = (hitCoords[1] > zeldaCoords[1] && (hitCoords[0] == zeldaCoords[0] || hitCoords[0] == zeldaCoords[0]-1));
+                var tEdge = (hitCoords[0] < zeldaCoords[0]);
+                bEdge = (hitCoords[0] > zeldaCoords[0]);
+
+                if(lEdge && this.velX < 0) {
+                    console.log("colliding left");
+                    this.velX = 0;
+                }
+                if(rEdge && this.velX > 0) this.velX = 0; 
+                if(tEdge && this.velY < 0) {
+                    console.log("colliding top!");
+                    this.velY *= -1;
+                }
+                if(bEdge) {
+                    console.log("colliding bottom");
+                    this.tempMaxJumpHeight = this.cy - this.maxPushHeight; 
+                    this.cy = zeldaCoords[0]*(g_canvas.height/14)+this.getSize().sizeY/6+1;
+                }
+            }
+        }
+    }       
 
     this.updateLocation(du);
-    //this.updateJump(blocks.top, blocks.isTB, blocks.topBlock);
+
+    this.updateJump(bEdge);
+
+    if(this.cy > g_canvas.height){
+        console.log("ur dead, scruuuub, f5 to win at life");
+        this._isDeadNow = true;
+    }
+    
+
+
+
+
+// ------------------------------------------------------------------
+
 
     // Check for death:
     if(this._isDeadNow) return entityManager.KILL_ME_NOW;

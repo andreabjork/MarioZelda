@@ -23,6 +23,8 @@ with suitable 'data' and 'methods'.
 /*jslint nomen: true, white: true, plusplus: true*/
 
 
+var g_NUMBER_OF_CLOUDS = 4;
+
 var entityManager = {
 
 // "PRIVATE" DATA
@@ -58,8 +60,11 @@ deferredSetup : function () {
 
 init: function() {
     this.generateCharacter();
-    this.generateEnemy();
+    //this.generateEnemy();
     this.generateLevel();
+    for(var i = 0; i < g_NUMBER_OF_CLOUDS; i++)
+        this.generateObject();
+    console.log(this._categories[0]);
 },
 
 fireBullet: function(cx, cy, velX, velY, rotation) {
@@ -86,7 +91,7 @@ generateLevel : function(descr) {
 },
 
 generateObject : function(descr) {
-    this._objects.push(new Object(descr));
+    this._objects.push(new Cloud(descr));
 },
 
 // entities and centres have same dimensions, max 2
