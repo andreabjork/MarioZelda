@@ -55,12 +55,13 @@ Block.prototype.activate = function (Char, direction) {
 	if(this.type === 4 && direction === 4){
 		//is in water
 		Char.tempMaxJumpHeight = Char.cy - Char.maxPushHeight/5;
-        Char.velX *= 0.9;
+        Char.velX *= 1;
 		Char.velY *= 0.9;
 		if(keys[Char.KEY_JUMP])
 		Char.velY = -1;
+	} if(this.type === 7 && Char.name === 'zelda') {
+		this._isDeadNow = true;
 	}
-	
 };
 
 

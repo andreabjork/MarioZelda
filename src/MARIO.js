@@ -85,6 +85,12 @@ var KEY_EXTRA_INFO = keyCode('V');
 
 var KEY_RESET = keyCode('R');
 
+var KEY_LEVEL1 = keyCode('1');
+var KEY_LEVEL2 = keyCode('2');
+var KEY_LEVEL3 = keyCode('3');
+var KEY_LEVEL4 = keyCode('4');
+var KEY_LEVEL5 = keyCode('5');
+
 // hér má bæta við lykklum fyrir tests ásamt falli fyrir neðan 
 // í Diagnostics svosem "spawna óvin"
 
@@ -99,8 +105,29 @@ function processDiagnostics() {
     if (eatKey(KEY_EXTRA_INFO)) 
 		g_renderExtraDebug = !g_renderExtraDebug;
 
-    if (eatKey(KEY_RESET)) entityManager.resetAll();
-}
+    if (eatKey(KEY_RESET)) entityManager.RESET_ALL();
+    
+    if (eatKey(KEY_LEVEL1)) {
+        entityManager.RESET_ALL();
+        entityManager._level[0].initLevel(levelObject.level1);
+    };
+    if (eatKey(KEY_LEVEL2)) {
+        entityManager.RESET_ALL();
+        entityManager._level[0].initLevel(levelObject.level2);
+    };
+    if (eatKey(KEY_LEVEL3)) {
+        entityManager.RESET_ALL();
+        entityManager._level[0].initLevel(levelObject.level3);
+    };
+    if (eatKey(KEY_LEVEL3)) {
+        entityManager.RESET_ALL();
+        entityManager._level[0].initLevel(levelObject.level4);
+    };
+    if (eatKey(KEY_LEVEL5)) {
+        entityManager.RESET_ALL();
+        entityManager._level[0].initLevel(levelObject.level5);
+    };
+};
 
 
 // =================
@@ -154,7 +181,8 @@ function requestPreloads() {
         dungeon: "res/images/dungeonBrick.png",
 		cloud: "res/images/Cloud1.png",
 		background1: "res/images/MainBackground.png",
-		background2: "res/images/Hills1.png"
+		background2: "res/images/Hills1.png",
+        coin: "res/images/Coin.png"
     };
 
     imagesPreload(requiredImages, g_images, preloadDone);
@@ -192,6 +220,7 @@ function preloadDone() {
 	g_sprites.BG1 = new Sprite(g_images.background1);
 	g_sprites.BG2 = new Sprite(g_images.background2);
 	g_sprites.cloud = new Sprite(g_images.cloud);
+    g_sprites.coin = new Sprite(g_images.coin);
 	
     entityManager.init();
 

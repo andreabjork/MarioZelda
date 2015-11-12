@@ -56,13 +56,24 @@ deferredSetup : function () {
     this._categories = [this._objects, this._character, this._bullets, this._level, this._enemies];
 },
 
+RESET_ALL: function() {
+    this._character = [];
+    this._bullets = [];
+    this._enemies = [];
+    this._objects = [];
+    
+    this.generateCharacter();
+    for(var i = 0; i < g_NUMBER_OF_CLOUDS; i++) {
+		this.generateObject();
+    }
+},
+
 
 init: function() {
     this.generateCharacter();
     this.generateLevel(levelObject.level1);
     for(var i = 0; i < g_NUMBER_OF_CLOUDS; i++)
 		this.generateObject();
-	console.log(this._categories[0]);
 },
 
 fireBullet: function(cx, cy, velX, velY, rotation) {
@@ -82,6 +93,7 @@ generateCharacter : function(descr) {
 
 generateEnemy : function(descr) {
     this._enemies.push(new Enemy(descr));
+    console.log(this._enemies);
 },
 
 generateLevel : function(descr) {

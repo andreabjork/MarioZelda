@@ -55,6 +55,9 @@ Zelda.prototype.casting = false;
 Zelda.prototype.status = "idleRight";
 // idle, walkingRight, walkingLeft, runningRight, runningLeft, inAirRight, inAirLeft
 
+// Identifier
+Zelda.prototype.name = 'zelda';
+
 // Sounds (should be preloaded and initialized in constructor):
 // Zelda.prototype.warpSound = new Audio(
 //    "sounds/ZeldaWarp.ogg");
