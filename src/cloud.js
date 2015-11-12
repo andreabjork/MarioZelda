@@ -7,7 +7,7 @@ function Cloud(descr) {
 	this.cx = Infinity;
 	this.cy = g_canvas.height - (0.3 + Math.random())*g_canvas.height;
 	this.scale = 0.8+0.4*Math.random();
-	this.xVel = 0.1+0.5*Math.random();
+	this.xVel = util.randRange(-0.6,0.6);
 }
 
 Cloud.prototype.cx = Math.random()*g_canvas.width;
@@ -17,11 +17,11 @@ Cloud.prototype.xVel = 0.2+0.3*Math.random();
     
 Cloud.prototype.update = function(du){
 	this.cx += this.xVel * du; 
-	if(this.cx > g_lvlLength + 600){
+	if(this.cx > g_lvlLength + g_canvas.width + 150) {
 		this.cx = Math.random()*g_lvlLength;
 		this.cy = g_canvas.height - (0.3 + Math.random())*g_canvas.height;
 		this.scale = 0.8+0.4*Math.random();
-		this.xVel = 0.1 + 0.5*Math.random();
+		this.xVel = util.randRange(-0.6,0.6);
 	}
 };
 

@@ -12,7 +12,7 @@ with suitable 'data' and 'methods'.
 
 */
 
-var g_NUMBER_OF_CLOUDS = 20;
+var g_NUMBER_OF_CLOUDS = 12;
 
 "use strict";
 

@@ -149,7 +149,7 @@ function requestPreloads() {
         background: "res/images/background.jpg",
 		spikes: "res/images/SpikeBall.gif",
 		coinBox: "res/images/Coin_Box.png",
-		water: "res/images/water.png",
+		water: "res/images/water-opaque.png",
         ground: "res/images/Ground1.png",
         dungeon: "res/images/dungeonBrick.png",
 		cloud: "res/images/Cloud1.png",
