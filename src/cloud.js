@@ -4,10 +4,10 @@ function Cloud(descr) {
     }
 	
 	this.sprite = this.sprite || g_sprites.cloud;
-	this.cx = Math.random()*2*g_canvas.width - g_canvas.width;
+	this.cx = Infinity;
 	this.cy = g_canvas.height - (0.3 + Math.random())*g_canvas.height;
-	this.scale = 0.4+0.5*Math.random();
-	this.xVel = 0.2+0.3*Math.random();
+	this.scale = 0.8+0.4*Math.random();
+	this.xVel = 0.1+0.5*Math.random();
 }
 
 Cloud.prototype.cx = Math.random()*g_canvas.width;
@@ -17,15 +17,15 @@ Cloud.prototype.xVel = 0.2+0.3*Math.random();
     
 Cloud.prototype.update = function(du){
 	this.cx += this.xVel * du; 
-	if(this.cx > g_canvas.width + 600){
-		this.cx = -(1+Math.random())*g_canvas.width;
+	if(this.cx > g_lvlLength + 600){
+		this.cx = Math.random()*g_lvlLength;
 		this.cy = g_canvas.height - (0.3 + Math.random())*g_canvas.height;
-		this.scale = 0.4+0.5*Math.random();
-		this.xVel = 0.2 + 0.3*Math.random();
+		this.scale = 0.8+0.4*Math.random();
+		this.xVel = 0.1 + 0.5*Math.random();
 	}
 };
 
 Cloud.prototype.render = function(ctx){
 	this.sprite.scale = this.scale;
-	this.sprite.drawCentredAt(ctx, g_viewPort.x + this.cx ,this.cy);
+	this.sprite.drawCentredAt(ctx, this.cx ,this.cy);
 };
