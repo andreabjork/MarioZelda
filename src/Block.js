@@ -51,6 +51,14 @@ Block.prototype.activate = function (Char, direction) {
 	if(this.type === 3 && direction === 1){
 		// $.$
 		console.log("get money");
+		var blockAbove = entityManager._level[0].Blocks[this.i-1][this.j];
+		if (!blockAbove) {
+			entityManager._level[0].Blocks[this.i-1][this.j] = new Block({
+				type : 7,
+				sprite : g_sprites.coin,
+				_isPassable : true
+			});
+		}
 	}
 	if(this.type === 4 && direction === 4){
 		//is in water
