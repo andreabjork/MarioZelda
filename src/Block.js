@@ -50,7 +50,6 @@ Block.prototype.activate = function (Char, direction) {
 	}
 	if(this.type === 3 && direction === 1){
 		// $.$
-		console.log("get money");
 		var blockAbove = entityManager._level[0].Blocks[this.i-1][this.j];
 		if (!blockAbove) {
 			entityManager._level[0].Blocks[this.i-1][this.j] = new Block({
@@ -69,6 +68,7 @@ Block.prototype.activate = function (Char, direction) {
 		Char.velY = -1;
 	} if(this.type === 7 && Char.name === 'zelda') {
 		this._isDeadNow = true;
+		g_score.update(50);
 	}
 };
 
@@ -81,5 +81,8 @@ Block.prototype.collide = function ( Char , hitValue) {
 };
 
 Block.prototype.tryToBreak = function(){
-    if(this._isBreakable) this._isDeadNow = true;
+    if(this._isBreakable) {
+		this._isDeadNow = true;
+		g_score.update(10);
+	}
 }

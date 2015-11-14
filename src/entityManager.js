@@ -73,7 +73,8 @@ init: function() {
     this.generateCharacter();
     this.generateLevel(levelObject.level1);
     for(var i = 0; i < g_NUMBER_OF_CLOUDS; i++)
-		this.generateObject();
+		this.generateObject('cloud');
+    this.generateObject('portal');
 },
 
 fireBullet: function(cx, cy, velX, velY, rotation) {
@@ -100,8 +101,9 @@ generateLevel : function(descr) {
     this._level.push(new Level(descr));
 },
 
-generateObject : function(descr) {
-    this._objects.push(new Cloud(descr));
+generateObject : function(name, descr) {
+    if (name === 'cloud') this._objects.push(new Cloud(descr));
+    if (name === 'portal') this._objects.push(new Portal(descr));
 },
 
 update: function(du) {

@@ -242,6 +242,7 @@ Zelda.prototype.update = function (du) {
         if (canTakeHit){ 
 			canTakeHit.call(hitEntity);
 			this.velY = -9;
+            g_score.update(100);
 		}
 		}
     }

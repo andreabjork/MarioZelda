@@ -47,6 +47,14 @@ function createInitialStuff() {
 	//byrjunar laggi
 }
 
+//==========
+// SCORE
+//==========
+   
+var g_score = new Score({
+    score : 0
+});
+
 // =============
 // GATHER INPUTS
 // =============
@@ -146,20 +154,21 @@ function renderSimulation(ctx) {
 	var dy = g_viewPort.y;
 
 	
-	g_lvlLength = entityManager._level[0].Blocks[13].length*(g_canvas.height/14) - g_canvas.width;
+	g_lvlLength = entityManager._level[0].Blocks[13].length*(g_canvas.height/14);
 
 	
 	g_sprites.BG1.drawAt(ctx, 0,0, g_canvas.width, g_canvas.height);
 
-    g_sprites.BG2.drawAt(ctx, -(dx / g_lvlLength) * g_canvas.width ,g_canvas.height/2, g_canvas.width*2, g_canvas.height);
+    g_sprites.BG2.drawAt(ctx, -(dx / g_lvlLength-g_canvas.width) * g_canvas.width ,g_canvas.height/2, g_canvas.width*2, g_canvas.height);
     
     ctx.translate(-dx,-dy);
     entityManager.render(ctx);
 
     if (g_renderSpatialDebug) spatialManager.render(ctx);
     ctx.restore();
-}
-
+    
+    g_score.render(ctx);
+};
 
 // =============
 // PRELOAD STUFF
@@ -182,7 +191,8 @@ function requestPreloads() {
 		cloud: "res/images/Cloud1.png",
 		background1: "res/images/MainBackground.png",
 		background2: "res/images/Hills1.png",
-        coin: "res/images/Coin.png"
+        coin: "res/images/Coin.png",
+        portal: "res/images/Portal.png"
     };
 
     imagesPreload(requiredImages, g_images, preloadDone);
@@ -221,12 +231,17 @@ function preloadDone() {
 	g_sprites.BG2 = new Sprite(g_images.background2);
 	g_sprites.cloud = new Sprite(g_images.cloud);
     g_sprites.coin = new Sprite(g_images.coin);
+    g_sprites.portal = new Sprite(g_images.portal);
 	
+    
     entityManager.init();
 
     main.init();
     
     entityManager._level[0].initLevel(levelObject.level1);
+    
+    g_lvlLength = entityManager._level[0].Blocks[13].length*(g_canvas.height/14);
+    
 }
 
 // Kick it off
