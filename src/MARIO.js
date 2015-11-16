@@ -196,8 +196,16 @@ function requestPreloads() {
         coin: "res/images/Coin.png",
         portal: "res/images/Portal.png"
     };
+    
+        var requiredAudio = {
+        theme1: "res/sounds/thema1.mp3",
+        theme2: "res/sounds/thema2.mp3",
+        themeDeath: "res/sounds/daudi.mp3",
+        zeldaShoot: "res/sounds/zelda-shot.mp3"
+    }
 
     imagesPreload(requiredImages, g_images, preloadDone);
+        audioPreload(requiredAudio, g_audio, preloadDone);
 }
 
 var g_sprites = {};
@@ -246,6 +254,11 @@ function preloadDone() {
     
     g_lvlLength = entityManager._level[0].Blocks[13].length*(g_canvas.height/14);
     
+    g_audio.theme1.addEventListener('ended', function () {
+        this.currentTime = 0;
+        this.play();
+    });
+    g_audio.theme1.play();
 }
 
 // Kick it off

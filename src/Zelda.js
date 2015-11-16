@@ -95,6 +95,8 @@ Zelda.prototype.computeGravity = function () {
 
 Zelda.prototype.shoot = function () {
 
+    g_audio.zeldaShoot.play();
+
     var dX = +1;//+Math.sin(this.rotation);
     var dY = 0;//Math.cos(this.rotation);
     var launchDist = this.getRadius() * 1.2;
