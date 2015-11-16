@@ -255,11 +255,15 @@ function preloadDone() {
     
     g_lvlLength = entityManager._level[0].Blocks[13].length*(g_canvas.height/14);
     
-    g_audio.theme1.addEventListener('ended', function () {
-        this.currentTime = 0;
-        this.play();
-    });
-    g_audio.theme1.play();
+    try {
+        g_audio.theme1.addEventListener('ended', function () {
+            this.currentTime = 0;
+            this.play();
+        });
+        g_audio.theme1.play();
+    } catch(err) {
+        
+    }
 }
 
 // Kick it off
