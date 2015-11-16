@@ -175,6 +175,7 @@ function renderSimulation(ctx) {
 // =============
 
 var g_images = {};
+var g_audio = {};
 
 function requestPreloads() {
 
@@ -198,9 +199,9 @@ function requestPreloads() {
     };
     
         var requiredAudio = {
-        theme1: "res/sounds/thema1.mp3",
-        theme2: "res/sounds/thema2.mp3",
-        themeDeath: "res/sounds/daudi.mp3",
+        theme1: "res/sounds/thema1.ogg",
+        theme2: "res/sounds/thema2.ogg",
+        themeDeath: "res/sounds/daudi.ogg",
         zeldaShoot: "res/sounds/zelda-shot.mp3"
     }
 
