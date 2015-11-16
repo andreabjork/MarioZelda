@@ -183,7 +183,7 @@ function requestPreloads() {
         zeldaSpriteSheet: "res/images/zeldass.png",
 		defaultBlock: "res/images/blockPlaceholder.png",
         background: "res/images/background.jpg",
-		spikes: "res/images/SpikeBall.gif",
+		spikes: "res/images/Spikes.png",
 		coinBox: "res/images/Coin_Box.png",
 		water: "res/images/water-opaque.png",
         ground: "res/images/Ground1.png",

@@ -23,7 +23,9 @@ function Block(descr) {
 Block.prototype._isDeadNow = false;
 Block.prototype._isBreakable = false;
 Block.prototype._isPassable = false;
-
+Block.prototype._makeAnimation = false;
+Block.prototype._AnimationCounter = 0;
+Block.prototype._AnimationSprite;
 
 
 Block.prototype.update = function (du) {
@@ -33,10 +35,19 @@ Block.prototype.update = function (du) {
 
 
 Block.prototype.render = function (ctx,x,y,w,h) {
-    var img_h = this.sprite.height;
+    if(this._makeAnimation){
+			var animationLength = 10;
+			this._AnimationSprite.drawCentredAt(ctx, x+w/2,
+										y+ h/2 - (this._AnimationCounter) * ((g_canvas.height/14)/animationLength));
+			this._AnimationCounter++;
+			if(this._AnimationCounter >= animationLength)
+				this._makeAnimation = false;
+	}
+	var img_h = this.sprite.height;
 	var scale = h/img_h;
 	this.sprite.scale = scale;
 	this.sprite.drawCentredAt(ctx,x+w/2,y+h/2);
+	
 };
 
 Block.prototype.activate = function (Char, direction) {
@@ -50,6 +61,10 @@ Block.prototype.activate = function (Char, direction) {
 	}
 	if(this.type === 3 && direction === 1){
 		// $.$
+		this._makeAnimation = true;
+		this._AnimationCounter = 0;
+		this._AnimationSprite = g_sprites.coin;
+		/*
 		var blockAbove = entityManager._level[0].Blocks[this.i-1][this.j];
 		if (!blockAbove) {
 			entityManager._level[0].Blocks[this.i-1][this.j] = new Block({
@@ -58,6 +73,8 @@ Block.prototype.activate = function (Char, direction) {
 				_isPassable : true
 			});
 		}
+		*/
+		
 	}
 	if(this.type === 4 && direction === 4){
 		//is in water
