@@ -32,6 +32,7 @@ Enemy.prototype.velX = -1;
 Enemy.prototype.velY = 0;
 Enemy.prototype.HP = 1;
 Enemy.prototype.inAir = true;
+Enemy.prototype.inWater = false;
 Enemy.prototype.initialized = false;
 
 
