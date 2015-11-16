@@ -20,10 +20,6 @@ function Level(descr) {
 
 Level.prototype = new Entity();
 
-    
-// Initial, inheritable, default values
-Level.prototype.height = 14 //dæmi um hversu mörg block canvazið getur tekið.
-							//geri ráð fyrir að Mario sé 2 blocks á hæð...
 
 var levelObject =  {
 	

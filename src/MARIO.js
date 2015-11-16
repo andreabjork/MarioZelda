@@ -205,8 +205,8 @@ function requestPreloads() {
         zeldaShoot: "res/sounds/zelda-shot.mp3"
     }
 
-    imagesPreload(requiredImages, g_images, preloadDone);
-        audioPreload(requiredAudio, g_audio, preloadDone);
+    imagesPreload(requiredImages, g_images);
+	audioPreload(requiredAudio, g_audio, preloadDone);
 }
 
 var g_sprites = {};
