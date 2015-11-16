@@ -99,16 +99,16 @@ Level.prototype.initLevel = function(curLevel) {
 					column[j] = new Block({
 										type: curLevel[i][j],
 										sprite : g_sprites.coinBox,
-										i : i,
-										j : j
+										ammo : 5
 									});
 				} else if(type === 4) {
 					//make water?
 					column[j] = new Block({
 										type: curLevel[i][j],
 										sprite : g_sprites.water,
-										_isPassable : true
-										
+										_isPassable : true,
+										i : i,
+										j : j
 									});
 				} else if (type === 5) {
 					//make ground
@@ -414,6 +414,7 @@ Level.prototype.dealWithLevelCollision = function (Lpos, Lpos2, Char) {
 			}
 		}
 	}
+	
 	if(this.Blocks[Lpos.yB][Lpos.xL]){
 		if(this.Blocks[Lpos.yB][Lpos.xL]._isPassable){
 			this.Blocks[Lpos.yB][Lpos.xL].activate(Char,4);
@@ -423,7 +424,6 @@ Level.prototype.dealWithLevelCollision = function (Lpos, Lpos2, Char) {
 			this.Blocks[Lpos.yB][Lpos.xR].activate(Char,4);
 		}
 	}
-	
 	
 	
 	

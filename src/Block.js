@@ -19,14 +19,14 @@ function Block(descr) {
         this[property] = descr[property];
     }
 	this.sprite = this.sprite || g_sprites.defaultBlock;
+	this.AnimationSprite = this.AnimationSprite || g_sprites.coin;
 };
 Block.prototype._isDeadNow = false;
 Block.prototype._isBreakable = false;
 Block.prototype._isPassable = false;
 Block.prototype._makeAnimation = false;
 Block.prototype._AnimationCounter = 0;
-Block.prototype._AnimationSprite;
-
+Block.prototype.ammmo = 0;
 
 Block.prototype.update = function (du) {
 	if(this._isDeadNow) return true;
@@ -37,8 +37,10 @@ Block.prototype.update = function (du) {
 Block.prototype.render = function (ctx,x,y,w,h) {
     if(this._makeAnimation){
 			var animationLength = 10;
-			this._AnimationSprite.drawCentredAt(ctx, x+w/2,
-										y+ h/2 - (this._AnimationCounter) * ((g_canvas.height/14)/animationLength));
+			g_ctx.globalAlpha = 1 - 0.5*(this._AnimationCounter/animationLength) ;
+			this.AnimationSprite.drawCentredAt(ctx, x+w/2,
+										y+ h/2 - (this._AnimationCounter) * ((g_canvas.height/14)/(animationLength/1.6)));
+			g_ctx.globalAlpha = 1;
 			this._AnimationCounter++;
 			if(this._AnimationCounter >= animationLength)
 				this._makeAnimation = false;
@@ -59,11 +61,12 @@ Block.prototype.activate = function (Char, direction) {
 		//hit by spikes
 	Char.takeHit();
 	}
-	if(this.type === 3 && direction === 1){
+	if(this.type === 3 && direction === 1 && this.ammo > 0){
 		// $.$
 		this._makeAnimation = true;
 		this._AnimationCounter = 0;
-		this._AnimationSprite = g_sprites.coin;
+		g_score.update(20);
+		this.ammo--;
 		/*
 		var blockAbove = entityManager._level[0].Blocks[this.i-1][this.j];
 		if (!blockAbove) {
@@ -78,12 +81,23 @@ Block.prototype.activate = function (Char, direction) {
 	}
 	if(this.type === 4 && direction === 4){
 		//is in water
-		Char.tempMaxJumpHeight = Char.cy - Char.maxPushHeight/5;
-        Char.velX *= 1;
-		Char.velY *= 0.9;
-		if(keys[Char.KEY_JUMP])
-		Char.velY = -1;
-	} if(this.type === 7 && Char.name === 'zelda') {
+		Char.inWater = true;
+		/*
+		if(keys[Char.KEY_JUMP]){
+			var temp = false;
+			var blockAbove = entityManager._level[0].Blocks[this.i-1][this.j];
+			if(!blockAbove) temp = true;
+			if(blockAbove){
+				if(blockAbove.type === 4) temp = true;
+				console.log(blockAbove.type);
+			}
+			if (temp) 
+				Char.velY = -1;
+		}
+		*/
+	} 
+	
+	if(this.type === 7 && Char.name === 'zelda') {
 		this._isDeadNow = true;
 		g_score.update(50);
 	}
