@@ -192,7 +192,6 @@ Zelda.prototype.update = function (du) {
 		this.maxVelX = 3.9;
 		this.maxVelY = 6.5;
 	}
-	console.log(this.inWater)
 	// Handle jumping:
     if((!this.jumping && keys[this.KEY_JUMP]) || (this.inWater && keys[this.KEY_JUMP])) this.jump();
     // Handle casting:

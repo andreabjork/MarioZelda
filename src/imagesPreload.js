@@ -92,7 +92,7 @@ function imagesPreload(requiredImages,
         numImagesHandled += 1;
 
         if (numImagesHandled === numImagesRequired) {
-            completionCallback();
+            if(completionCallback) completionCallback();
         }
     };
 
