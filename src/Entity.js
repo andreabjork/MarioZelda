@@ -72,27 +72,25 @@ Entity.prototype.kill = function () {
     this._isDeadNow = true;
 };
 
-Entity.prototype.findHitEntity = function () {
-    var pos = this.getPos();
+Entity.prototype.findHitEntity = function (nextX, nextY) {
 	var size = this.getSize();
     return spatialManager.findEntityInRange(
-        pos.posX, pos.posY, size.sizeX, size.sizeY , this.getRadius()
+        nextX, nextY, size.sizeX, size.sizeY , this.getRadius()
     );
 };
 
 
 
-Entity.prototype.findHitEntities = function () {
-    var pos = this.getPos();
+Entity.prototype.findHitEntities = function (nextX, nextY) {
     var size = this.getSize();
     return spatialManager.findEntitiesInRange(
-        pos.posX, pos.posY, size.sizeX, size.sizeY , this.getRadius()
+        nextX, nextY, size.sizeX, size.sizeY , this.getRadius()
     );
 };
 
 // This is just little "convenience wrapper"
-Entity.prototype.isColliding = function () {
-    return this.findHitEntity();
+Entity.prototype.isColliding = function (nextX, nextY) {
+    return this.findHitEntity(nextX, nextY);
 };
 
 Entity.prototype.wrapPosition = function () {

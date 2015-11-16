@@ -59,18 +59,16 @@ World.prototype.getLocation = function(i,j) {
 World.prototype.collidesWith = function (zelda, prevX, prevY, nextX, nextY) {
 	var halfW = zelda.getSize().sizeX;
 	var halfH = zelda.getSize().sizeY;
-	var newCoords = this.getBlockCoords(nextX,nextY);
-
-
+	var newCoords = this.getBlockCoords(prevX,prevY+halfH/2 - 2); // off by 2 because we have off by 1 for zelda's putToGround AND regular off by 1 so we don't fall after landing.
+/*
 	var row = newCoords[0];
 	var col = newCoords[1];
-/*
-	var topBlock = this.blocks[row-2][col];
-	var leftBlockA = this.blocks[row-1][col-1];
-	var leftBlockB = this.blocks[row][col-1];
-	var bottomBlock = this.blocks[row+1][col];
-	var rightBlockA = this.blocks[row-1][col+1];
-	var rightBlockB = this.blocks[row][col+1];
+	var topBlock = (this.blocks[row-2] ? this.blocks[row-2][col] : null);
+	var leftBlockA = (this.blocks[row-1] ? this.blocks[row-1][col-1] : null);
+	var leftBlockB = (this.blocks[row] ?  this.blocks[row][col-1] : null);
+	var bottomBlock = (this.blocks[row+1] ? this.blocks[row+1][col] : null);
+	var rightBlockA = (this.blocks[row-1] ? this.blocks[row-1][col+1] : null);
+	var rightBlockB = (this.blocks[row] ? this.blocks[row][col+1] : null);
 	
 	var collidingCoords = [];
 	var collidingBlocks = [topBlock, leftBlockA, leftBlockB, bottomBlock, rightBlockA, rightBlockB];
@@ -83,8 +81,8 @@ World.prototype.collidesWith = function (zelda, prevX, prevY, nextX, nextY) {
 			b.halfWidth = this.blockDim;
 			b.halfHeight = this.blockDim;
 		}
-	}*/
-
+	}
+*/
 	var collidingBlocks = [];
 	var collidingCoords = [];
 	var row = newCoords[0]-2;

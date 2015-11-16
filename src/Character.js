@@ -73,7 +73,9 @@ Character.prototype.takeHit = function () {
 };
 
 Character.prototype.render = function (ctx) {
-        this.animation.renderAt(ctx, this.cx, this.cy);
+    ctx.fillStyle = "red";
+    ctx.fillRect(this.cx, this.cy+42*this._scale/2, 10, 10);
+    this.animation.renderAt(ctx, this.cx, this.cy);
 };
 
 Character.prototype.getPos = function(){
