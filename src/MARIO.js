@@ -188,7 +188,9 @@ function requestPreloads() {
 		water: "res/images/water-opaque.png",
         ground: "res/images/Ground1.png",
         dungeon: "res/images/dungeonBrick.png",
-		cloud: "res/images/Cloud1.png",
+		cloud1: "res/images/Cloud1.png",
+		cloud2: "res/images/shitty_cloud.png",
+		cloud3: "res/images/portal.png",
 		background1: "res/images/MainBackground.png",
 		background2: "res/images/Hills1.png",
         coin: "res/images/Coin.png",
@@ -229,7 +231,9 @@ function preloadDone() {
     g_sprites.dungeon = new Sprite(g_images.dungeon);
 	g_sprites.BG1 = new Sprite(g_images.background1);
 	g_sprites.BG2 = new Sprite(g_images.background2);
-	g_sprites.cloud = new Sprite(g_images.cloud);
+	g_sprites.cloud1 = new Sprite(g_images.cloud1);
+	g_sprites.cloud2 = new Sprite(g_images.cloud2);
+	g_sprites.cloud3 = new Sprite(g_images.cloud3);
     g_sprites.coin = new Sprite(g_images.coin);
     g_sprites.portal = new Sprite(g_images.portal);
 	
