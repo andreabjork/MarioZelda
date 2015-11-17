@@ -265,7 +265,7 @@ function preloadDone() {
 function initLevel() {
     entityManager.init();
     
-    entityManager._world[0].initLevel(levelObject.level1);
+    entityManager.enterLevel(1);
     
     g_lvlLength = entityManager._world[0].blocks[13].length*(g_canvas.height/14) - g_canvas.width;
     
