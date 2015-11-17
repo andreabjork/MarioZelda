@@ -89,6 +89,7 @@ var g_isMuted = false;
 
 var KEY_MUTE   = keyCode('M');
 var KEY_SPATIAL = keyCode('X');
+var KEY_SPACE = keyCode(' ');
 
 var KEY_RESET = keyCode('R');
 
@@ -145,16 +146,18 @@ function processDiagnostics() {
 var g_lvlLength;
 var g_menuScreenOn = true;
 var g_deathScreenOn = false;
-window.addEventListener('keyup', function() {
-    if (g_menuScreenOn) {
-        g_menuScreenOn = false;
-        initLevel();
-    }
-    if (g_deathScreenOn) {
-        g_doClear = true;
-        g_deathScreenOn = false;
-        g_menuScreenOn = true;
-        entityManager.enterLevel(entityManager._level);
+window.addEventListener('keydown', function() {
+    if (keys[KEY_SPACE]) {
+        if (g_menuScreenOn) {
+            g_menuScreenOn = false;
+            initLevel();
+        }
+        if (g_deathScreenOn) {
+            g_doClear = true;
+            g_deathScreenOn = false;
+            g_menuScreenOn = true;
+            entityManager.enterLevel(entityManager._level);
+        }
     }
 });
 
@@ -177,9 +180,9 @@ function renderSimulation(ctx) {
         entityManager.render(ctx);
     
         if (g_renderSpatialDebug) spatialManager.render(ctx);
-        if (g_deathScreenOn) g_sprites.deathScreen.drawAt(ctx, 0, 0, g_canvas.width, g_canvas.height);
         ctx.restore();
         
+        if (g_deathScreenOn) g_sprites.deathScreen.drawAt(ctx, 0, 0, g_canvas.width, g_canvas.height);       
         g_score.render(ctx);
     }
 };

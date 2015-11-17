@@ -177,9 +177,17 @@ update: function(du) {
                 // remove the dead guy, and shuffle the others down to
                 // prevent a confusing gap from appearing in the array
                 aCategory.splice(i,1);
-                if(c === 1) { // Zelda died!
-                    g_doClear = false; 
+                if(c === 1) { // Zelda died! 
                     g_deathScreenOn = true;
+                    backgroundMusic.pause();
+                    backgroundMusic = g_audio.themeDeath;
+                    try {
+                        backgroundMusic.addEventListener('ended', function () {
+                            this.currentTime = 0;
+                            this.play();
+                        });
+                        backgroundMusic.play();
+                    } catch (err) {};                   
                 }
             }
             else {
