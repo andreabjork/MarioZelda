@@ -198,7 +198,12 @@ Zelda.prototype.updateStatus = function() {
 
     // figure out our status
     var nextStatus = this.status;
-    var dir = (this.velX >= 0)?"Right":"Left";
+	var dir;
+	if(this.velX === 0) dir = this._lastDir || "Right";
+	else{
+		dir = (this.velX > 0 ? "Right" : "Left");
+		this._lastDir = dir;
+	}
     var atMaxVel = (Math.abs(this.velX)>=(this.maxVelX*0.9))
     if(this.state['jumping']) nextStatus = "inAir"+dir;
     else if(this.state['casting']) nextStatus = "magic" + dir;

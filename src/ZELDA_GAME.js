@@ -246,7 +246,8 @@ function makeEnemyAnimation(scale) {
     var enemy = {};
     enemy.walkingRight = new Animation(g_images.enemySpriteSheet,0,20,20,2,80, scale);
     enemy.walkingLeft = new Animation(g_images.enemySpriteSheet,0,20,20,2,80,-scale);
-    enemy.inAir = new Animation(g_images.enemySpriteSheet,20,20,20,1,1,scale);
+    enemy.inAirRight = new Animation(g_images.enemySpriteSheet,20,20,20,1,1,scale);
+    enemy.inAirLeft = new Animation(g_images.enemySpriteSheet,20,20,20,1,1,-scale);
     enemy.swimmingRight = new Animation(g_images.enemySpriteSheet,40,20,20,2,80,scale);
     enemy.swimmingLeft = new Animation(g_images.enemySpriteSheet,40,20,20,2,80,-scale);
 	enemy.death = new Animation(g_images.enemySpriteSheet,60,20,20,1,50,scale);

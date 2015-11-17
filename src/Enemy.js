@@ -40,6 +40,10 @@ inWater: false
 
 Enemy.prototype.update = function(du) {
 	spatialManager.unregister(this);
+	
+	//check if this is inside the viewport
+	if(!(this.cx-this.getSize().sizeX/2 > g_viewPort.x &&
+	   this.cx+this.getSize().sizeX/2 < g_viewPort.x+g_canvas.width)) return;
 
 	//Handles if enemy is in water
     if(this.state['inWater']){
@@ -85,9 +89,13 @@ Enemy.prototype.update = function(du) {
     if(this._isDeadNow) return entityManager.KILL_ME_NOW;
 	
 	//update status
-	var dir = (this.velX >= 0 ? "Right" : "Left");
-	console.log(dir);
-	if(this.velY !== 0) this.status = "inAir";
+	var dir;
+	if(this.velX === 0) dir = this._lastDir || "Right";
+	else{
+		dir = (this.velX > 0 ? "Right" : "Left");
+		this._lastDir = dir;
+	}
+	if(this.velY !== 0) this.status = "inAir"+dir;
 	else if(this.state.inWater) this.status = "swimming"+dir;
 	else this.status = "walking"+dir;
 	
