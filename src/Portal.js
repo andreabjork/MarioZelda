@@ -2,7 +2,7 @@ function Portal(descr) {
     this.setup(descr);
 //    console.log("is this happening");
     this._scale = 3;
-    this.sprite = this.sprite || g_sprites.portal;
+    this.sprite = g_sprites.portal;
 };
 
 Portal.prototype = new Character();
