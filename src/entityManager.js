@@ -86,7 +86,7 @@ enterLevel: function(lvl) {
     this._level = lvl;
     this.generateLevel({level: this._level});
     for(var i = 0; i < g_NUMBER_OF_CLOUDS; i++) {
-        this.generateObject();
+        this.generateObject('cloud');
     }
 
     this.deferredSetup();
