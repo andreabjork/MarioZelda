@@ -46,6 +46,7 @@ Zelda.prototype.cy = 400;
 Zelda.prototype.velX = 0;
 Zelda.prototype.velY = 0;
 Zelda.prototype.HP = 1;
+Zelda.prototype.life = 5;
 Zelda.prototype.maxVelX = 3.9;
 Zelda.prototype.maxVelY = 6.5;
 Zelda.prototype.tempMaxJumpHeight = 0;
