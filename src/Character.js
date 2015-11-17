@@ -102,29 +102,25 @@ Character.prototype.handlePartialCollision = function(charX,charY,axis){
         var hitEntities = this.findHitEntities(charX, charY);
         for(var hit in hitEntities) {
             var hitEntity = hitEntities[hit];
+            // Lots of vars for type of collision: top, bottom, same column, same row, going by zelda center coordinate, left coordinate, right, etc.
+            var charCoords = entityManager._world[0].getBlockCoords(this.cx, this.cy); //This is going by char's center, which is her lower half. Upper half needs to be in i, j-1.
+            var charCoordsLeft = entityManager._world[0].getBlockCoords(this.cx-this.getSize().sizeX/2, this.cy); //This is going by char's bottom left corner
+            var charCoordsRight = entityManager._world[0].getBlockCoords(this.cx+this.getSize().sizeX/2, this.cy); //This is going by char's bottom right corner
+            var hitCoords = (hitEntity instanceof Block ? [hitEntity.i, hitEntity.j] : entityManager._world[0].getBlockCoords(hitEntity.cx+this.getSize().sizeX/2, hitEntity.cy));
+
+            var charAbove = (hitCoords[0] > charCoords[0]); // char block coordinates lower because y-axis points down.
+            var charBelow = (hitCoords[0] < charCoords[0]);
+            var charToLeft = (hitCoords[1] > charCoords[1]); // char column coords must be lower.
+            var charToRight = (hitCoords[1] < charCoords[1]);
+            var sameCol = (hitCoords[1] == charCoordsLeft[1] || hitCoords[1] == charCoordsRight[1]);
+            var sameRow = (hitCoords[0] == charCoords[0] || hitCoords[0] == charCoords[0]-1) || this.state['jumping'];
+
+            lEdge = charToRight && sameRow;
+            rEdge = charToLeft && sameRow;
+            tEdge = charBelow && sameCol;
+            bEdge = charAbove && sameCol;
+
             if(hitEntity instanceof Block) {
-                var charCoords = entityManager._world[0].getBlockCoords(this.cx, this.cy); //This is going by char's center, which is her lower half. Upper half needs to be in i, j-1.
-                var charCoordsLeft = entityManager._world[0].getBlockCoords(this.cx-this.getSize().sizeX/2, this.cy); //This is going by char's bottom left corner
-                var charCoordsRight = entityManager._world[0].getBlockCoords(this.cx+this.getSize().sizeX/2, this.cy); //This is going by char's bottom right corner
-                var hitCoords = [hitEntity.i, hitEntity.j];
-
-                var charAbove = (hitCoords[0] > charCoords[0]); // char block coordinates lower because y-axis points down.
-                var charBelow = (hitCoords[0] < charCoords[0]);
-                var charToLeft = (hitCoords[1] > charCoords[1]); // char column coords must be lower.
-                var charToRight = (hitCoords[1] < charCoords[1]);
-                var sameCol = (hitCoords[1] == charCoordsLeft[1] || hitCoords[1] == charCoordsRight[1]);
-                var sameRow = (hitCoords[0] == charCoords[0] || hitCoords[0] == charCoords[0]-1) || this.state['jumping'];
-
-                //var lEdge = (hitCoords[1] < charCoords[1] && (hitCoords[0] == charCoords[0] || hitCoords[0] == charCoords[0]-1) );
-                //var rEdge = (hitCoords[1] > charCoords[1] && (hitCoords[0] == charCoords[0] || hitCoords[0] == charCoords[0]-1));
-                //var tEdge = (hitCoords[0] < charCoords[0] && ());
-                //bEdge = (hitCoords[0] > charCoords[0]);
-
-                lEdge = charToRight && sameRow;
-                rEdge = charToLeft && sameRow;
-                tEdge = charBelow && sameCol;
-                bEdge = charAbove && sameCol;
-
                 var dir = 0; //direction of hit
                 if(!hitEntity._isPassable) {
                     standingOnSomething = standingOnSomething || bEdge;
@@ -151,6 +147,15 @@ Character.prototype.handlePartialCollision = function(charX,charY,axis){
             }else if(hitEntity instanceof Portal && this instanceof Zelda) {
                 g_audio.portal.play();
                 entityManager.enterLevel(++entityManager._level);
+            }else if(hitEntity instanceof Enemy && this instanceof Zelda) {
+                if(bEdge) {
+                    console.log("colliding bottom edge!");
+                    hitEntity.takeHit();
+                    this.velY = -3;
+                } else {
+                    console.log("colliding elsewhere");
+                    this.takeHit();
+                }
             }
         }
     }

@@ -47,9 +47,7 @@ Projectile.prototype.update = function (du) {
     var nextY = this.cy + this.velY*du;
 
     var hitEntity = this.findHitEntity(nextX, nextY);
-    console.log("THIS IS OUR HIT ENTITY");
-    console.log(hitEntity);
-    if (hitEntity) {
+    if (hitEntity instanceof Enemy) {
         var canTakeHit = hitEntity.takeHit;
         if (canTakeHit) hitEntity.takeHit();
         return entityManager.KILL_ME_NOW;
@@ -57,7 +55,7 @@ Projectile.prototype.update = function (du) {
     
     this.cx += this.velX * du;
     this.cy += this.velY * du;
-        
+
     // (Re-)Register
     spatialManager.register(this);
 
