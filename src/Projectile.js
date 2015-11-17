@@ -43,16 +43,21 @@ Projectile.prototype.update = function (du) {
     // og hvenær projectilið drepur sig... best kannski bara þegar það 
     //er out of screen
 
-    this.cx += this.velX * du;
-    this.cy += this.velY * du;
+    var nextX = this.cx + this.velX*du;
+    var nextY = this.cy + this.velY*du;
 
-    var hitEntity = this.findHitEntity();
+    var hitEntity = this.findHitEntity(nextX, nextY);
+    console.log("THIS IS OUR HIT ENTITY");
+    console.log(hitEntity);
     if (hitEntity) {
-        var canTakeHit = hitEntity.takeProjectileHit;
-        if (canTakeHit) canTakeHit.call(hitEntity); 
+        var canTakeHit = hitEntity.takeHit;
+        if (canTakeHit) hitEntity.takeHit();
         return entityManager.KILL_ME_NOW;
     }
     
+    this.cx += this.velX * du;
+    this.cy += this.velY * du;
+        
     // (Re-)Register
     spatialManager.register(this);
 
@@ -72,6 +77,6 @@ Projectile.prototype.takeProjectileHit = function () {
 
 Projectile.prototype.render = function (ctx) {
     // Must-do
-    ctx.fillStyle = "red";
+    ctx.fillStyle = "purple";
     ctx.fillRect(this.cx, this.cy, this.radius, this.radius);
 };

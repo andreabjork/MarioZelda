@@ -15,7 +15,7 @@
 function Enemy(descr) {
 	this.setup(descr)
     // Default sprite, if not otherwise specified
-    this._scale = 2;
+    this._scale = 2.5;
 	this.animations = makeEnemyAnimation(this._scale);
 	this.animation = this.animations['walkingRight'];
 };

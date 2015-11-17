@@ -109,6 +109,7 @@ init: function() {
 
 
 fireBullet: function(cx, cy, velX, velY, rotation) {
+    console.log("firing");
     this._bullets.push(new Projectile({
         cx   : cx,
         cy   : cy,
