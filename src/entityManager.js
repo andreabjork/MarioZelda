@@ -86,9 +86,9 @@ enterLevel: function(lvl) {
     this._level = lvl;
     this.generateLevel({level: this._level});
     for(var i = 0; i < g_NUMBER_OF_CLOUDS; i++) {
-        this.generateObject();
+        this.generateObject('cloud');
     }
-
+    this.generateObject('portal');
     this.deferredSetup();
     spatialManager._entities = [];
     spatialManager._nextSpatialID = 1;
@@ -123,7 +123,6 @@ generateCharacter : function(descr) {
 },
 
 generateEnemy : function(descr) {
-	//console.log("generating enemy");
     this._enemies.push(new Enemy(descr));
 },
 

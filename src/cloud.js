@@ -2,8 +2,7 @@ function Cloud(descr) {
     for (var property in descr) {
         this[property] = descr[property];
     }
-	
-	this.sprite = this.sprite || this.setCloudFormAtRandom();
+	this.setCloudFormAtRandom();
 	this.cx = Infinity;
 	this.cy = g_canvas.height - (0.3 + Math.random())*g_canvas.height;
 	this.scale = 0.8+0.4*Math.random();

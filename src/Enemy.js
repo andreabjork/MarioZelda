@@ -60,7 +60,6 @@ Enemy.prototype.update = function(du) {
 // A generic contructor which accepts an arbitrary descriptor object
 function Enemy(descr) {
 	this.setup(descr)
-	//console.dir(descr);
     // Default sprite, if not otherwise specified
     this._scale = 1;
 	this.animations = makeZeldaAnimation(this._scale);
