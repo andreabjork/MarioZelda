@@ -73,8 +73,10 @@ Character.prototype.takeHit = function () {
 };
 
 Character.prototype.render = function (ctx) {
-    ctx.fillStyle = "red";
-    ctx.fillRect(this.cx, this.cy+42*this._scale/2, 10, 10);
+/*     ctx.strokeStyle = "red";
+	var pointBelowX = this.cx;
+	var pointBelowY = this.cy+this.getSize().sizeY;
+	util.strokeCircle(ctx,pointBelowX,pointBelowY,5); */
     this.animation.renderAt(ctx, this.cx, this.cy);
 };
 

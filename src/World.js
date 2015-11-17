@@ -83,6 +83,7 @@ World.prototype.collidesWith = function (zelda, prevX, prevY, nextX, nextY) {
 		}
 	}
 */
+// /*
 	var collidingBlocks = [];
 	var collidingCoords = [];
 	var row = newCoords[0]-2;
@@ -107,7 +108,7 @@ World.prototype.collidesWith = function (zelda, prevX, prevY, nextX, nextY) {
 			b.halfHeight = this.blockDim;
 		}
 	}
-
+// */
 
 	return {blocks: collidingBlocks, coords: collidingCoords};
 };

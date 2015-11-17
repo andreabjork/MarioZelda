@@ -42,7 +42,7 @@ Zelda.prototype.KEY_CAST  = ' '.charCodeAt(0);
 
 // Initial, inheritable, default values
 Zelda.prototype.cx = 200;
-Zelda.prototype.cy = 483;
+Zelda.prototype.cy = 400;
 Zelda.prototype.velX = 0;
 Zelda.prototype.velY = 0;
 Zelda.prototype.HP = 1;
@@ -136,7 +136,7 @@ Zelda.prototype.putToGround = function(groundY) {
     this.state['offGround'] = false;
     this.state['onGround'] = true;
     this.velY = 0;
-    this.cy = groundY;
+    this.cy = groundY -this.getSize().sizeY/2 + 1; // zelda center coordinate on ground.
 }
 
 // ==================
@@ -151,9 +151,10 @@ Zelda.prototype.updateJump = function(bEdge) {
         this.state['pushing'] = keys[this.KEY_JUMP];
         this.state['offGround'] = false;
         if(!(keys[this.KEY_LEFT] || keys[this.KEY_RIGHT])) this.velX = 0;
-    } else {
-        this.state['jumping'] = true;
-    }
+    }else{
+		console.log("falling");
+		this.state['jumping'] = true;
+	}
 	
     // Set offGround to true so that we can't keep pushing while in air.
     if(this.cy <= this.tempMaxJumpHeight) {
@@ -235,7 +236,93 @@ Zelda.prototype.updateStatus = function() {
     }    
 }
 
+Zelda.prototype.handlePartialCollision = function(nextX,nextY,axis){
+	var bEdge,lEdge,rEdge,tEdge;
+	if(this.isColliding(nextX, nextY)) {
+		var hitEntities = this.findHitEntities(nextX, nextY);
+		for(var hit in hitEntities) {
+			var hitEntity = hitEntities[hit];
+			if(hitEntity instanceof Block) {
+				var zeldaCoords = entityManager._world[0].getBlockCoords(this.cx, this.cy); //This is going by zelda's center, which is her lower half. Upper half needs to be in i, j-1.
+				var zeldaCoordsLeft = entityManager._world[0].getBlockCoords(this.cx-this.getSize().sizeX/2, this.cy); //This is going by zelda's center, which is her lower half. Upper half needs to be in i, j-1.
+				var zeldaCoordsRight = entityManager._world[0].getBlockCoords(this.cx+this.getSize().sizeX/2, this.cy); //This is going by zelda's center, which is her lower half. Upper half needs to be in i, j-1.
+				var hitCoords = [hitEntity.i, hitEntity.j];
 
+				var zeldaAbove = (hitCoords[0] > zeldaCoords[0]); // zelda block coordinates lower because y-axis points down.
+				var zeldaBelow = (hitCoords[0] < zeldaCoords[0]);
+				var zeldaToLeft = (hitCoords[1] > zeldaCoords[1]); // zelda column coords must be lower.
+				var zeldaToRight = (hitCoords[1] < zeldaCoords[1]);
+				var sameCol = (hitCoords[1] == zeldaCoordsLeft[1] || hitCoords[1] == zeldaCoordsRight[1]);
+				var sameRow = (hitCoords[0] == zeldaCoords[0] || hitCoords[0] == zeldaCoords[0]-1) || this.state['jumping'];
+
+				//var lEdge = (hitCoords[1] < zeldaCoords[1] && (hitCoords[0] == zeldaCoords[0] || hitCoords[0] == zeldaCoords[0]-1) );
+				//var rEdge = (hitCoords[1] > zeldaCoords[1] && (hitCoords[0] == zeldaCoords[0] || hitCoords[0] == zeldaCoords[0]-1));
+				//var tEdge = (hitCoords[0] < zeldaCoords[0] && ());
+				//bEdge = (hitCoords[0] > zeldaCoords[0]);
+
+				lEdge = zeldaToRight && sameRow;
+				rEdge = zeldaToLeft && sameRow;
+				tEdge = zeldaBelow && sameCol;
+				bEdge = zeldaAbove && sameCol;
+
+
+
+				if(lEdge && this.velX < 0 && axis === "x") {
+					console.log("colliding left");
+					this.velX = 0;
+					//keys[this.KEY_LEFT] = false;
+					//this.cx += 2;
+				}
+				if(rEdge && this.velX > 0 && axis === "x") {
+					console.log("colliding right");
+					this.velX = 0;
+					//keys[this.KEY_RIGHT] = false;
+					//this.cx -= 2;
+				}
+				if(bEdge && this.velY > 0 && axis === "y") {
+					console.log("colliding bottom");
+					this.tempMaxJumpHeight = this.cy - this.maxPushHeight; 
+					var groundY = entityManager._world[0].getLocation((hitEntity.i), (hitEntity.j))[1] // block top y coordinate
+					this.putToGround(groundY);
+				} 
+				if(tEdge && this.velY < 0  && axis === "y"){// && this.velY < 0) {
+					console.log("colliding top!");
+					this.velY *= -1;
+				}
+
+			}
+		}
+	}
+	return bEdge;
+}
+
+Zelda.prototype.checkFalling = function(){
+	console.log("checking if we should fall!");
+	var pointBelowX = this.cx;
+	var pointBelowY = this.cy+this.getSize().sizeY;
+	if(this.isColliding(pointBelowX, pointBelowY)) {
+		var hitEntities = this.findHitEntities(pointBelowX, pointBelowY);
+		for(var hit in hitEntities) {
+			var hitEntity = hitEntities[hit];
+			if(hitEntity instanceof Block) {
+				var zeldaCoords = entityManager._world[0].getBlockCoords(this.cx, this.cy); //This is going by zelda's center, which is her lower half. Upper half needs to be in i, j-1.
+				var zeldaCoordsLeft = entityManager._world[0].getBlockCoords(this.cx-this.getSize().sizeX/2, this.cy); //This is going by zelda's lower left corner
+				var zeldaCoordsRight = entityManager._world[0].getBlockCoords(this.cx+this.getSize().sizeX/2, this.cy); //This is going by zelda's lower right corner
+				var hitCoords = [hitEntity.i, hitEntity.j];
+
+				var zeldaAbove = (hitCoords[0] > zeldaCoords[0]); // zelda block coordinates lower because y-axis points down.
+				var sameCol = (hitCoords[1] == zeldaCoordsLeft[1] || hitCoords[1] == zeldaCoordsRight[1]);
+
+				var bEdge = zeldaAbove && sameCol;
+				if(!bEdge) {
+					console.log("should be falling!");
+					this.state['jumping'] = true;
+				}
+			}
+		}
+	}
+}
+	
 
 Zelda.prototype.update = function (du) {
     // TEMP SOLUTION??? Seems kind of silly to make zelda 'find' the blocks.
@@ -260,66 +347,17 @@ Zelda.prototype.update = function (du) {
 // TO BE FIDDLED WITH ---------------------------------------------------------------------
     var nextX = this.cx+this.velX*du;
     var nextY = this.cy+this.velY*du;
-    var bEdge, lEdge, rEdge, tEdge;
-    if(this.isColliding(nextX, nextY)) {
-        var hitEntities = this.findHitEntities(nextX, nextY);
-        for(var hit in hitEntities) {
-            var hitEntity = hitEntities[hit];
-            if(hitEntity instanceof Block) {
-                var zeldaCoords = entityManager._world[0].getBlockCoords(this.cx, this.cy); //This is going by zelda's center, which is her lower half. Upper half needs to be in i, j-1.
-                var zeldaCoordsLeft = entityManager._world[0].getBlockCoords(this.cx-this.getSize().sizeX/2, this.cy); //This is going by zelda's center, which is her lower half. Upper half needs to be in i, j-1.
-                var zeldaCoordsRight = entityManager._world[0].getBlockCoords(this.cx+this.getSize().sizeX/2, this.cy); //This is going by zelda's center, which is her lower half. Upper half needs to be in i, j-1.
-                var hitCoords = [hitEntity.i, hitEntity.j];
-
-                var zeldaAbove = (hitCoords[0] > zeldaCoords[0]); // zelda block coordinates lower because y-axis points down.
-                var zeldaBelow = (hitCoords[0] < zeldaCoords[0]);
-                var zeldaToLeft = (hitCoords[1] > zeldaCoords[1]); // zelda column coords must be lower.
-                var zeldaToRight = (hitCoords[1] < zeldaCoords[1]);
-                var sameCol = (hitCoords[1] == zeldaCoordsLeft[1] || hitCoords[1] == zeldaCoordsRight[1]);
-                var sameRow = (hitCoords[0] == zeldaCoords[0] || hitCoords[0] == zeldaCoords[0]-1);
-
-                //var lEdge = (hitCoords[1] < zeldaCoords[1] && (hitCoords[0] == zeldaCoords[0] || hitCoords[0] == zeldaCoords[0]-1) );
-                //var rEdge = (hitCoords[1] > zeldaCoords[1] && (hitCoords[0] == zeldaCoords[0] || hitCoords[0] == zeldaCoords[0]-1));
-                //var tEdge = (hitCoords[0] < zeldaCoords[0] && ());
-                //bEdge = (hitCoords[0] > zeldaCoords[0]);
-
-                lEdge = zeldaToRight && sameRow;
-                rEdge = zeldaToLeft && sameRow;
-                tEdge = zeldaBelow && sameCol;
-                bEdge = zeldaAbove && sameCol;
-
-
-
-                if(bEdge && this.velY > 0) {
-                    console.log("colliding bottom");
-                    this.tempMaxJumpHeight = this.cy - this.maxPushHeight; 
-                    var groundY = entityManager._world[0].getLocation((hitEntity.i), (hitEntity.j))[1] // block top y coordinate
-                                    -this.getSize().sizeY/2 + 1; // zelda center coordinate on ground.
-                    this.putToGround(groundY);
-                }
-                if(lEdge && this.velX < 0) {
-                    console.log("colliding left");
-                    this.velX = 0;
-                    //keys[this.KEY_LEFT] = false;
-                    //this.cx += 2;
-                }
-                if(rEdge && this.velX > 0) {
-                    console.log("colliding right");
-                    this.velX = 0;
-                    //keys[this.KEY_RIGHT] = false;
-                    //this.cx -= 2;
-                } 
-                if(tEdge && this.velY < 0 ){// && this.velY < 0) {
-                    console.log("colliding top!");
-                    this.velY *= -1;
-                }
-
-            }
-        }
-    }       
-
+	var prevX = this.cx;
+    var prevY = this.cy;
+    var bEdge;
+	
+	//check left/right collisions and handle them first, if none, check top bottom collisions.
+    this.handlePartialCollision(nextX,prevY,"x");
+	bEdge = this.handlePartialCollision(prevX,nextY,"y");
+	console.log("bEdge after y check: "+bEdge);
+	//this.checkFalling();
+	// check top bottom collisions specially if left/right collision occurred
     this.updateLocation(du);
-
     this.updateJump(bEdge);
 
     if(this.cy > g_canvas.height){
