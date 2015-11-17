@@ -42,8 +42,9 @@ Enemy.prototype.update = function(du) {
 	spatialManager.unregister(this);
 	
 	//check if this is inside the viewport
-	if(!(this.cx-this.getSize().sizeX/2 > g_viewPort.x &&
-	   this.cx+this.getSize().sizeX/2 < g_viewPort.x+g_canvas.width)) return;
+	var margin = this.getSize().sizeX; //margin outside of viewport we want to update
+	if(this.cx+this.getSize().sizeX/2 < g_viewPort.x-margin ||
+	   this.cx-this.getSize().sizeX/2 > g_viewPort.x+g_canvas.width+margin) return;
 
 	//Handles if enemy is in water
     if(this.state['inWater']){
@@ -66,7 +67,6 @@ Enemy.prototype.update = function(du) {
 	//check left/right collisions first and then top/bottomx
     var walkingIntoSomething = this.handlePartialCollision(nextX,prevY,"x");
 	var standingOnSomething = this.handlePartialCollision(prevX,nextY,"y");
-	
 	// update location
     this.cx += this.velX*du;
     this.cy += this.velY*du;
