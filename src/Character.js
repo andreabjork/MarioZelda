@@ -34,26 +34,10 @@ Character.prototype.findProxBlocks = function(prevX, prevY, nextX, nextY) {
 
 Character.prototype.registerBlocks = function() {
     for(var b in this.proxBlocks) if(this.proxBlocks[b]) spatialManager.register(this.proxBlocks[b]);
-    /*for(var i=0; i<this.proxBlocks.length; i++){
-        for(var j=0; j<this.proxBlocks[i].length; j++){
-            if(this.proxBlocks[i][j]){
-                spatialManager.register(this.proxBlocks[i][j]);
-            }
-        }
-    }*/
 }
 
 Character.prototype.unregisterBlocks = function() {
     for(var b in this.proxBlocks) if(this.proxBlocks[b]) spatialManager.unregister(this.proxBlocks[b]);
-
-    /*
-    for(var i=0; i<this.proxBlocks.length; i++){
-        for(var j=0; j<this.proxBlocks[i].length; j++){
-            if(this.proxBlocks[i][j]){
-                spatialManager.unregister(this.proxBlocks[i][j]);
-            }
-        }
-    }*/
 }
 
 

@@ -77,7 +77,6 @@ function audioPreload(requiredAudio,
     // whose `name` property will have been set appropriately.
     //
     preloadHandler = function () {
-		console.log("triggering now?");
         loadedAudio[this.name] = this;
 
         if (0 === this.duration) {

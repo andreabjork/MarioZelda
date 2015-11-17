@@ -47,6 +47,14 @@ function createInitialStuff() {
 	//byrjunar laggi
 }
 
+//==========
+// SCORE
+//==========
+   
+var g_score = new Score({
+    score : 0
+});
+
 // =============
 // GATHER INPUTS
 // =============
@@ -104,23 +112,23 @@ function processDiagnostics() {
 
     if (eatKey(KEY_LEVEL1)) {
         entityManager.RESET_ALL();
-        entityManager._level[0].initLevel(levelObject.level1);
+        entityManager._world[0].initLevel(levelObject.level1);
     };
     if (eatKey(KEY_LEVEL2)) {
         entityManager.RESET_ALL();
-        entityManager._level[0].initLevel(levelObject.level2);
+        entityManager._world[0].initLevel(levelObject.level2);
     };
     if (eatKey(KEY_LEVEL3)) {
         entityManager.RESET_ALL();
-        entityManager._level[0].initLevel(levelObject.level3);
+        entityManager._world[0].initLevel(levelObject.level3);
     };
     if (eatKey(KEY_LEVEL3)) {
         entityManager.RESET_ALL();
-        entityManager._level[0].initLevel(levelObject.level4);
+        entityManager._world[0].initLevel(levelObject.level4);
     };
     if (eatKey(KEY_LEVEL5)) {
         entityManager.RESET_ALL();
-        entityManager._level[0].initLevel(levelObject.level5);
+        entityManager._world[0].initLevel(levelObject.level5);
     };
 }
 
@@ -130,6 +138,7 @@ function processDiagnostics() {
 // =================
 
 // GAME-SPECIFIC RENDERING
+var g_lvlLength;
 function renderSimulation(ctx) {
     
     ctx.save();
@@ -157,7 +166,7 @@ function renderSimulation(ctx) {
 // =============
 
 var g_images = {};
-
+var g_audio = {};
 function requestPreloads() {
 
     var requiredImages = {
@@ -167,7 +176,7 @@ function requestPreloads() {
         background: "res/images/background.jpg",
         spikes: "res/images/spikes.png",
         coinBox: "res/images/Coin_Box.png",
-        water: "res/images/water.png",
+        water: "res/images/water-translucent.png",
         ground: "res/images/Ground1.png",
         dungeon: "res/images/dungeonBrick.png",
         cloud1: "res/images/Cloud1.png",
@@ -179,16 +188,7 @@ function requestPreloads() {
         portal: "res/images/Portal.png"
     };
 
-    imagesPreload(requiredImages, g_images, preloadDone);
-
-    var requiredAudio = {
-        theme1: "res/sounds/thema1.ogg",
-        theme2: "res/sounds/thema2.ogg",
-        themeDeath: "res/sounds/daudi.ogg",
-        zeldaShoot: "res/sounds/zelda-shot.mp3"
-    }
-
-    audioPreload(requiredAudio, g_audio, preloadDone);
+    imagesPreload(requiredImages, g_images, imagePreloadDone);
 }
 
 var g_sprites = {};
@@ -209,7 +209,15 @@ function makeZeldaAnimation(scale) {
     return zelda;
 }
 
-
+function imagePreloadDone() {
+    var requiredAudio = {
+        theme1: "res/sounds/thema1.ogg",
+        theme2: "res/sounds/thema2.ogg",
+        themeDeath: "res/sounds/daudi.ogg",
+        zeldaShoot: "res/sounds/zelda-shot.mp3"
+    }
+    audioPreload(requiredAudio, g_audio, preloadDone);
+}
 
 function preloadDone() {
 
@@ -234,9 +242,9 @@ function preloadDone() {
 
     main.init();
     
-    entityManager._level[0].initLevel(levelObject.level1);
+    //entityManager._world[0].initLevel(levelObject.level1);
     
-    g_lvlLength = entityManager._level[0].Blocks[13].length*(g_canvas.height/14);
+    g_lvlLength = entityManager._world[0].blocks[13].length*(g_canvas.height/14);
     
     try {
         g_audio.theme1.addEventListener('ended', function () {

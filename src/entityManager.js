@@ -23,7 +23,7 @@ with suitable 'data' and 'methods'.
 /*jslint nomen: true, white: true, plusplus: true*/
 
 
-var g_NUMBER_OF_CLOUDS = 4;
+var g_NUMBER_OF_CLOUDS = 15;
 
 var entityManager = {
 
@@ -55,15 +55,29 @@ KILL_ME_NOW : -1,
 // i.e. thing which need `this` to be defined.
 //
 deferredSetup : function () {
-    this._categories = [this._world, this._collisionBlocks, this._objects, this._character, this._bullets, this._enemies];
+    this._categories = [this._objects, this._world, this._collisionBlocks, this._character, this._bullets, this._enemies];
+},
+
+RESET_ALL: function() {
+    this._character = [];
+    this._bullets = [];
+    this._enemies = [];
+    this._objects = [];
+    
+    this.generateCharacter();
+    for(var i = 0; i < g_NUMBER_OF_CLOUDS; i++) {
+        this.generateObject();
+    }
 },
 
 init: function() {
     this.generateCharacter();
     //this.generateEnemy();
     this.generateLevel();
-    for(var i = 0; i < g_NUMBER_OF_CLOUDS; i++)
-        this.generateObject();
+    for(var i = 0; i < g_NUMBER_OF_CLOUDS; i++) {
+        this.generateObject('cloud');
+    }
+    this.generateObject('portal');
     console.log(this._categories[0]);
 },
 
@@ -90,8 +104,9 @@ generateLevel : function(descr) {
     this._world.push(new World(descr));
 },
 
-generateObject : function(descr) {
-    this._objects.push(new Cloud(descr));
+generateObject : function(name, descr) {
+    if (name === 'cloud') this._objects.push(new Cloud(descr));
+    if (name === 'portal') this._objects.push(new Portal(descr));
 },
 
 // entities and centres have same dimensions, max 2

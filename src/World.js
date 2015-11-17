@@ -26,7 +26,6 @@ function World(descr) {
 		this.blocks[i] = [];
 		for(var j = 0; j < this.world[i].length; j++) {
 			s = this.world[i][j];
-			console.log("does this happen?");
 			this.blocks[i][j] = (s === 0 ? null : new Block({i: i, j: j, type: s}));
 		}
 	}
@@ -390,7 +389,14 @@ World.prototype.dealWithLevelCollision = function (Lpos, Lpos2, Char) {
 
 
 World.prototype.update = function (du) {
-	
+	for(var i = 0; i < this.world.length; i++) {
+		for(var j = 0; j < this.world[i].length; j++) {
+			var block = this.blocks[i][j];
+			if(block != null) {
+				if(block.update(du)) this.blocks[i][j] = null;
+			}
+		}
+	}
 };
 
 World.prototype.render = function(ctx) {

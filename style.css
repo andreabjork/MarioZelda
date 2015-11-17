@@ -1,0 +1,47 @@
+* {margin: 0; padding: 0;}
+
+body {
+	background-color: #1A1A1A;
+}
+
+.container {
+	width: 800px;
+	height: 1000px;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: #1f5c99;
+	}
+	
+#myCanvas {
+	display: block;
+	width: 700px;
+	margin-left: auto;
+	margin-right: auto;
+	}
+	
+.logo img{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#name {
+	display: block;
+	color: #fffffa;
+	float: right;
+	margin-right: 50px;
+	margin-top: 5px;
+}
+
+.info {
+	color: #fffffa;
+	margin: 50px;
+}
+
+.info ul {
+	list-style: none;
+}
+
+.info li {
+	padding-top: 7px;
+}

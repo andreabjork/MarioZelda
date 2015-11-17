@@ -50,7 +50,7 @@ Zelda.prototype.maxVelX = 3.9;
 Zelda.prototype.maxVelY = 6.5;
 Zelda.prototype.tempMaxJumpHeight = 0;
 Zelda.prototype.maxPushHeight = 120;
-Zelda.prototype.state = {jumping: false, pushing: false, offGround: false, casting: false, onGround: true, idle: true, right: true, left: false}
+Zelda.prototype.state = {jumping: false, pushing: false, offGround: false, casting: false, onGround: true, idle: true, right: true, left: false, inWater: false}
 Zelda.prototype.status = "idleRight";
 // idle, walkingRight, walkingLeft, runningRight, runningLeft, inAirRight, inAirLeft
 
@@ -60,8 +60,11 @@ Zelda.prototype.status = "idleRight";
 
 
 Zelda.prototype.handleJump = function () {
-    if(this.state['jumping']) { return; }
-    else {
+    if(this.state['jumping'] && !this.state['inWater']) { return; }
+    else if(this.state['inWater']) {
+        this.velY = -1; 
+        this.tempMaxJumpHeight = this.cy - 1;
+    } else {
     	this.state['jumping'] = true;
         this.velY = -6;
     	this.tempMaxJumpHeight = this.cy - this.maxPushHeight; 
@@ -178,15 +181,15 @@ Zelda.prototype.updateVelocity = function(du) {
     this.state['pushing'] = keys[this.KEY_JUMP] && !this.state['offGround'];
     
     // To be able to change direction in midair:
-    if((movingRight && wasMovingLeft) || (movingLeft && wasMovingRight)) this.velX = 0;
+    if((movingRight && wasMovingLeft && !this.state['inWater']) || (movingLeft && wasMovingRight && !this.state['inWater'])) this.velX = 0;
 
     // Increase speed to the right:
-    if(movingRight && this.velX < this.maxVelX) {
+    if(movingRight && this.velX < this.maxVelX || this.velX <  - this.maxVelX) {
         this.velX += NOMINAL_FORCE*du;
     } 
 
     // Increase speed to the left:
-    if(movingLeft && this.velX > - this.maxVelX) {
+    if(movingLeft && this.velX > - this.maxVelX || this.velX >  this.maxVelX) {
         this.velX -= NOMINAL_FORCE*du;
     }
 
@@ -197,7 +200,8 @@ Zelda.prototype.updateVelocity = function(du) {
 
     // Start accelerating down as soon as we've "stopped state['pushing']"
     if(this.state['jumping'] && !this.state['pushing']) {
-        this.velY += NOMINAL_GRAVITY*du;
+        if(!this.state['inWater'])this.velY += NOMINAL_GRAVITY*du;
+        else            this.velY += (NOMINAL_GRAVITY*du)/10;
     } else if(!this.state['jumping']){
         this.velY = 0;
     }
@@ -220,7 +224,7 @@ Zelda.prototype.updateStatus = function() {
     if(this.state['jumping']) nextStatus = "inAir"+dir;
     else if(this.state['casting']) nextStatus = "magic" + dir;
     else if(this.velX === 0 && !this.state['pushing']) nextStatus = "idle"+(wasMovingLeft?"Left":dir);
-    else if(atMaxVel && !this.state['pushing']) nextStatus = "running"+dir;
+    else if(atMaxVel && !this.state['pushing'] && !this.state['inWater']) nextStatus = "running"+dir;
     else if(!this.state['pushing']) nextStatus = "walking"+dir;
 
     // Update animation
@@ -260,26 +264,27 @@ Zelda.prototype.handlePartialCollision = function(nextX,nextY,axis){
 				tEdge = zeldaBelow && sameCol;
 				bEdge = zeldaAbove && sameCol;
 
-
-
-				if(lEdge && this.velX < 0 && axis === "x") {
-					this.velX = 0;
-					//keys[this.KEY_LEFT] = false;
-					//this.cx += 2;
-				}
-				if(rEdge && this.velX > 0 && axis === "x") {
-					this.velX = 0;
-					//keys[this.KEY_RIGHT] = false;
-					//this.cx -= 2;
-				}
-				if(bEdge && this.velY > 0 && axis === "y") {
-					this.tempMaxJumpHeight = this.cy - this.maxPushHeight; 
-					var groundY = entityManager._world[0].getLocation((hitEntity.i), (hitEntity.j))[1] // block top y coordinate
-					this.putToGround(groundY);
-				} 
-				if(tEdge && this.velY < 0  && axis === "y"){// && this.velY < 0) {
-					this.velY *= -1;
-				}
+                var dir = 0; //direction of hit
+                if(!hitEntity._isPassable) {
+    				if(lEdge && this.velX < 0 && axis === "x") {
+    					this.velX = 0;
+    					dir = 1;
+    				}
+    				if(rEdge && this.velX > 0 && axis === "x") {
+    					this.velX = 0;
+    					dir = 1;
+    				}
+    				if(bEdge && this.velY > 0 && axis === "y") {
+    					this.tempMaxJumpHeight = this.cy - this.maxPushHeight; 
+    					var groundY = entityManager._world[0].getLocation((hitEntity.i), (hitEntity.j))[1] // block top y coordinate
+    					this.putToGround(groundY);
+    				} 
+    				if(tEdge && this.velY < 0  && axis === "y"){// && this.velY < 0) {
+    					this.velY *= -1;
+                        dir = 1;
+    				}
+                }
+                hitEntity.activate(this, dir);
 
 			}
 		}
@@ -301,6 +306,15 @@ Zelda.prototype.update = function (du) {
         this.handleCasting();
     }
 
+    //Handles if Zelda is in water
+    if(this.state['inWater']){
+        this.maxVelX = 2.3;
+        this.maxVelY = 1.1;
+    }else {
+        this.maxVelX = 3.9;
+        this.maxVelY = 6.5;
+    }
+
     // Update speed/location and handle jumps/collisions
     this.updateVelocity(du);
 
@@ -308,7 +322,6 @@ Zelda.prototype.update = function (du) {
     this.handleBoxCollision(this.cx, this.cy, this.cx+this.velX*du, this.cy+this.velY*du);
     //
 
-// TO BE FIDDLED WITH ---------------------------------------------------------------------
     var nextX = this.cx+this.velX*du;
     var nextY = this.cy+this.velY*du;
 	var prevX = this.cx;
@@ -344,6 +357,8 @@ Zelda.prototype.update = function (du) {
 
         this.state['casting'] = false;
     }
+
+    this.state['inWater'] = false;
 
 	spatialManager.register(this);
 
