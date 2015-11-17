@@ -85,8 +85,9 @@ function updateSimulation(du) {
 var g_allowMixedActions = true;
 var g_renderSpatialDebug = false;
 var g_viewPort = {x:0, y:0};
+var g_isMuted = false;
 
-var KEY_MIXED   = keyCode('M');
+var KEY_MUTE   = keyCode('M');
 var KEY_SPATIAL = keyCode('X');
 
 var KEY_RESET = keyCode('R');
@@ -102,8 +103,14 @@ var KEY_LEVEL5 = keyCode('5');
 
 function processDiagnostics() {
 
-    if (eatKey(KEY_MIXED))
-        g_allowMixedActions = !g_allowMixedActions;
+    if (eatKey(KEY_MUTE)) {
+        if (g_isMuted) {
+            backgroundMusic.play();
+        } else {
+            backgroundMusic.pause();
+        }
+		g_isMuted = !g_isMuted;
+    };
 
     if (eatKey(KEY_SPATIAL)) 
 		g_renderSpatialDebug = !g_renderSpatialDebug;
@@ -137,11 +144,15 @@ function processDiagnostics() {
 // GAME-SPECIFIC RENDERING
 var g_lvlLength;
 var g_menuScreenOn = true;
+var g_deathScreenOn = false;
 window.addEventListener('keydown', function() {
     if (g_menuScreenOn) {
         g_menuScreenOn = false;
-        g_audio.theme2.pause();
         initLevel();
+    }
+    if (g_deathScreenOn) {
+        g_deathScreenOn = false;
+        entityManager.enterLevel(entityManager._level);
     }
 });
 
@@ -149,6 +160,8 @@ function renderSimulation(ctx) {
     
     if (g_menuScreenOn) {
         g_sprites.menuBar.drawAt(ctx, 0, 0, g_canvas.width, g_canvas.height);
+    } else if (g_deathScreenOn) {
+        g_sprites.deathScreen.drawAt(ctx, 0, 0, g_canvas.width, g_canvas.height);
     } else {
         ctx.save();
 	
@@ -177,10 +190,13 @@ function renderSimulation(ctx) {
 
 var g_images = {};
 var g_audio = {};
+var backgroundMusic;
+
 function requestPreloads() {
 
     var requiredImages = {
         menuBar: "res/images/menuBar.jpg",
+        deathScreen: "res/images/deathScreen.png",
         marioTest: "res/images/mario.png",
         zeldaSpriteSheet: "res/images/zeldass.png",
 		defaultBlock: "res/images/blockPlaceholder.png",
@@ -233,6 +249,7 @@ function imagePreloadDone() {
 function preloadDone() {
 
     g_sprites.menuBar = new Sprite(g_images.menuBar);
+    g_sprites.deathScreen = new Sprite(g_images.deathScreen);
     g_sprites.marioTest  = new Sprite(g_images.marioTest);
     g_sprites.defaultBlock  = new Sprite(g_images.defaultBlock);
     g_sprites.background = new Sprite(g_images.background);
@@ -254,11 +271,12 @@ function preloadDone() {
     main.init();
     
     try {
-        g_audio.theme2.addEventListener('ended', function () {
+        backgroundMusic = g_audio.theme2;
+        backgroundMusic.addEventListener('ended', function () {
             this.currentTime = 0;
             this.play();
         });
-        g_audio.theme2.play();
+        backgroundMusic.play();
     } catch(err) {}
     
 };
@@ -270,11 +288,13 @@ function initLevel() {
     g_lvlLength = entityManager._world[0].blocks[13].length*(g_canvas.height/14) - g_canvas.width;
     
     try {
-        g_audio.theme1.addEventListener('ended', function () {
+        backgroundMusic.pause();
+        backgroundMusic = g_audio.theme1;
+        backgroundMusic.addEventListener('ended', function () {
             this.currentTime = 0;
             this.play();
         });
-        g_audio.theme1.play();
+        backgroundMusic.play();
     } catch(err) {}
 };
 

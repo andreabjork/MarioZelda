@@ -82,8 +82,10 @@ enterLevel: function(lvl) {
     this._collisionBlocks = [];
 
     
+
     if(this._character.length === 0) this.generateCharacter();
     this._character[0].reset();
+
     this._level = lvl;
     this.generateLevel({level: this._level});
     for(var i = 0; i < g_NUMBER_OF_CLOUDS; i++) {
@@ -176,10 +178,16 @@ update: function(du) {
             if (status === this.KILL_ME_NOW) {
                 // remove the dead guy, and shuffle the others down to
                 // prevent a confusing gap from appearing in the array
-                aCategory.splice(i,1);
-                if(c === 1) { // Zelda died! 
-                    this.enterLevel(this._level);
-                }
+                if (c === 1) {
+                    if (this._character[0].life > 0) {
+                        this._character[0].life--;
+                        this.enterLevel(this._level);
+                    } else {
+                        g_deathScreenOn = true;
+                    } 
+                } else {
+                    aCategory.splice(i,1);
+                }  
             }
             else {
                 ++i;
