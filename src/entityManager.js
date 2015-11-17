@@ -74,8 +74,7 @@ RESET_ALL: function() {
 },
 
 enterLevel: function(lvl) {
-    console.log("entering level");
-    this._character = [];
+    //this._character = [];
     this._bullets = [];
     this._enemies = [];
     this._objects = [];
@@ -83,7 +82,8 @@ enterLevel: function(lvl) {
     this._collisionBlocks = [];
 
     
-    this.generateCharacter();
+    //this.generateCharacter();
+    this._character[0].reset();
     this._level = lvl;
     this.generateLevel({level: this._level});
     for(var i = 0; i < g_NUMBER_OF_CLOUDS; i++) {
