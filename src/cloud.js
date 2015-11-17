@@ -20,7 +20,7 @@ Cloud.prototype.fading = 1;
     
 Cloud.prototype.update = function(du){
 	this.cx += this.xVel * du; 
-	if(this.cx > g_lvlLength + 250 || this.cx < -250) {
+	if(this.cx > g_lvlLength + g_canvas.width + 250 || this.cx < -250) {
 		this.cx = Math.random()*g_lvlLength;
 		this.cy = g_canvas.height - (0.3 + Math.random())*g_canvas.height;
 		this.scale = 0.8+0.4*Math.random();

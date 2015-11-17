@@ -145,13 +145,15 @@ function processDiagnostics() {
 var g_lvlLength;
 var g_menuScreenOn = true;
 var g_deathScreenOn = false;
-window.addEventListener('keydown', function() {
+window.addEventListener('keyup', function() {
     if (g_menuScreenOn) {
         g_menuScreenOn = false;
         initLevel();
     }
     if (g_deathScreenOn) {
+        g_doClear = true;
         g_deathScreenOn = false;
+        g_menuScreenOn = true;
         entityManager.enterLevel(entityManager._level);
     }
 });
@@ -160,8 +162,6 @@ function renderSimulation(ctx) {
     
     if (g_menuScreenOn) {
         g_sprites.menuBar.drawAt(ctx, 0, 0, g_canvas.width, g_canvas.height);
-    } else if (g_deathScreenOn) {
-        g_sprites.deathScreen.drawAt(ctx, 0, 0, g_canvas.width, g_canvas.height);
     } else {
         ctx.save();
 	
@@ -177,6 +177,7 @@ function renderSimulation(ctx) {
         entityManager.render(ctx);
     
         if (g_renderSpatialDebug) spatialManager.render(ctx);
+        if (g_deathScreenOn) g_sprites.deathScreen.drawAt(ctx, 0, 0, g_canvas.width, g_canvas.height);
         ctx.restore();
         
         g_score.render(ctx);
