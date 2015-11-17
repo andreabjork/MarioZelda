@@ -261,7 +261,7 @@ Zelda.prototype.update = function (du) {
     this.updateLocation(du);
     this.updateJump(bEdge);
 
-    if(this.cy > g_canvas.height){
+    if(this.cy > g_canvas.height + 42){
         this._isDeadNow = true;
     }
 

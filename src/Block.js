@@ -38,6 +38,7 @@ function Block(descr) {
 		break; 
 		case 7: this.sprite = g_sprites.coin;
 				this._isPassable = true;
+				this.ammo = 1;
 		break;
 		
 		default: this._isBreakable = true;
@@ -101,8 +102,9 @@ Block.prototype.activate = function (Char, direction) {
 	} 
 	
 	if(this.type === 7 && Char instanceof Zelda) {
-		this._isDeadNow = true;
-		g_score.update(50);
+		this.ammo--;
+		if(this.ammo > 0) g_score.update(50);
+		else this.sprite = g_sprites.blank;
 	}
 };
 
