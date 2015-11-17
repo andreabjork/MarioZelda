@@ -15,7 +15,7 @@
 function Enemy(descr) {
 	this.setup(descr)
     // Default sprite, if not otherwise specified
-    this._scale = 1;
+    this._scale = 2;
 	this.animations = makeEnemyAnimation(this._scale);
 	this.animation = this.animations['walkingRight'];
 };
@@ -86,9 +86,12 @@ Enemy.prototype.update = function(du) {
 	
 	//update status
 	var dir = (this.velX >= 0 ? "Right" : "Left");
+	console.log(dir);
 	if(this.velY !== 0) this.status = "inAir";
 	else if(this.state.inWater) this.status = "swimming"+dir;
 	else this.status = "walking"+dir;
+	
+	this.animation = this.animations[this.status];
 	
 	this.animation.update(du);
 
