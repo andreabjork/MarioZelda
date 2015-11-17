@@ -187,7 +187,11 @@ Zelda.prototype.updateVelocity = function(du) {
 }
 
 Zelda.prototype.updateLocation = function(du) {
+    var lvlLength = entityManager._world[0].blocks[13].length*(g_canvas.height/14);
+	var halfWidth = this.getSize().sizeX/2;
     this.cx += this.velX*du;
+	this.cx = Math.min(this.cx, lvlLength-halfWidth);
+	this.cx = Math.max(this.cx, halfWidth);
     this.cy += this.velY*du;
 }
 
