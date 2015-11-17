@@ -82,6 +82,7 @@ function updateSimulation(du) {
 
 // GAME-SPECIFIC DIAGNOSTICS
 
+var g_currentLevel = 1;
 var g_allowMixedActions = true;
 var g_renderSpatialDebug = false;
 var g_renderExtraDebug = false;
@@ -118,22 +119,27 @@ function processDiagnostics() {
     if (eatKey(KEY_LEVEL1)) {
         entityManager.RESET_ALL();
         entityManager._level[0].initLevel(levelObject.level1);
+		g_currentLevel = 1;
     };
     if (eatKey(KEY_LEVEL2)) {
         entityManager.RESET_ALL();
         entityManager._level[0].initLevel(levelObject.level2);
+		g_currentLevel = 2;
     };
     if (eatKey(KEY_LEVEL3)) {
         entityManager.RESET_ALL();
         entityManager._level[0].initLevel(levelObject.level3);
+		g_currentLevel = 3;
     };
     if (eatKey(KEY_LEVEL3)) {
         entityManager.RESET_ALL();
         entityManager._level[0].initLevel(levelObject.level4);
+		g_currentLevel = 4;
     };
     if (eatKey(KEY_LEVEL5)) {
         entityManager.RESET_ALL();
         entityManager._level[0].initLevel(levelObject.level5);
+		g_currentLevel = 5;
     };
 };
 

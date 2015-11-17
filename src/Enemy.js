@@ -34,6 +34,7 @@ Enemy.prototype.HP = 1;
 Enemy.prototype.inAir = true;
 Enemy.prototype.inWater = false;
 Enemy.prototype.initialized = false;
+Enemy.prototype.friendly = false;
 
 
 Enemy.prototype.update = function(du) {

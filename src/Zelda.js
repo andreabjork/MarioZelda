@@ -39,7 +39,7 @@ Zelda.prototype.KEY_SHOOT  = ' '.charCodeAt(0);
 
 // Initial, inheritable, default values
 Zelda.prototype.cx = 200;
-Zelda.prototype.cy = 430;
+Zelda.prototype.cy = 400;
 Zelda.prototype.velX = 0;
 Zelda.prototype.velY = 0;
 Zelda.prototype.HP = 1;
@@ -250,16 +250,17 @@ Zelda.prototype.update = function (du) {
     if(this.isColliding()) {
 		//þarf að setja inn fleiri skilyrði til að deyja við collision. temp er bara velY
 		if(this.velY <= 0){
-			this.takeHit();
+			var hitEntity = this.findHitEntity();
+			if(!hitEntity.friendly)this.takeHit();
+			else hitEntity.collide(this);
 		} else {
-		console.log("detecting collision");
-		var hitEntity = this.findHitEntity();
-		var canTakeHit = hitEntity.takeHit;
-        if (canTakeHit){ 
-			canTakeHit.call(hitEntity);
-			this.velY = -9;
-            g_score.update(100);
-		}
+			var hitEntity = this.findHitEntity();
+			var canTakeHit = hitEntity.takeHit;
+			if (canTakeHit){ 
+				canTakeHit.call(hitEntity);
+				this.velY = -9;
+				g_score.update(100);
+			}
 		}
     }
 	
