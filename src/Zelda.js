@@ -253,7 +253,7 @@ Zelda.prototype.update = function (du) {
     this.state['inWater'] = false;
 
 	//check left/right collisions first and then top/bottom
-    this.handlePartialCollision(nextX,prevY,"x");
+    if(this.handlePartialCollision(nextX,prevY,"x")) this.velX = 0;
 	bEdge = this.handlePartialCollision(prevX,nextY,"y");
 	
 	
