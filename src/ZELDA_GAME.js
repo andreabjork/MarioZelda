@@ -200,6 +200,7 @@ function requestPreloads() {
         deathScreen: "res/images/deathScreen.png",
         marioTest: "res/images/mario.png",
         zeldaSpriteSheet: "res/images/zeldass.png",
+        enemySpriteSheet: "res/images/enemyss.png",
 		defaultBlock: "res/images/blockPlaceholder.png",
         background: "res/images/background.jpg",
         spikes: "res/images/spikes.png",
@@ -235,6 +236,18 @@ function makeZeldaAnimation(scale) {
     zelda.magicLeft = new Animation(g_images.zeldaSpriteSheet,320,51,48,6,100,-scale);
 
     return zelda;
+};
+
+function makeEnemyAnimation(scale) {
+    var enemy = {};
+    enemy.walkingRight = new Animation(g_images.enemySpriteSheet,0,20,20,2,80, scale);
+    enemy.walkingLeft = new Animation(g_images.enemySpriteSheet,0,20,20,2,80,-scale);
+    enemy.inAir = new Animation(g_images.enemySpriteSheet,20,20,20,1,1,scale);
+    enemy.swimmingRight = new Animation(g_images.enemySpriteSheet,40,20,20,2,80,scale);
+    enemy.swimmingLeft = new Animation(g_images.enemySpriteSheet,40,20,20,2,80,-scale);
+	enemy.death = new Animation(g_images.enemySpriteSheet,60,20,20,1,50,scale);
+
+    return enemy;
 };
 
 function imagePreloadDone() {
