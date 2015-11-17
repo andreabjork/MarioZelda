@@ -36,7 +36,7 @@ Zelda.prototype = new Character();
 // Keys
 Zelda.prototype.KEY_LEFT   = 37; //Left-arrow key code
 Zelda.prototype.KEY_RIGHT  = 39; //Right-arrow key code
-Zelda.prototype.KEY_PLUMMET = 36; //Down-arrow key code
+Zelda.prototype.KEY_PLUMMET = 40; //Down-arrow key code
 Zelda.prototype.KEY_JUMP   = 38; //Up-arrow key code
 Zelda.prototype.KEY_SPRINT = 'Z'.charCodeAt(0); // Implement method for this?
 Zelda.prototype.KEY_CAST  = ' '.charCodeAt(0);
