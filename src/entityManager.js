@@ -82,7 +82,7 @@ enterLevel: function(lvl) {
     this._collisionBlocks = [];
 
     
-    //this.generateCharacter();
+    if(this._character.length === 0) this.generateCharacter();
     this._character[0].reset();
     this._level = lvl;
     this.generateLevel({level: this._level});
