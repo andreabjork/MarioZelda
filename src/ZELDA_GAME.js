@@ -112,23 +112,20 @@ function processDiagnostics() {
 
     if (eatKey(KEY_LEVEL1)) {
         console.log("entering level 1");
-        entityManager.enterNextLevel(1);
+        entityManager.enterLevel(1);
     };
     if (eatKey(KEY_LEVEL2)) {
         console.log("entering level 2");
-        entityManager.enterNextLevel(2);
+        entityManager.enterLevel(2);
     };
     if (eatKey(KEY_LEVEL3)) {
-        entityManager.RESET_ALL();
-        entityManager._world[0].initLevel(3);
+        entityManager.enterLevel(3);
     };
     if (eatKey(KEY_LEVEL3)) {
-        entityManager.RESET_ALL();
-        entityManager._world[0].initLevel(4);
+        entityManager.enterLevel(4);
     };
     if (eatKey(KEY_LEVEL5)) {
-        entityManager.RESET_ALL();
-        entityManager._world[0].initLevel(5);
+        entityManager.enterLevel(5);
     };
 }
 

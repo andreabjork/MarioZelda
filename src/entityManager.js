@@ -35,6 +35,7 @@ _world: [],
 _collisionBlocks : [],
 _enemies   : [],
 _objects    : [],
+_level : 1,
 
 // "PRIVATE" METHODS
 
@@ -72,7 +73,7 @@ RESET_ALL: function() {
 
 },
 
-enterNextLevel: function(lvl) {
+enterLevel: function(lvl) {
     this._character = [];
     this._bullets = [];
     this._enemies = [];
@@ -82,13 +83,15 @@ enterNextLevel: function(lvl) {
 
     
     this.generateCharacter();
-    this.generateLevel({level: lvl});
+    this._level = lvl;
+    this.generateLevel({level: this._level});
     for(var i = 0; i < g_NUMBER_OF_CLOUDS; i++) {
         this.generateObject();
     }
 
     this.deferredSetup();
     spatialManager._entities = [];
+    spatialManager._nextSpatialID = 1;
 },
 
 init: function() {
@@ -173,6 +176,9 @@ update: function(du) {
                 // remove the dead guy, and shuffle the others down to
                 // prevent a confusing gap from appearing in the array
                 aCategory.splice(i,1);
+                if(c === 1) { // Zelda died! 
+                    this.enterLevel(this._level);
+                }
             }
             else {
                 ++i;
