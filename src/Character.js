@@ -149,6 +149,7 @@ Character.prototype.handlePartialCollision = function(charX,charY,axis){
                 hitEntity.activate(this, dir);
 
             }else if(hitEntity instanceof Portal && this instanceof Zelda) {
+                g_audio.portal.play();
                 entityManager.enterLevel(++entityManager._level);
             }
         }

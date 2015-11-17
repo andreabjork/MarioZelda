@@ -89,6 +89,7 @@ var g_isMuted = false;
 
 var KEY_MUTE   = keyCode('M');
 var KEY_SPATIAL = keyCode('X');
+var KEY_SPACE = keyCode(' ');
 
 var KEY_RESET = keyCode('R');
 
@@ -128,7 +129,7 @@ function processDiagnostics() {
     if (eatKey(KEY_LEVEL3)) {
         entityManager.enterLevel(3);
     };
-    if (eatKey(KEY_LEVEL3)) {
+    if (eatKey(KEY_LEVEL4)) {
         entityManager.enterLevel(4);
     };
     if (eatKey(KEY_LEVEL5)) {
@@ -145,16 +146,18 @@ function processDiagnostics() {
 var g_lvlLength;
 var g_menuScreenOn = true;
 var g_deathScreenOn = false;
-window.addEventListener('keyup', function() {
-    if (g_menuScreenOn) {
-        g_menuScreenOn = false;
-        initLevel();
-    }
-    if (g_deathScreenOn) {
-        g_doClear = true;
-        g_deathScreenOn = false;
-        g_menuScreenOn = true;
-        entityManager.enterLevel(entityManager._level);
+window.addEventListener('keydown', function() {
+    if (keys[KEY_SPACE]) {
+        if (g_menuScreenOn) {
+            g_menuScreenOn = false;
+            initLevel();
+        }
+        if (g_deathScreenOn) {
+            g_doClear = true;
+            g_deathScreenOn = false;
+            g_menuScreenOn = true;
+            entityManager.enterLevel(entityManager._level);
+        }
     }
 });
 
@@ -177,9 +180,9 @@ function renderSimulation(ctx) {
         entityManager.render(ctx);
     
         if (g_renderSpatialDebug) spatialManager.render(ctx);
-        if (g_deathScreenOn) g_sprites.deathScreen.drawAt(ctx, 0, 0, g_canvas.width, g_canvas.height);
         ctx.restore();
         
+        if (g_deathScreenOn) g_sprites.deathScreen.drawAt(ctx, 0, 0, g_canvas.width, g_canvas.height);       
         g_score.render(ctx);
     }
 };
@@ -231,8 +234,8 @@ function makeZeldaAnimation(scale) {
     zelda.runningLeft = new Animation(g_images.zeldaSpriteSheet,44,33,43,4,100,-scale);
     zelda.inAirRight = new Animation(g_images.zeldaSpriteSheet,89,31,44,2,100,scale);
     zelda.inAirLeft = new Animation(g_images.zeldaSpriteSheet,89,31,44,2,100,-scale);
-    zelda.idleRight = new Animation(g_images.zeldaSpriteSheet,135,30,42,1,10,scale);
-    zelda.idleLeft = new Animation(g_images.zeldaSpriteSheet,135,30,42,1,10,-scale);
+    zelda.idleRight = new Animation(g_images.zeldaSpriteSheet,510,19,42,1,1,scale);
+    zelda.idleLeft = new Animation(g_images.zeldaSpriteSheet,510,19,42,1,1,-scale);
     zelda.magicRight = new Animation(g_images.zeldaSpriteSheet,320,51,48,6,100,scale);
     zelda.magicLeft = new Animation(g_images.zeldaSpriteSheet,320,51,48,6,100,-scale);
 
@@ -243,7 +246,8 @@ function makeEnemyAnimation(scale) {
     var enemy = {};
     enemy.walkingRight = new Animation(g_images.enemySpriteSheet,0,20,20,2,80, scale);
     enemy.walkingLeft = new Animation(g_images.enemySpriteSheet,0,20,20,2,80,-scale);
-    enemy.inAir = new Animation(g_images.enemySpriteSheet,20,20,20,1,1,scale);
+    enemy.inAirRight = new Animation(g_images.enemySpriteSheet,20,20,20,1,1,scale);
+    enemy.inAirLeft = new Animation(g_images.enemySpriteSheet,20,20,20,1,1,-scale);
     enemy.swimmingRight = new Animation(g_images.enemySpriteSheet,40,20,20,2,80,scale);
     enemy.swimmingLeft = new Animation(g_images.enemySpriteSheet,40,20,20,2,80,-scale);
 	enemy.death = new Animation(g_images.enemySpriteSheet,60,20,20,1,50,scale);
@@ -256,7 +260,8 @@ function imagePreloadDone() {
         theme1: "res/sounds/thema1.ogg",
         theme2: "res/sounds/thema2.ogg",
         themeDeath: "res/sounds/daudi.ogg",
-        zeldaShoot: "res/sounds/zelda-shot.mp3"
+        zeldaShoot: "res/sounds/zelda-shot.mp3",
+        portal: "res/sounds/portal.mp3"
     }
     audioPreload(requiredAudio, g_audio, preloadDone);
 };
@@ -281,6 +286,8 @@ function preloadDone() {
     g_sprites.cloud3 = new Sprite(g_images.cloud3);
     g_sprites.coin = new Sprite(g_images.coin);
     g_sprites.portal = new Sprite(g_images.portal);
+    
+    g_audio.theme1.volume = 0.8;
     
     entityManager.init();
     main.init();

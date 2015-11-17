@@ -78,3 +78,10 @@ Frame Width = 24 px
 Frame Height = 45 px
 Frame Count = 5
 Example interval = 150 ms
+
+Row 11: Idle
+Top edge = 510 px
+Frame Width = 19 px
+Frame Height = 42 px
+Frame Count = 1
+Example interval = 1 ms

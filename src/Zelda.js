@@ -187,7 +187,11 @@ Zelda.prototype.updateVelocity = function(du) {
 }
 
 Zelda.prototype.updateLocation = function(du) {
+    var lvlLength = entityManager._world[0].blocks[13].length*(g_canvas.height/14);
+	var halfWidth = this.getSize().sizeX/2;
     this.cx += this.velX*du;
+	this.cx = Math.min(this.cx, lvlLength-halfWidth);
+	this.cx = Math.max(this.cx, halfWidth);
     this.cy += this.velY*du;
 }
 
@@ -198,7 +202,12 @@ Zelda.prototype.updateStatus = function() {
 
     // figure out our status
     var nextStatus = this.status;
-    var dir = (this.velX >= 0)?"Right":"Left";
+	var dir;
+	if(this.velX === 0) dir = this._lastDir || "Right";
+	else{
+		dir = (this.velX > 0 ? "Right" : "Left");
+		this._lastDir = dir;
+	}
     var atMaxVel = (Math.abs(this.velX)>=(this.maxVelX*0.9))
     if(this.state['jumping']) nextStatus = "inAir"+dir;
     else if(this.state['casting']) nextStatus = "magic" + dir;
