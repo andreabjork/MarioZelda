@@ -113,6 +113,7 @@ World.prototype.update = function (du) {
 				if(j > 0)						 block3 = this.blocks[i][j-1];
 				if(block2 != null) if(block2.type === 4) inWater = true;
 				if(block3 != null) if(block3.type === 4) inWater = true;
+				if(block.type === 4) inWater = false;
 				block.inWater = inWater;
 				if(block.update(du)) this.blocks[i][j] = null;
 			}
