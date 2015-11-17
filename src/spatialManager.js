@@ -26,7 +26,7 @@ e.g. general collision detection.
 12345678901234567890123456789012345678901234567890123456789012345678901234567890
 */
 
-var spatialManager = {
+var spatialManagerPrototype = {
 
 // "PRIVATE" DATA
 
@@ -132,3 +132,5 @@ render: function(ctx){
 	ctx.beginPath();
 }
 }
+
+var spatialManager = spatialManagerPrototype;
