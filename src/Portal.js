@@ -2,7 +2,7 @@ function Portal(descr) {
     this.setup(descr);
 //    console.log("is this happening");
     this._scale = 3;
-    this.sprite = g_sprites.portal;
+    this.sprite = this.sprite || g_sprites.portal;
 };
 
 Portal.prototype = new Character();
@@ -27,5 +27,5 @@ Portal.prototype.collide = function(Zelda) {
 };
 
 Portal.prototype.render = function(ctx) {
-    this.sprite.drawCentredAt(ctx, this.cx ,this.cy);
+	this.sprite.drawCentredAt(ctx, this.cx ,this.cy);
 }

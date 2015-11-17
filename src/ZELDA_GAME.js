@@ -214,6 +214,7 @@ function requestPreloads() {
         background1: "res/images/MainBackground.png",
         background2: "res/images/Hills1.png",
         coin: "res/images/Coin.png",
+        blank: "res/images/blank.png",
         portal: "res/images/Portal.png"
     };
 
@@ -267,7 +268,7 @@ function preloadDone() {
     g_sprites.marioTest  = new Sprite(g_images.marioTest);
     g_sprites.defaultBlock  = new Sprite(g_images.defaultBlock);
     g_sprites.background = new Sprite(g_images.background);
-
+	g_sprites.blank = new Sprite(g_images.blank);
     g_sprites.spikes = new Sprite(g_images.spikes);
     g_sprites.coinBox = new Sprite(g_images.coinBox);
     g_sprites.water = new Sprite(g_images.water);

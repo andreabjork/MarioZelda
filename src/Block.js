@@ -23,7 +23,8 @@ function Block(descr) {
 		break;
 		case 1: this._isBreakable = true;
 		break;
-		case 2: this.sprite = g_sprites.spikes
+		case 2: this.sprite = g_sprites.spikes;
+				this.scale *= 0.9;
 		break;
 		case 3: this.sprite = g_sprites.coinBox;
 				this.ammo = 5;
@@ -38,13 +39,18 @@ function Block(descr) {
 		case 7: this.sprite = g_sprites.coin;
 				this._isPassable = true;
 		break;
+		
 		default: this._isBreakable = true;
+				 this._isPassable = true;
+				 this.sprite = g_sprites.blank;
 		break;
 	}
 };
+
 Block.prototype._isDeadNow = false;
 Block.prototype._isBreakable = false;
 Block.prototype._isPassable = false;
+Block.prototype._inWater = false;
 Block.prototype._makeAnimation = false;
 Block.prototype._AnimationCounter = 0;
 Block.prototype.ammmo = 0;
@@ -72,6 +78,7 @@ Block.prototype.render = function (ctx,x,y,w,h) {
 	var img_h = this.sprite.height;
 	var scale = h/img_h;
 	this.sprite.scale = scale;
+	if(this.inWater) g_sprites.water.drawCentredAt(ctx,x+w/2,y+h/2);
 	this.sprite.drawCentredAt(ctx,x+w/2,y+h/2);
 	
 };
