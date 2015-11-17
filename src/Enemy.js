@@ -16,8 +16,8 @@ function Enemy(descr) {
 	this.setup(descr)
     // Default sprite, if not otherwise specified
     this._scale = 1;
-	this.animations = makeZeldaAnimation(this._scale);
-	this.animation = this.animations['idleRight'];
+	this.animations = makeEnemyAnimation(this._scale);
+	this.animation = this.animations['walkingRight'];
 };
 
 // This comes later on when Entity has been implemented: 
@@ -84,7 +84,20 @@ Enemy.prototype.update = function(du) {
     // Check for death:
     if(this._isDeadNow) return entityManager.KILL_ME_NOW;
 	
+	//update status
+	var dir = (this.velX >= 0 ? "Right" : "Left");
+	if(this.velY !== 0) this.status = "inAir";
+	else if(this.state.inWater) this.status = "swimming"+dir;
+	else this.status = "walking"+dir;
+	
 	this.animation.update(du);
 
 	spatialManager.register(this);
+}
+
+
+
+Enemy.prototype.getSize = function(){
+    var size = {sizeX:10*this._scale,sizeY:15*this._scale};
+    return size;
 }
