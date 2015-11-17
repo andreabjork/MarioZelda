@@ -266,7 +266,15 @@ Zelda.prototype.update = function (du) {
     }
 
     // Check for death:
-    if(this._isDeadNow) return entityManager.KILL_ME_NOW;
+    if(this._isDeadNow) {
+        if (this.life > 0) {
+            this.life--;
+            this._isDeadNow = false;
+            entityManager.enterLevel(entityManager._level);
+        } else {
+            return entityManager.KILL_ME_NOW;            
+        }      
+    };
 
     // Finally, update status:
     this.updateStatus();

@@ -179,8 +179,9 @@ update: function(du) {
                 // remove the dead guy, and shuffle the others down to
                 // prevent a confusing gap from appearing in the array
                 aCategory.splice(i,1);
-                if(c === 1) { // Zelda died! 
-                    this.enterLevel(this._level);
+                if(c === 1) { // Zelda died!
+                    g_doClear = false; 
+                    g_deathScreenOn = true;
                 }
             }
             else {
