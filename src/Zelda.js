@@ -52,7 +52,7 @@ Zelda.prototype.maxVelX = 3.9;
 Zelda.prototype.maxVelY = 6.5;
 Zelda.prototype.tempMaxJumpHeight = 0;
 Zelda.prototype.maxPushHeight = 120;
-Zelda.prototype.state = {jumping: false, pushing: false, offGround: false, casting: false, onGround: true, idle: true, right: true, left: false, inWater: false}
+Zelda.prototype.state = {jumping: false, pushing: false, offGround: false, casting: false, onGround: true, idle: true, facingRight: true, inWater: false}
 Zelda.prototype.status = "idleRight";
 // idle, walkingRight, walkingLeft, runningRight, runningLeft, inAirRight, inAirLeft
 
@@ -78,15 +78,16 @@ Zelda.prototype.handleCasting = function () {
     if(this.state['casting']) return;
     else {
         this.state['casting'] = true;
-        var dX = +1;//+Math.sin(this.rotation);
+        var dX = (this.state["facingRight"] ? 1 : -1 );
         var dY = 0;//Math.cos(this.rotation);
-        var launchDist = this.getSize().sizeX * 1.2;
-        
+        var launchDist = this.getSize().sizeX/2;
+        var bulletVel = (this.state["facingRight"] ? 7 : -7 );
+		
         var relVelX = dX;
         var relVelY = dY;
         entityManager.fireBullet(
-           this.cx + dX * launchDist, this.cy + dY * launchDist,
-           7, 0,
+           this.cx + dX + launchDist, this.cy + dY,
+           bulletVel, 0,
            0);
     }
 };
@@ -203,10 +204,10 @@ Zelda.prototype.updateStatus = function() {
     // figure out our status
     var nextStatus = this.status;
 	var dir;
-	if(this.velX === 0) dir = this._lastDir || "Right";
+	if(this.velX === 0) dir = (this.state['facingRight'] ? "Right" : "Left");
 	else{
 		dir = (this.velX > 0 ? "Right" : "Left");
-		this._lastDir = dir;
+		this.state['facingRight'] = (dir==="Right");
 	}
     var atMaxVel = (Math.abs(this.velX)>=(this.maxVelX*0.9))
     if(this.state['jumping']) nextStatus = "inAir"+dir;
