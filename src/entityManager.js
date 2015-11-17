@@ -91,7 +91,6 @@ enterLevel: function(lvl) {
     for(var i = 0; i < g_NUMBER_OF_CLOUDS; i++) {
         this.generateObject('cloud');
     }
-    this.generateObject('portal');
     this.deferredSetup();
     spatialManager._entities = [];
     spatialManager._nextSpatialID = 1;
@@ -104,7 +103,6 @@ init: function() {
     for(var i = 0; i < g_NUMBER_OF_CLOUDS; i++) {
         this.generateObject('cloud');
     }
-    this.generateObject('portal');
     console.log(this._categories[0]);
 },
 

@@ -1,14 +1,29 @@
 function Portal(descr) {
-    for (var property in descr) {
-        this[property] = descr[property];
-    }
-    
+    this.setup(descr);
+//    console.log("is this happening");
+    this._scale = 3;
     this.sprite = g_sprites.portal;
 };
 
+Portal.prototype = new Character();
+
+Portal.prototype.friendly = true;
+
 Portal.prototype.update = function(du) {
-    this.cx = g_lvlLength - 110;
-    this.cy = g_canvas.height - 200;
+    spatialManager.unregister(this);
+	
+    if(this.isColliding()) {
+    	console.log("this is colliding with something");
+    }
+	
+	spatialManager.register(this);
+
+};
+
+Portal.prototype.collide = function(Zelda) {
+    if(Zelda.name === 'zelda') {
+		entityManager.enterLevel(entityManager._level);
+	}
 };
 
 Portal.prototype.render = function(ctx) {

@@ -28,12 +28,11 @@ function Entity() {
     // Diagnostics to check inheritance stuff
     this._entityProperty = true;
     console.dir(this);
-*/
+*/  
 
 };
 
 Entity.prototype.setup = function (descr) {
-
     // Apply all setup properies from the (optional) descriptor
     for (var property in descr) {
         this[property] = descr[property];
