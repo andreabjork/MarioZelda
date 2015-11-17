@@ -129,7 +129,7 @@ function processDiagnostics() {
     if (eatKey(KEY_LEVEL3)) {
         entityManager.enterLevel(3);
     };
-    if (eatKey(KEY_LEVEL3)) {
+    if (eatKey(KEY_LEVEL4)) {
         entityManager.enterLevel(4);
     };
     if (eatKey(KEY_LEVEL5)) {
