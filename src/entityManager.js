@@ -63,23 +63,46 @@ RESET_ALL: function() {
     this._bullets = [];
     this._enemies = [];
     this._objects = [];
+    this._world = [];
     
     this.generateCharacter();
     for(var i = 0; i < g_NUMBER_OF_CLOUDS; i++) {
         this.generateObject();
     }
+
+},
+
+enterNextLevel: function(lvl) {
+    this._character = [];
+    this._bullets = [];
+    this._enemies = [];
+    this._objects = [];
+    this._world = [];
+    this._collisionBlocks = [];
+
+    
+    this.generateCharacter();
+    this.generateLevel({level: lvl});
+    for(var i = 0; i < g_NUMBER_OF_CLOUDS; i++) {
+        this.generateObject();
+    }
+
+    this.deferredSetup();
+    spatialManager._entities = [];
 },
 
 init: function() {
     this.generateCharacter();
     //this.generateEnemy();
-    this.generateLevel();
+    this.generateLevel({level: 1});
     for(var i = 0; i < g_NUMBER_OF_CLOUDS; i++) {
         this.generateObject('cloud');
     }
     this.generateObject('portal');
     console.log(this._categories[0]);
 },
+
+
 
 fireBullet: function(cx, cy, velX, velY, rotation) {
     this._bullets.push(new Projectile({

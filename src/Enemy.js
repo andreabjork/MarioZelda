@@ -83,7 +83,7 @@ Enemy.prototype.initialized = false;
 
 Enemy.prototype.update = function(du) {
 	spatialManager.unregister(this);
-
+/*
 	var blocks = entityManager._world[0].findBlocks(this, du);
     
 	if(this.velX > 0)
@@ -123,7 +123,7 @@ Enemy.prototype.update = function(du) {
 						console.log("wow, you killed a basic unit. so impressed...");
 	}
 	
-
+*/
 	spatialManager.register(this);
 
 }
