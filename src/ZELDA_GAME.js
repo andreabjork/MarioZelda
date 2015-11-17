@@ -249,7 +249,8 @@ function preloadDone() {
     g_sprites.cloud3 = new Sprite(g_images.cloud3);
     g_sprites.coin = new Sprite(g_images.coin);
     g_sprites.portal = new Sprite(g_images.portal);
-
+    
+    entityManager.init();
     main.init();
     
     try {
@@ -263,7 +264,6 @@ function preloadDone() {
 };
 
 function initLevel() {
-    entityManager.init();
     
     entityManager.enterLevel(1);
     
