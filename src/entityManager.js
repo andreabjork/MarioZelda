@@ -97,6 +97,7 @@ generateCharacter : function(descr) {
 },
 
 generateEnemy : function(descr) {
+	console.log("generating enemy");
     this._enemies.push(new Enemy(descr));
 },
 

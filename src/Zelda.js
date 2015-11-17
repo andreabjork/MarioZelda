@@ -110,92 +110,10 @@ Zelda.prototype.handleEnemyCollision = function() {
     }
 }
 
-Zelda.prototype.handleBoxCollision = function(prevX, prevY, nextX, nextY) {
-    this.unregisterBlocks();
-    this.findProxBlocks(prevX, prevY, nextX, nextY);
-    this.registerBlocks();
-}
-
 
 Zelda.prototype.handleCollisions = function(prevX, prevY, nextX, nextY) {
-
-        /*var hitEntity = this.findHitEntity();
-        var canTakeHit = hitEntity.takeHit;
-        if (canTakeHit){ 
-            canTakeHit.call(hitEntity);
-            this.velY = -9;
-        }*/
-
     this.handleEnemyCollision();
-    this.handleBoxCollision(prevX, prevY, nextX, nextY);
-}
-
-
-Zelda.prototype.handlePartialCollision = function(nextX,nextY,axis){
-    var bEdge,lEdge,rEdge,tEdge;
-    var standingOnSomething = false;
-    if(this.isColliding(nextX, nextY)) {
-        var hitEntities = this.findHitEntities(nextX, nextY);
-        for(var hit in hitEntities) {
-            var hitEntity = hitEntities[hit];
-            if(hitEntity instanceof Block) {
-                var zeldaCoords = entityManager._world[0].getBlockCoords(this.cx, this.cy); //This is going by zelda's center, which is her lower half. Upper half needs to be in i, j-1.
-                var zeldaCoordsLeft = entityManager._world[0].getBlockCoords(this.cx-this.getSize().sizeX/2, this.cy); //This is going by zelda's center, which is her lower half. Upper half needs to be in i, j-1.
-                var zeldaCoordsRight = entityManager._world[0].getBlockCoords(this.cx+this.getSize().sizeX/2, this.cy); //This is going by zelda's center, which is her lower half. Upper half needs to be in i, j-1.
-                var hitCoords = [hitEntity.i, hitEntity.j];
-
-                var zeldaAbove = (hitCoords[0] > zeldaCoords[0]); // zelda block coordinates lower because y-axis points down.
-                var zeldaBelow = (hitCoords[0] < zeldaCoords[0]);
-                var zeldaToLeft = (hitCoords[1] > zeldaCoords[1]); // zelda column coords must be lower.
-                var zeldaToRight = (hitCoords[1] < zeldaCoords[1]);
-                var sameCol = (hitCoords[1] == zeldaCoordsLeft[1] || hitCoords[1] == zeldaCoordsRight[1]);
-                var sameRow = (hitCoords[0] == zeldaCoords[0] || hitCoords[0] == zeldaCoords[0]-1) || this.state['jumping'];
-
-                //var lEdge = (hitCoords[1] < zeldaCoords[1] && (hitCoords[0] == zeldaCoords[0] || hitCoords[0] == zeldaCoords[0]-1) );
-                //var rEdge = (hitCoords[1] > zeldaCoords[1] && (hitCoords[0] == zeldaCoords[0] || hitCoords[0] == zeldaCoords[0]-1));
-                //var tEdge = (hitCoords[0] < zeldaCoords[0] && ());
-                //bEdge = (hitCoords[0] > zeldaCoords[0]);
-
-                lEdge = zeldaToRight && sameRow;
-                rEdge = zeldaToLeft && sameRow;
-                tEdge = zeldaBelow && sameCol;
-                bEdge = zeldaAbove && sameCol;
-
-                var dir = 0; //direction of hit
-                if(!hitEntity._isPassable) {
-                    standingOnSomething = standingOnSomething || bEdge;
-                    if(lEdge && this.velX < 0 && axis === "x") {
-                        this.velX = 0;
-                    }
-                    if(rEdge && this.velX > 0 && axis === "x") {
-                        this.velX = 0;
-                    }
-                    if(bEdge && this.velY > 0 && axis === "y") {
-                        this.tempMaxJumpHeight = this.cy - this.maxPushHeight; 
-                        var groundY = entityManager._world[0].getLocation((hitEntity.i), (hitEntity.j))[1] // block top y coordinate
-                        this.putToGround(groundY);
-                        dir = 4;
-                    } 
-                    if(tEdge && this.velY < 0  && axis === "y"){// && this.velY < 0) {
-                        this.velY *= -1;
-                        dir = 1;
-                    }
-                }
-
-                hitEntity.activate(this, dir);
-
-            }
-        }
-    }
-    return standingOnSomething;
-}
-
-Zelda.prototype.putToGround = function(groundY) {
-    this.state['jumping'] = false;
-    this.state['offGround'] = false;
-    this.state['onGround'] = true;
-    this.velY = 0;
-    this.cy = groundY -this.getSize().sizeY/2 + 1; // zelda center coordinate on ground.
+    this.updateProxBlocks(prevX, prevY, nextX, nextY);
 }
 
 // ==================
@@ -223,7 +141,6 @@ Zelda.prototype.updateJump = function(bEdge) {
 
 Zelda.prototype.updateVelocity = function(du) {
     var NOMINAL_FORCE = +0.15;
-    var NOMINAL_GRAVITY = 0.52;
 
     var wasMovingRight = (this.velX > 0);
     var wasMovingLeft = (this.velX < 0);
@@ -259,7 +176,7 @@ Zelda.prototype.updateVelocity = function(du) {
     }
 
     // Start accelerating down as soon as we've "stopped state['pushing']"
-    if(this.state['jumping'] && !this.state['pushing']) {
+    if(this.state['jumping'] && !this.state['pushing'] && this.velY < TERMINAL_VELOCITY) {
         if(!this.state['inWater'])this.velY += NOMINAL_GRAVITY*du;
         else this.velY += (NOMINAL_GRAVITY*du)/10;
     } else if(!this.state['jumping']){
@@ -323,7 +240,7 @@ Zelda.prototype.update = function (du) {
     this.updateVelocity(du);
 
     //this.handleCollisions(this.cx, this.cy, this.cx+this.velX*du, this.cy+this.velY*du);
-    this.handleBoxCollision(this.cx, this.cy, this.cx+this.velX*du, this.cy+this.velY*du);
+    this.updateProxBlocks(this.cx, this.cy, this.cx+this.velX*du, this.cy+this.velY*du);
     //
 
     var nextX = this.cx+this.velX*du;
@@ -334,24 +251,17 @@ Zelda.prototype.update = function (du) {
 	
     this.state['inWater'] = false;
 
-	//check left/right collisions and handle them first, if none, check top bottom collisions.
+	//check left/right collisions first and then top/bottom
     this.handlePartialCollision(nextX,prevY,"x");
 	bEdge = this.handlePartialCollision(prevX,nextY,"y");
-	//this.checkFalling();
-	// check top bottom collisions specially if left/right collision occurred
+	
+	
     this.updateLocation(du);
     this.updateJump(bEdge);
 
     if(this.cy > g_canvas.height){
         this._isDeadNow = true;
     }
-    
-
-
-
-
-// ------------------------------------------------------------------
-
 
     // Check for death:
     if(this._isDeadNow) return entityManager.KILL_ME_NOW;
