@@ -35,6 +35,7 @@ _world: [],
 _collisionBlocks : [],
 _enemies   : [],
 _objects    : [],
+_level : 1,
 
 // "PRIVATE" METHODS
 
@@ -63,23 +64,48 @@ RESET_ALL: function() {
     this._bullets = [];
     this._enemies = [];
     this._objects = [];
+    this._world = [];
     
     this.generateCharacter();
     for(var i = 0; i < g_NUMBER_OF_CLOUDS; i++) {
         this.generateObject();
     }
+
+},
+
+enterLevel: function(lvl) {
+    this._character = [];
+    this._bullets = [];
+    this._enemies = [];
+    this._objects = [];
+    this._world = [];
+    this._collisionBlocks = [];
+
+    
+    this.generateCharacter();
+    this._level = lvl;
+    this.generateLevel({level: this._level});
+    for(var i = 0; i < g_NUMBER_OF_CLOUDS; i++) {
+        this.generateObject();
+    }
+
+    this.deferredSetup();
+    spatialManager._entities = [];
+    spatialManager._nextSpatialID = 1;
 },
 
 init: function() {
     this.generateCharacter();
     //this.generateEnemy();
-    this.generateLevel();
+    this.generateLevel({level: 1});
     for(var i = 0; i < g_NUMBER_OF_CLOUDS; i++) {
         this.generateObject('cloud');
     }
     this.generateObject('portal');
     console.log(this._categories[0]);
 },
+
+
 
 fireBullet: function(cx, cy, velX, velY, rotation) {
     this._bullets.push(new Projectile({
@@ -97,6 +123,7 @@ generateCharacter : function(descr) {
 },
 
 generateEnemy : function(descr) {
+	console.log("generating enemy");
     this._enemies.push(new Enemy(descr));
 },
 
@@ -150,6 +177,9 @@ update: function(du) {
                 // remove the dead guy, and shuffle the others down to
                 // prevent a confusing gap from appearing in the array
                 aCategory.splice(i,1);
+                if(c === 1) { // Zelda died! 
+                    this.enterLevel(this._level);
+                }
             }
             else {
                 ++i;

@@ -40,6 +40,12 @@ Character.prototype.unregisterBlocks = function() {
     for(var b in this.proxBlocks) if(this.proxBlocks[b]) spatialManager.unregister(this.proxBlocks[b]);
 }
 
+Character.prototype.updateProxBlocks = function(prevX, prevY, nextX, nextY) {
+    this.unregisterBlocks();
+    this.findProxBlocks(prevX, prevY, nextX, nextY);
+    this.registerBlocks();
+}
+
 
 Character.prototype.rememberResets = function () {
     // Remember my reset positions
@@ -57,6 +63,7 @@ Character.prototype.takeHit = function () {
 };
 
 Character.prototype.render = function (ctx) {
+	console.log("rendering at: ("+this.cx+","+this.cy+")");
     this.animation.renderAt(ctx, this.cx, this.cy);
 };
 
@@ -72,4 +79,76 @@ Character.prototype.getNextPos = function(du) {
 Character.prototype.getSize = function(){
     var size = {sizeX:16*this._scale,sizeY:42*this._scale};
     return size;
+}
+
+
+//=================
+// COLLISION STUFFS
+//=================
+
+Character.prototype.putToGround = function(groundY) {
+    this.state['jumping'] = false;
+    this.state['offGround'] = false;
+    this.state['onGround'] = true;
+    this.velY = 0;
+    this.cy = groundY -this.getSize().sizeY/2 + 1; // character centre coordinate on ground.
+}
+
+Character.prototype.handlePartialCollision = function(charX,charY,axis){
+    var bEdge,lEdge,rEdge,tEdge;
+    var standingOnSomething = false;
+    if(this.isColliding(charX, charY)) {
+        var hitEntities = this.findHitEntities(charX, charY);
+        for(var hit in hitEntities) {
+            var hitEntity = hitEntities[hit];
+            if(hitEntity instanceof Block) {
+                var charCoords = entityManager._world[0].getBlockCoords(this.cx, this.cy); //This is going by char's center, which is her lower half. Upper half needs to be in i, j-1.
+                var charCoordsLeft = entityManager._world[0].getBlockCoords(this.cx-this.getSize().sizeX/2, this.cy); //This is going by char's bottom left corner
+                var charCoordsRight = entityManager._world[0].getBlockCoords(this.cx+this.getSize().sizeX/2, this.cy); //This is going by char's bottom right corner
+                var hitCoords = [hitEntity.i, hitEntity.j];
+
+                var charAbove = (hitCoords[0] > charCoords[0]); // char block coordinates lower because y-axis points down.
+                var charBelow = (hitCoords[0] < charCoords[0]);
+                var charToLeft = (hitCoords[1] > charCoords[1]); // char column coords must be lower.
+                var charToRight = (hitCoords[1] < charCoords[1]);
+                var sameCol = (hitCoords[1] == charCoordsLeft[1] || hitCoords[1] == charCoordsRight[1]);
+                var sameRow = (hitCoords[0] == charCoords[0] || hitCoords[0] == charCoords[0]-1) || this.state['jumping'];
+
+                //var lEdge = (hitCoords[1] < charCoords[1] && (hitCoords[0] == charCoords[0] || hitCoords[0] == charCoords[0]-1) );
+                //var rEdge = (hitCoords[1] > charCoords[1] && (hitCoords[0] == charCoords[0] || hitCoords[0] == charCoords[0]-1));
+                //var tEdge = (hitCoords[0] < charCoords[0] && ());
+                //bEdge = (hitCoords[0] > charCoords[0]);
+
+                lEdge = charToRight && sameRow;
+                rEdge = charToLeft && sameRow;
+                tEdge = charBelow && sameCol;
+                bEdge = charAbove && sameCol;
+
+                var dir = 0; //direction of hit
+                if(!hitEntity._isPassable) {
+                    standingOnSomething = standingOnSomething || bEdge;
+                    if(lEdge && this.velX < 0 && axis === "x") {
+                        this.velX = 0;
+                    }
+                    if(rEdge && this.velX > 0 && axis === "x") {
+                        this.velX = 0;
+                    }
+                    if(bEdge && this.velY > 0 && axis === "y") {
+                        this.tempMaxJumpHeight = this.cy - this.maxPushHeight; 
+                        var groundY = entityManager._world[0].getLocation((hitEntity.i), (hitEntity.j))[1] // block top y coordinate
+                        this.putToGround(groundY);
+                        dir = 4;
+                    } 
+                    if(tEdge && this.velY < 0  && axis === "y"){// && this.velY < 0) {
+                        this.velY *= -1;
+                        dir = 1;
+                    }
+                }
+
+                hitEntity.activate(this, dir);
+
+            }
+        }
+    }
+    return standingOnSomething;
 }

@@ -21,6 +21,8 @@ function Block(descr) {
 	switch(this.type) {
 		case 0: 
 		break;
+		case 1: this._isBreakable = true;
+		break;
 		case 2: this.sprite = g_sprites.spikes
 		break;
 		case 3: this.sprite = g_sprites.coinBox;
@@ -37,7 +39,7 @@ function Block(descr) {
 				this._isPassable = true;
 		case 'a':  entityManager.generateEnemy({cx: this.cx, cy: this.cy})
 		break;
-		case 'default': this._isBreakable = true;
+		default: this._isBreakable = true;
 		break;
 	}
 };
@@ -103,11 +105,13 @@ Block.prototype.collide = function ( Char , hitValue) {
     // this function is to let blocks interact with characters, f.ex. water/spikes
 	// if they are just solid and collidable return the top value, and if not,
 	// interact with character and then return (will finish description when this is ready)stuff stuff
-		return hitValue;
+	return hitValue;
 };
 
 Block.prototype.tryToBreak = function(){
+	console.log("trying to break");
     if(this._isBreakable) {
+    	console.log("breaking!");
 		this._isDeadNow = true;
 		g_score.update(10);
 	}
