@@ -37,7 +37,6 @@ function Block(descr) {
 		break; 
 		case 7: this.sprite = g_sprites.coin;
 				this._isPassable = true;
-		case 'a':  entityManager.generateEnemy({cx: this.cx, cy: this.cy})
 		break;
 		default: this._isBreakable = true;
 		break;

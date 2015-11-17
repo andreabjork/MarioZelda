@@ -97,6 +97,7 @@ Character.prototype.putToGround = function(groundY) {
 Character.prototype.handlePartialCollision = function(charX,charY,axis){
     var bEdge,lEdge,rEdge,tEdge;
     var standingOnSomething = false;
+    var walkingIntoSomething = false;
     if(this.isColliding(charX, charY)) {
         var hitEntities = this.findHitEntities(charX, charY);
         for(var hit in hitEntities) {
@@ -128,10 +129,10 @@ Character.prototype.handlePartialCollision = function(charX,charY,axis){
                 if(!hitEntity._isPassable) {
                     standingOnSomething = standingOnSomething || bEdge;
                     if(lEdge && this.velX < 0 && axis === "x") {
-                        this.velX = 0;
+						walkingIntoSomething = walkingIntoSomething || true;
                     }
                     if(rEdge && this.velX > 0 && axis === "x") {
-                        this.velX = 0;
+						walkingIntoSomething = walkingIntoSomething || true;
                     }
                     if(bEdge && this.velY > 0 && axis === "y") {
                         this.tempMaxJumpHeight = this.cy - this.maxPushHeight; 
@@ -150,5 +151,6 @@ Character.prototype.handlePartialCollision = function(charX,charY,axis){
             }
         }
     }
-    return standingOnSomething;
+    if(axis === "x") return walkingIntoSomething;
+    if(axis === "y") return standingOnSomething;
 }
