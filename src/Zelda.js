@@ -60,12 +60,11 @@ Zelda.prototype.status = "idleRight";
 
 
 Zelda.prototype.handleJump = function () {
-    console.log(this.state.inWater);
     if(this.state['jumping'] && !this.state['inWater']) { return; }
     else if(this.state['inWater']) {
-        console.log("Just keep swimming!");
         this.velY = -1; 
         this.tempMaxJumpHeight = this.cy - 1;
+        this.state['jumping'] = true;
     } else {
     	this.state['jumping'] = true;
         this.velY = -6;
@@ -277,7 +276,6 @@ Zelda.prototype.handlePartialCollision = function(nextX,nextY,axis){
     					this.velX = 0;
     				}
     				if(bEdge && this.velY > 0 && axis === "y") {
-                        console.log("IS THIS TRIGGERING???");
     					this.tempMaxJumpHeight = this.cy - this.maxPushHeight; 
     					var groundY = entityManager._world[0].getLocation((hitEntity.i), (hitEntity.j))[1] // block top y coordinate
     					this.putToGround(groundY);

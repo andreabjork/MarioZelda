@@ -88,7 +88,7 @@ Block.prototype.activate = function (Char, direction) {
 		g_score.update(20);
 		this.ammo--;
 	}
-	if(this.type === 4 && direction === 4){
+	if(this.type === 4) {// && direction === 4){
 		Char.state.inWater = true;
 	} 
 	
