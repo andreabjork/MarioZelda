@@ -2,10 +2,7 @@ function Cloud(descr) {
     for (var property in descr) {
         this[property] = descr[property];
     }
-	console.log("setting sprite");
 	this.setCloudFormAtRandom();
-	console.log("is it undefined?");
-	console.log(this.sprite);
 	this.cx = Infinity;
 	this.cy = g_canvas.height - (0.3 + Math.random())*g_canvas.height;
 	this.scale = 0.8+0.4*Math.random();
