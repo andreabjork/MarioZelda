@@ -139,26 +139,39 @@ function processDiagnostics() {
 
 // GAME-SPECIFIC RENDERING
 var g_lvlLength;
+var g_menuScreenOn = true;
+window.addEventListener('keydown', function() {
+    if (g_menuScreenOn) {
+        g_menuScreenOn = false;
+        g_audio.theme2.pause();
+        initLevel();
+    }
+});
+
 function renderSimulation(ctx) {
     
-    ctx.save();
+    if (g_menuScreenOn) {
+        g_sprites.menuBar.drawAt(ctx, 0, 0, g_canvas.width, g_canvas.height);
+    } else {
+        ctx.save();
 	
-	var dx = g_viewPort.x;
-	var dy = g_viewPort.y;
-
-    var lvlLength;
-    lvlLength = entityManager._world[0].blocks[13].length*(g_canvas.height/14) - g_canvas.width;
-    g_sprites.BG1.drawAt(ctx, 0,0, g_canvas.width, g_canvas.height);
-    g_sprites.BG2.drawAt(ctx, -(dx / lvlLength) * g_canvas.width ,g_canvas.height/2, g_canvas.width*2, g_canvas.height);
+        var dx = g_viewPort.x;
+        var dy = g_viewPort.y;
     
-    ctx.translate(-dx,-dy);
-    entityManager.render(ctx);
-
-    if (g_renderSpatialDebug) spatialManager.render(ctx);
-    ctx.restore();
-
-    g_score.render(ctx);
-}
+        var lvlLength;
+        lvlLength = entityManager._world[0].blocks[13].length*(g_canvas.height/14) - g_canvas.width;
+        g_sprites.BG1.drawAt(ctx, 0,0, g_canvas.width, g_canvas.height);
+        g_sprites.BG2.drawAt(ctx, -(dx / lvlLength) * g_canvas.width ,g_canvas.height/2, g_canvas.width*2, g_canvas.height);
+        
+        ctx.translate(-dx,-dy);
+        entityManager.render(ctx);
+    
+        if (g_renderSpatialDebug) spatialManager.render(ctx);
+        ctx.restore();
+        
+        g_score.render(ctx);
+    }
+};
 
 
 // =============
@@ -170,6 +183,7 @@ var g_audio = {};
 function requestPreloads() {
 
     var requiredImages = {
+        menuBar: "res/images/menuBar.jpg",
         marioTest: "res/images/mario.png",
         zeldaSpriteSheet: "res/images/zeldass.png",
 		defaultBlock: "res/images/blockPlaceholder.png",
@@ -189,7 +203,7 @@ function requestPreloads() {
     };
 
     imagesPreload(requiredImages, g_images, imagePreloadDone);
-}
+};
 
 var g_sprites = {};
 var g_animations = {};
@@ -207,7 +221,7 @@ function makeZeldaAnimation(scale) {
     zelda.magicLeft = new Animation(g_images.zeldaSpriteSheet,320,51,48,6,100,-scale);
 
     return zelda;
-}
+};
 
 function imagePreloadDone() {
     var requiredAudio = {
@@ -217,10 +231,11 @@ function imagePreloadDone() {
         zeldaShoot: "res/sounds/zelda-shot.mp3"
     }
     audioPreload(requiredAudio, g_audio, preloadDone);
-}
+};
 
 function preloadDone() {
 
+    g_sprites.menuBar = new Sprite(g_images.menuBar);
     g_sprites.marioTest  = new Sprite(g_images.marioTest);
     g_sprites.defaultBlock  = new Sprite(g_images.defaultBlock);
     g_sprites.background = new Sprite(g_images.background);
@@ -238,13 +253,24 @@ function preloadDone() {
     g_sprites.coin = new Sprite(g_images.coin);
     g_sprites.portal = new Sprite(g_images.portal);
 
-    entityManager.init();
-
     main.init();
     
-    //entityManager._world[0].initLevel(levelObject.level1);
+    try {
+        g_audio.theme2.addEventListener('ended', function () {
+            this.currentTime = 0;
+            this.play();
+        });
+        g_audio.theme2.play();
+    } catch(err) {}
     
-    g_lvlLength = entityManager._world[0].blocks[13].length*(g_canvas.height/14);
+};
+
+function initLevel() {
+    entityManager.init();
+    
+    entityManager._world[0].initLevel(levelObject.level1);
+    
+    g_lvlLength = entityManager._world[0].blocks[13].length*(g_canvas.height/14) - g_canvas.width;
     
     try {
         g_audio.theme1.addEventListener('ended', function () {
@@ -252,10 +278,8 @@ function preloadDone() {
             this.play();
         });
         g_audio.theme1.play();
-    } catch(err) {
-        
-    }
-}
+    } catch(err) {}
+};
 
 // Kick it off
 requestPreloads();
