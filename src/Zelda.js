@@ -60,8 +60,10 @@ Zelda.prototype.status = "idleRight";
 
 
 Zelda.prototype.handleJump = function () {
+    console.log(this.state.inWater);
     if(this.state['jumping'] && !this.state['inWater']) { return; }
     else if(this.state['inWater']) {
+        console.log("Just keep swimming!");
         this.velY = -1; 
         this.tempMaxJumpHeight = this.cy - 1;
     } else {
@@ -201,7 +203,7 @@ Zelda.prototype.updateVelocity = function(du) {
     // Start accelerating down as soon as we've "stopped state['pushing']"
     if(this.state['jumping'] && !this.state['pushing']) {
         if(!this.state['inWater'])this.velY += NOMINAL_GRAVITY*du;
-        else            this.velY += (NOMINAL_GRAVITY*du)/10;
+        else this.velY += (NOMINAL_GRAVITY*du)/10;
     } else if(!this.state['jumping']){
         this.velY = 0;
     }
@@ -237,6 +239,7 @@ Zelda.prototype.updateStatus = function() {
 
 Zelda.prototype.handlePartialCollision = function(nextX,nextY,axis){
 	var bEdge,lEdge,rEdge,tEdge;
+    var standingOnSomething = false;
 	if(this.isColliding(nextX, nextY)) {
 		var hitEntities = this.findHitEntities(nextX, nextY);
 		for(var hit in hitEntities) {
@@ -266,30 +269,32 @@ Zelda.prototype.handlePartialCollision = function(nextX,nextY,axis){
 
                 var dir = 0; //direction of hit
                 if(!hitEntity._isPassable) {
+                    standingOnSomething = standingOnSomething || bEdge;
     				if(lEdge && this.velX < 0 && axis === "x") {
     					this.velX = 0;
-    					dir = 1;
     				}
     				if(rEdge && this.velX > 0 && axis === "x") {
     					this.velX = 0;
-    					dir = 1;
     				}
     				if(bEdge && this.velY > 0 && axis === "y") {
+                        console.log("IS THIS TRIGGERING???");
     					this.tempMaxJumpHeight = this.cy - this.maxPushHeight; 
     					var groundY = entityManager._world[0].getLocation((hitEntity.i), (hitEntity.j))[1] // block top y coordinate
     					this.putToGround(groundY);
+                        dir = 4;
     				} 
     				if(tEdge && this.velY < 0  && axis === "y"){// && this.velY < 0) {
     					this.velY *= -1;
                         dir = 1;
     				}
                 }
+
                 hitEntity.activate(this, dir);
 
 			}
 		}
 	}
-	return bEdge;
+	return standingOnSomething;
 }
 	
 
@@ -328,6 +333,8 @@ Zelda.prototype.update = function (du) {
     var prevY = this.cy;
     var bEdge;
 	
+    this.state['inWater'] = false;
+
 	//check left/right collisions and handle them first, if none, check top bottom collisions.
     this.handlePartialCollision(nextX,prevY,"x");
 	bEdge = this.handlePartialCollision(prevX,nextY,"y");
@@ -358,8 +365,6 @@ Zelda.prototype.update = function (du) {
         this.state['casting'] = false;
     }
 
-    this.state['inWater'] = false;
-
 	spatialManager.register(this);
 
     this.updateViewport();
@@ -367,6 +372,14 @@ Zelda.prototype.update = function (du) {
 
 // Make sure Zelda is always center of the screen:
 Zelda.prototype.updateViewport = function(){
-	g_viewPort.x = Math.max(0,this.cx-g_canvas.width/2);
-	g_viewPort.y = 0;
+    var nextView = this.cx - g_canvas.width/2;
+    var lvlLength = entityManager._world[0].blocks[13].length*(g_canvas.height/14) - g_canvas.width;
+    if (nextView < 0) {
+        g_viewPort.x = 0;
+    } else if (nextView > lvlLength) {
+        g_viewPort.x = lvlLength;
+    } else {
+        g_viewPort.x = nextView;
+    }
+    g_viewPort.y = 0;
 }

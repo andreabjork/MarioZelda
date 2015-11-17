@@ -89,7 +89,7 @@ Block.prototype.activate = function (Char, direction) {
 		this.ammo--;
 	}
 	if(this.type === 4 && direction === 4){
-		Char.inWater = true;
+		Char.state.inWater = true;
 	} 
 	
 	if(this.type === 7 && Char instanceof Zelda) {

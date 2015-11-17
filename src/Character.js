@@ -57,10 +57,6 @@ Character.prototype.takeHit = function () {
 };
 
 Character.prototype.render = function (ctx) {
-/*     ctx.strokeStyle = "red";
-	var pointBelowX = this.cx;
-	var pointBelowY = this.cy+this.getSize().sizeY;
-	util.strokeCircle(ctx,pointBelowX,pointBelowY,5); */
     this.animation.renderAt(ctx, this.cx, this.cy);
 };
 
