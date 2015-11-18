@@ -304,13 +304,15 @@ function makeBowserAnimation(scale) {
 	//image, frameY, frameWidth, frameHeight, numFrames, interval, scale
     bowser.idleRight = new Animation(g_images.bowserSpriteSheet,0,200,200,3,600,scale);
     bowser.idleLeft = new Animation(g_images.bowserSpriteSheet,0,200,200,3,600,-scale);
-    bowser.attackRight = new Animation(g_images.bowserSpriteSheet,200,200,200,5,400,scale);
-    bowser.attackLeft = new Animation(g_images.bowserSpriteSheet,200,200,200,5,400,-scale);
+    bowser.attackRight = new Animation(g_images.bowserSpriteSheet,200,199,200,5,400,scale);
+    bowser.attackLeft = new Animation(g_images.bowserSpriteSheet,200,199,200,5,400,-scale);
 	bowser.takeDamageRight = new Animation(g_images.bowserSpriteSheet,400,200,200,4,400,scale);
     bowser.takeDamageLeft = new Animation(g_images.bowserSpriteSheet,400,200,200,4,400,-scale);
-    bowser.dieRight = new Animation(g_images.bowserSpriteSheet,400,200,200,4,350,scale);
-    bowser.dieLeft = new Animation(g_images.bowserSpriteSheet,400,200,200,4,350,-scale);
+    bowser.dieRight = new Animation(g_images.bowserSpriteSheet,600,200,200,4,350,scale);
+    bowser.dieLeft = new Animation(g_images.bowserSpriteSheet,600,200,200,4,350,-scale);
 
+	console.log(bowser); 
+	
     return bowser;
 };
 

@@ -56,6 +56,7 @@ Projectile.prototype.update = function (du) {
     // Unregister
     spatialManager.unregister(this);
     this.updateProxBlocks(this.cx, this.cy, this.cx+this.velX*du, this.cy+this.velY*du);
+    if(this._isDeadNow) return entityManager.KILL_ME_NOW;
     this.animation.update(du);
 
     // hér á eftir að útbúa handler fyrir rotation sem og manage hvað
@@ -77,8 +78,7 @@ Projectile.prototype.update = function (du) {
     }
 	
     this.handlePartialCollision(nextX,this.cy,"x")
-
-    if(this._isDeadNow) return entityManager.KILL_ME_NOW;	
+	
     // select random colour
 	var randIndex = Math.floor(Math.random()*this.particleColors.length);
 	var randColour = this.particleColors[randIndex];
@@ -108,3 +108,19 @@ Projectile.prototype.getSize = function () {
 Projectile.prototype.render = function (ctx) {
     this.animation.renderAt(ctx, this.cx, this.cy);
 };
+
+
+Projectile.prototype.handleCollision = function(hitEntity, axis) {
+    var bEdge,lEdge,rEdge,tEdge;
+    var standingOnSomething;
+    var walkingIntoSomething;
+
+    if(hitEntity instanceof Block && !hitEntity._isPassable) {
+        this.takeHit();
+    }else if(hitEntity instanceof Enemy) {
+        this.takeHit();
+        hitEntity.takeHit();
+    }
+
+    return {standingOnSomething: standingOnSomething, walkingIntoSomething: walkingIntoSomething};
+}

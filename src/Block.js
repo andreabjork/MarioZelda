@@ -99,6 +99,7 @@ Block.prototype.activate = function (Char, direction) {
 		g_audio.coin.currentTime = 0;
 		util.play(g_audio.coin);
 		this.ammo--;
+		if(this.ammo === 1) this._isBreakable = true;
 	}
 	if(this.type === 4) {// && direction === 4){
 		Char.state.inWater = true;

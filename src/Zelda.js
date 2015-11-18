@@ -98,29 +98,77 @@ Zelda.prototype.handleCasting = function () {
 // ZELDA COLLISION LOGIC
 // =====================
 
-Zelda.prototype.handleEnemyCollision = function() {
-    if(this.isColliding()) {
-        var hitEntity = this.findHitEntity();
-        // naive collision check, will do it better later 
-        // once collision for tiles has been done correctly
-        var entPos = hitEntity.getPos();
-        var entSize = hitEntity.getSize();
-        var entityLeft = entPos.posX-entSize.sizeX;
-        var entityRight = entPos.posX+entSize.sizeX;
-        if(this.cx-this.getSize().sizeX < entityRight && this.cx+this.getSize().sizeX > entityLeft) {
-            hitEntity.takeHit();
-        }else {
-            this.takeHit();
+Zelda.prototype.handleCollision = function(hitEntity, axis) {
+    var bEdge,lEdge,rEdge,tEdge;
+    var standingOnSomething;
+    var walkingIntoSomething;
+
+
+
+        // Lots of vars for type of collision: top, bottom, same column, same row, going by zelda center coordinate, left coordinate, right, etc.
+        var charCoords = entityManager._world[0].getBlockCoords(this.cx, this.cy); //This is going by char's center, which is her lower half. Upper half needs to be in i, j-1.
+        var charCoordsLeft = entityManager._world[0].getBlockCoords(this.cx-this.getSize().sizeX/2, this.cy); //This is going by char's bottom left corner
+        var charCoordsRight = entityManager._world[0].getBlockCoords(this.cx+this.getSize().sizeX/2, this.cy); //This is going by char's bottom right corner
+        var hitCoords = (hitEntity instanceof Block ? [hitEntity.i, hitEntity.j] : entityManager._world[0].getBlockCoords(hitEntity.cx+this.getSize().sizeX/2, hitEntity.cy));
+
+        var charAbove = (hitCoords[0] > charCoords[0]); // char block coordinates lower because y-axis points down.
+        var charBelow = (hitCoords[0] < charCoords[0]);
+        var charToLeft = (hitCoords[1] > charCoords[1]); // char column coords must be lower.
+        var charToRight = (hitCoords[1] < charCoords[1]);
+        var sameCol = (hitCoords[1] == charCoordsLeft[1] || hitCoords[1] == charCoordsRight[1]);
+        var sameRow = (hitCoords[0] == charCoords[0] || hitCoords[0] == charCoords[0]-1) || this.state['jumping'];
+
+        lEdge = charToRight && sameRow;
+        rEdge = charToLeft && sameRow;
+        tEdge = charBelow && sameCol;
+        bEdge = charAbove && sameCol;
+
+        // Bad fix to make Character decide what happens to it's subclasses (Enemy, Zelda, Projectile)
+        if(hitEntity instanceof Block) {
+            var dir = 0; //direction of hit
+            if(!hitEntity._isPassable) {
+                standingOnSomething = standingOnSomething || bEdge;
+                if(lEdge && this.velX < 0 && axis === "x") {
+                    walkingIntoSomething = walkingIntoSomething || true;
+                }
+                if(rEdge && this.velX > 0 && axis === "x") {
+                    walkingIntoSomething = walkingIntoSomething || true;
+                }
+                if(bEdge && this.velY > 0 && axis === "y") {
+                    this.tempMaxJumpHeight = this.cy - this.maxPushHeight; 
+                    var groundY = entityManager._world[0].getLocation((hitEntity.i), (hitEntity.j))[1] // block top y coordinate
+                    this.putToGround(groundY);
+                    dir = 4;
+                } 
+                if(tEdge && this.velY < 0  && axis === "y"){// && this.velY < 0) {
+                    this.velY *= -1;
+                    dir = 1;
+                    this.state['offGround'] = true;
+                }
+            }
+            hitEntity.activate(this, dir);
+
+        }else if(hitEntity instanceof Portal) {
+            if(this.animationTimer === 0){
+                util.play(g_audio.portal);
+                this.animationTimer = 70; 
+                this.transend();
+            }
+        } else if(hitEntity instanceof Enemy) {
+            if(bEdge) {
+                console.log("colliding bottom edge!");
+                util.play(g_audio.boop);
+                g_score.update(50);
+                hitEntity.takeHit();
+                this.velY = -3;
+            } else {
+                console.log("colliding elsewhere");
+                this.takeHit();
+            }
         }
-    }
-}
+    
 
-
-
-
-Zelda.prototype.handleCollisions = function(prevX, prevY, nextX, nextY) {
-    this.handleEnemyCollision();
-    this.updateProxBlocks(prevX, prevY, nextX, nextY);
+    return {standingOnSomething: standingOnSomething, walkingIntoSomething: walkingIntoSomething};
 }
 
 // ==================
@@ -241,6 +289,28 @@ Zelda.prototype.update = function (du) {
     //var blocks = entityManager._world[0].findBlocks(this);
 
 	spatialManager.unregister(this);
+	
+	//update blocks in proximity
+    this.updateProxBlocks(this.cx, this.cy, this.cx+this.velX*du, this.cy+this.velY*du);
+	
+    // Check for death:
+    if(this._isDeadNow) {
+        if(Math.random() < 0.34){
+            util.play(g_audio.patIdiot);
+        } else if(Math.random() < 0.5){
+            util.play(g_audio.patClown);
+        } else {
+            util.play(g_audio.patFraud);
+        }
+        g_score.update(-500);
+        if (this.life > 0) {
+            this.life--;
+            this._isDeadNow = false;
+            entityManager.enterLevel(entityManager._level);
+        } else {
+            return entityManager.KILL_ME_NOW;            
+        }      
+    };
 
 	// Handle state['jumping']:
     if(keys[this.KEY_JUMP]) this.handleJump();
@@ -261,10 +331,6 @@ Zelda.prototype.update = function (du) {
 
     // Update speed/location and handle jumps/collisions
     this.updateVelocity(du);
-
-    //this.handleCollisions(this.cx, this.cy, this.cx+this.velX*du, this.cy+this.velY*du);
-    this.updateProxBlocks(this.cx, this.cy, this.cx+this.velX*du, this.cy+this.velY*du);
-    //
 
     var nextX = this.cx+this.velX*du;
     var nextY = this.cy+this.velY*du;
@@ -290,25 +356,6 @@ Zelda.prototype.update = function (du) {
         this._isDeadNow = true;
     }
 
-    // Check for death:
-    if(this._isDeadNow) {
-        if(Math.random() < 0.34){
-            util.play(g_audio.patIdiot);
-        } else if(Math.random() < 0.5){
-            util.play(g_audio.patClown);
-        } else {
-            util.play(g_audio.patFraud);
-        }
-        g_score.update(-500);
-        if (this.life > 0) {
-            this.life--;
-            this._isDeadNow = false;
-            entityManager.enterLevel(entityManager._level);
-        } else {
-            return entityManager.KILL_ME_NOW;            
-        }      
-    };
-
     // Finally, update status:
     this.updateStatus();
     var animFinished = this.animation.update(du);
@@ -326,16 +373,22 @@ Zelda.prototype.update = function (du) {
 Zelda.prototype.updateViewport = function(){
 	var acid = 0;
 	if(g_acid) acid = Math.random()*20 - 10;
-    var nextView = this.cx - g_canvas.width/2 + acid;
+    var nextViewX = this.cx - g_canvas.width/2 + acid;
     var lvlLength = entityManager._world[0].blocks[13].length*(g_canvas.height/14) - g_canvas.width;
-    if (nextView < 0) {
+    if (nextViewX < 0) {
         g_viewPort.x = 0;
-    } else if (nextView > lvlLength) {
+    } else if (nextViewX > lvlLength) {
         g_viewPort.x = lvlLength;
     } else {
-        g_viewPort.x = nextView;
+        g_viewPort.x = nextViewX;
     }
-    g_viewPort.y = 0;
+	
+    var nextViewY = this.cy - g_canvas.height/2 + acid;
+	if (nextViewY > 0) {
+        g_viewPort.y = 0;
+    } else {
+        g_viewPort.y = nextViewY;
+    }
 }
 
 Zelda.prototype.transend = function(){

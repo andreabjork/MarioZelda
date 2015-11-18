@@ -17,23 +17,24 @@ function Bowser(descr) {
     // Default sprite, if not otherwise specified
     this._scale = 1;
 	this.animations = makeBowserAnimation(this._scale);
-	this.animation = this.animations['idle'];
+	this.animation = this.animations['idleRight'];
 };
 
 // This comes later on when Entity has been implemented: 
-Bowser.prototype = new Character();
+Bowser.prototype = new Enemy();
 
 // Initial, inheritable, default values
 Bowser.prototype.cx = 500;
 Bowser.prototype.cy = 483;
 Bowser.prototype.velX = 0;
 Bowser.prototype.velY = 0;
-Bowser.prototype.HP = 10;
+Bowser.prototype.HP = 1;
 Bowser.prototype.teljari = 200;
+Bowser.prototype.animationTeljari = 80;
 Bowser.prototype.initialized = false;
 Bowser.prototype.startBattle = false;
 Bowser.prototype.state = {
-	idle: false,
+	idle: true,
 	attacking: false,
 	die: true,
 	takeDamage: false
@@ -44,15 +45,14 @@ Bowser.prototype.update = function(du) {
 	//check if this is inside the viewport
 	var margin = this.getSize().sizeX; //margin outside of viewport we want to update
 	if(!(this.cx+this.getSize().sizeX/2 < g_viewPort.x-margin ||
-	   this.cx-this.getSize().sizeX/2 > g_viewPort.x+g_canvas.width+margin)) this.startBattle = true;
+	   this.cx-this.getSize().sizeX/2 > g_viewPort.x+ g_canvas.width + margin)) this.startBattle = true;
 
 	if(this.startBattle){
 		spatialManager.unregister(this);
 		
 		this.updateProxBlocks(this.cx, this.cy, this.cx+this.velX*du, this.cy+this.velY*du);
 		
-		
-		var nextX = this.cx+this.velX*du;
+		var nextX = this.cx + this.velX*du;
 		var prevX = this.cx;
 		var nextY = this.cy;
 		var prevY = this.cy;
@@ -64,7 +64,9 @@ Bowser.prototype.update = function(du) {
 		this.cx += this.velX*du;
 	
 		// Check for death:
-		//if(this._isDeadNow) this.Die(); //return entityManager.KILL_ME_NOW;
+		if(this._isDeadNow) 
+			if(this.die() === "yolo") this.kill();
+		//return entityManager.KILL_ME_NOW;
 	
 		//update status
 		var dir;
@@ -74,9 +76,10 @@ Bowser.prototype.update = function(du) {
 			this._lastDir = dir;
 		}
 		this.teljari--;
-		if(this.teljari< 0) this.status = "idle"+dir;
+		if(this._isDeadNow) this.status = "die"+dir;
+		else if(this.teljari< 0) this.status = "idle"+dir;
 		else this.status = "takeDamage"+dir;
-		if(this.teljari < -200) this.teljari = 200;
+		if(this.teljari < -200) this.teljari = 0;
 		
 		this.animation = this.animations[this.status];
 	
@@ -87,6 +90,11 @@ Bowser.prototype.update = function(du) {
 }
 
 
+Bowser.prototype.die = function(){
+	this.velX = 10;
+	if(this.animationTeljari < 0) return "yolo";
+    else {this.animationTeljari--; return "pleb";}
+}
 
 Bowser.prototype.getSize = function(){
     var size = {sizeX:140*this._scale,sizeY:140*this._scale};
