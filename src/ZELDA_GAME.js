@@ -204,6 +204,7 @@ function requestPreloads() {
         marioTest: "res/images/mario.png",
         zeldaSpriteSheet: "res/images/zeldass.png",
         enemySpriteSheet: "res/images/enemyss.png",
+        spellSpriteSheet: "res/images/spellss.png",
 		defaultBlock: "res/images/blockPlaceholder.png",
         background: "res/images/background.jpg",
         spikes: "res/images/spikes.png",
@@ -253,6 +254,10 @@ function makeEnemyAnimation(scale) {
 	enemy.death = new Animation(g_images.enemySpriteSheet,60,20,20,1,50,scale);
 
     return enemy;
+};
+
+function makeSpellAnimation(scale) {
+    return new Animation(g_images.spellSpriteSheet,0,15,10,5,100, scale);
 };
 
 function imagePreloadDone() {

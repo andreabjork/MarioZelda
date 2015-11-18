@@ -31,6 +31,7 @@ var entityManager = {
 
 _character   : [],
 _bullets : [],
+_particles : [],
 _world: [],
 _collisionBlocks : [],
 _enemies   : [],
@@ -56,12 +57,13 @@ KILL_ME_NOW : -1,
 // i.e. thing which need `this` to be defined.
 //
 deferredSetup : function () {
-    this._categories = [this._objects, this._character, this._world, this._collisionBlocks, this._bullets, this._enemies];
+    this._categories = [this._objects, this._character, this._world, this._collisionBlocks, this._bullets, this._particles, this._enemies];
 },
 
 RESET_ALL: function() {
     this._character = [];
     this._bullets = [];
+    this._particles = [];
     this._enemies = [];
     this._objects = [];
     this._world = [];
@@ -118,6 +120,22 @@ fireBullet: function(cx, cy, velX, velY, rotation) {
 
         rotation : rotation
     }));
+},
+
+generateParticle : function(x,y,angle,avgVel,maxAlpha,maxR,fillStyle){
+	var r = Math.random()*maxR;
+	var vel = avgVel + (0.5*avgVel - Math.random()*avgVel); // +- 50% velocity from avgVel
+	var alpha = Math.random()*maxAlpha;
+	var particle = new Particle({
+		cx: x,
+		cy: y,
+		r: r,
+		angle: angle,
+		vel: vel,
+		style: fillStyle,
+		alpha: alpha
+	});
+    this._particles.push(particle);
 },
 
 generateCharacter : function(descr) {
