@@ -97,7 +97,7 @@ Block.prototype.activate = function (Char, direction) {
 		g_score.update(50);
 		g_audio.coin.pause();
 		g_audio.coin.currentTime = 0;
-		g_audio.coin.play();
+		util.play(g_audio.coin);
 		this.ammo--;
 	}
 	if(this.type === 4) {// && direction === 4){
@@ -109,7 +109,7 @@ Block.prototype.activate = function (Char, direction) {
 			g_score.update(50);
 			g_audio.coin.pause();
 			g_audio.coin.currentTime = 0;
-			g_audio.coin.play();
+			util.play(g_audio.coin);
 		} else this.sprite = g_sprites.blank;
 		this.ammo--;
 	}
@@ -131,6 +131,6 @@ Block.prototype.tryToBreak = function(){
 		g_score.update(10);
 		g_audio.brick.pause();
 		g_audio.brick.currentTime = 0;
-		g_audio.brick.play();
+		util.play(g_audio.brick);
 	}
 }

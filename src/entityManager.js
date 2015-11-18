@@ -60,7 +60,7 @@ deferredSetup : function () {
     this._categories = [this._objects, this._character, this._world, this._collisionBlocks, this._bullets, this._particles, this._enemies];
 },
 
-RESET_ALL: function() {
+resetAll: function() {
     this._character = [];
     this._bullets = [];
     this._particles = [];
@@ -149,6 +149,10 @@ generateEnemy : function(descr) {
 generateBOWSER : function(descr) {
     this._enemies.push(new Bowser	(descr));
 },
+	
+generateBoss : function(descr) {
+    this._enemies.push(new Boss(descr))
+},
 
 generateLevel : function(descr) {
     this._world.push(new World(descr));
@@ -203,14 +207,7 @@ update: function(du) {
                 if(c === 1) { // Zelda died! 
                     g_deathScreenOn = true;
                     backgroundMusic.pause();
-                    backgroundMusic = g_audio.themeDeath;
-                    try {
-                        backgroundMusic.addEventListener('ended', function () {
-                            this.currentTime = 0;
-                            this.play();
-                        });
-                        backgroundMusic.play();
-                    } catch (err) {};                   
+                    util.playLoop(g_audio.themeDeath);                 
                 }
             }
             else {

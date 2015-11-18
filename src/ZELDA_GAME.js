@@ -144,19 +144,28 @@ function processDiagnostics() {
 
 // GAME-SPECIFIC RENDERING
 var g_lvlLength;
+var g_newGame = true;
 var g_menuScreenOn = true;
 var g_deathScreenOn = false;
+
 window.addEventListener('keydown', function() {
     if (keys[KEY_SPACE]) {
         if (g_menuScreenOn) {
             g_menuScreenOn = false;
-            initLevel();
-        }
+            if (g_newGame) {
+                g_newGame = false;
+                initLevel();
+            } else {
+                backgroundMusic.pause();
+                util.playLoop(g_audio.theme1);
+                entityManager.enterLevel(1);
+            }
+        } 
         if (g_deathScreenOn) {
-            g_doClear = true;
             g_deathScreenOn = false;
             g_menuScreenOn = true;
-            entityManager.enterLevel(entityManager._level);
+            backgroundMusic.pause();
+            util.playLoop(g_audio.theme2);
         }
     }
 });
@@ -281,10 +290,15 @@ function imagePreloadDone() {
         theme1: "res/sounds/thema1.ogg",
         theme2: "res/sounds/thema2.ogg",
         themeDeath: "res/sounds/daudi.ogg",
-        zeldaShoot: "res/sounds/zelda-shot.mp3",
+        victoryTheme: "res/sounds/victory.ogg",
+        zeldaShoot: "res/sounds/zelda-shot.ogg",
         portal: "res/sounds/portal.ogg",
         coin: "res/sounds/coin.ogg",
-        brick: "res/sounds/brick.ogg"
+        brick: "res/sounds/brick.ogg",
+        boop: "res/sounds/boop.ogg",
+        patClown: "res/sounds/Patt_clown.ogg",
+        patIdiot: "res/sounds/Patt_idiot.ogg",
+        patFraud: "res/sounds/Patt_uselessFraud.ogg"
     }
     audioPreload(requiredAudio, g_audio, preloadDone);
 };
@@ -315,14 +329,8 @@ function preloadDone() {
     
     main.init();
     
-    try {
-        backgroundMusic = g_audio.theme2;
-        backgroundMusic.addEventListener('ended', function () {
-            this.currentTime = 0;
-            this.play();
-        });
-        backgroundMusic.play();
-    } catch(err) {}
+    backgroundMusic = g_audio.theme2;
+    util.playLoop(g_audio.theme2);
     
 };
 
@@ -334,15 +342,8 @@ function initLevel() {
     
     g_lvlLength = entityManager._world[0].blocks[13].length*(g_canvas.height/14) - g_canvas.width;
     
-    try {
-        backgroundMusic.pause();
-        backgroundMusic = g_audio.theme1;
-        backgroundMusic.addEventListener('ended', function () {
-            this.currentTime = 0;
-            this.play();
-        });
-        backgroundMusic.play();
-    } catch(err) {}
+    backgroundMusic.pause();
+    util.playLoop(g_audio.theme1);
 };
 
 // Kick it off
