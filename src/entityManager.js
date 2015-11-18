@@ -146,6 +146,10 @@ generateEnemy : function(descr) {
     this._enemies.push(new Enemy(descr));
 },
 
+generateBoss : function(descr) {
+    this._enemies.push(new Boss(descr))
+},
+
 generateLevel : function(descr) {
     this._world.push(new World(descr));
 },

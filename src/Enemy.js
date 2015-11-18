@@ -16,8 +16,10 @@ function Enemy(descr) {
 	this.setup(descr)
     // Default sprite, if not otherwise specified
     this._scale = 2.5;
-	this.animations = makeEnemyAnimation(this._scale);
-	this.animation = this.animations['walkingRight'];
+	if(typeof makeEnemyAnimation == 'function') {
+		this.animations = makeEnemyAnimation(this._scale);
+		this.animation = this.animations['walkingRight'];
+	}
 };
 
 // This comes later on when Entity has been implemented: 
@@ -30,6 +32,7 @@ Enemy.prototype.velX = -1;
 Enemy.prototype.velY = 1;
 Enemy.prototype.HP = 1;
 Enemy.prototype.initialized = false;
+Enemy.prototype._lastDir = "Right";
 Enemy.prototype.state = {
 jumping: false,
 offGround: false,
@@ -53,7 +56,7 @@ Enemy.prototype.update = function(du) {
         this.maxVelX = 3.9;
         this.maxVelY = 6.5;
     }
-	
+
 	this.updateProxBlocks(this.cx, this.cy, this.cx+this.velX*du, this.cy+this.velY*du);
 	
 	var nextX = this.cx+this.velX*du;
@@ -103,7 +106,9 @@ Enemy.prototype.update = function(du) {
 	
 	this.animation.update(du);
 	
-	
+		
+    this.handleSpecificEnemyAction(du);
+
 	spatialManager.register(this);
 }
 
@@ -112,4 +117,8 @@ Enemy.prototype.update = function(du) {
 Enemy.prototype.getSize = function(){
     var size = {sizeX:10*this._scale,sizeY:15*this._scale};
     return size;
+}
+
+Enemy.prototype.handleSpecificEnemyAction = function(du) {
+	// To be implemented in subclasses.
 }
