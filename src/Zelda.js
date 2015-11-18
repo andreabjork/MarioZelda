@@ -132,7 +132,7 @@ Zelda.prototype.updateJump = function(bEdge) {
     // If colliding with bottom edge, stop 'jumping'.	
 	if(bEdge) { 
         this.state['jumping'] = false;
-        this.state['pushing'] = keys[this.KEY_JUMP];
+        this.state['pushing'] = false;
         this.state['offGround'] = false;
         if(!(keys[this.KEY_LEFT] || keys[this.KEY_RIGHT])) this.velX = 0;
     }else{
@@ -162,7 +162,10 @@ Zelda.prototype.updateVelocity = function(du) {
 
     // We can keep 'pushing' off ground to manage a higher jump so long as we're
     // not too high in the air, i.e. 'offGround'.
-    this.state['pushing'] = keys[this.KEY_JUMP] && !this.state['offGround'];
+	// We can only start "pushing" if we can jump:
+	if(!this.state['pushing']) this.state['pushing'] = keys[this.KEY_JUMP] && this.state['canJump'] && this.state['jumping'];
+	// if we're already pushing we can keep pushing by these constraints:
+	else  this.state['pushing'] = keys[this.KEY_JUMP] && !this.state['offGround'];
     
     // To be able to change direction in midair:
     if((movingRight && wasMovingLeft && !this.state['inWater']) || (movingLeft && wasMovingRight && !this.state['inWater'])) this.velX = 0;
