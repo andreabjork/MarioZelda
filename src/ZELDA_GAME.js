@@ -279,7 +279,10 @@ function imagePreloadDone() {
         portal: "res/sounds/portal.ogg",
         coin: "res/sounds/coin.ogg",
         brick: "res/sounds/brick.ogg",
-        boop: "res/sounds/boop.ogg"
+        boop: "res/sounds/boop.ogg",
+        patClown: "res/sounds/Patt_clown.ogg",
+        patIdiot: "res/sounds/Patt_idiot.ogg",
+        patFraud: "res/sounds/Patt_uselessFraud.ogg"
     }
     audioPreload(requiredAudio, g_audio, preloadDone);
 };

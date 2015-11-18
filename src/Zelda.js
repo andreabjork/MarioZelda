@@ -282,6 +282,15 @@ Zelda.prototype.update = function (du) {
 
     // Check for death:
     if(this._isDeadNow) {
+        backgroundMusic.pause();
+        if(Math.random() < 0.34){
+            g_audio.patIdiot.play();
+        } else if(Math.random() < 0.5){
+            g_audio.patClown.play();
+        } else {
+            g_audio.patFraud.play();
+        }
+        backgroundMusic.play();
         if (this.life > 0) {
             this.life--;
             this._isDeadNow = false;
