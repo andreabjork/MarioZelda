@@ -48,8 +48,10 @@ Zelda.prototype.velX = 0;
 Zelda.prototype.velY = 0;
 Zelda.prototype.HP = 1;
 Zelda.prototype.life = 5;
+Zelda.prototype.rotation = 0;
 Zelda.prototype.maxVelX = 3.9;
 Zelda.prototype.maxVelY = 6.5;
+Zelda.prototype.animationTimer = 0;
 Zelda.prototype.tempMaxJumpHeight = 0;
 Zelda.prototype.maxPushHeight = 120;
 Zelda.prototype.state = {jumping: false, pushing: false, offGround: false, casting: false, onGround: true, idle: true, right: true, left: false, inWater: false}
@@ -222,7 +224,6 @@ Zelda.prototype.updateStatus = function() {
 	
 
 Zelda.prototype.update = function (du) {
-    // TEMP SOLUTION??? Seems kind of silly to make zelda 'find' the blocks.
     //var blocks = entityManager._world[0].findBlocks(this);
 
 	spatialManager.unregister(this);
@@ -262,8 +263,10 @@ Zelda.prototype.update = function (du) {
     if(this.handlePartialCollision(nextX,prevY,"x")) this.velX = 0;
 	bEdge = this.handlePartialCollision(prevX,nextY,"y");
 	
+	if(this.animationTimer > 0) this.transend();
 	
     this.updateLocation(du);
+	
     this.updateJump(bEdge);
 
     if(this.cy > g_canvas.height + 42){
@@ -288,7 +291,7 @@ Zelda.prototype.update = function (du) {
 
         this.state['casting'] = false;
     }
-
+	
 	spatialManager.register(this);
 
     this.updateViewport();
@@ -296,7 +299,9 @@ Zelda.prototype.update = function (du) {
 
 // Make sure Zelda is always center of the screen:
 Zelda.prototype.updateViewport = function(){
-    var nextView = this.cx - g_canvas.width/2;
+	var acid = 0;
+	if(g_acid) acid = Math.random()*20 - 10;
+    var nextView = this.cx - g_canvas.width/2 + acid;
     var lvlLength = entityManager._world[0].blocks[13].length*(g_canvas.height/14) - g_canvas.width;
     if (nextView < 0) {
         g_viewPort.x = 0;
@@ -306,4 +311,15 @@ Zelda.prototype.updateViewport = function(){
         g_viewPort.x = nextView;
     }
     g_viewPort.y = 0;
+}
+
+Zelda.prototype.transend = function(){
+	this.animationTimer--;
+	this.rotation = (this.animationTimer/70)*(2*Math.PI);
+	this.velX = 0;
+	this.velY = 0;
+	
+	if(this.animationTimer === 0){console.log("Yolo"); 
+	entityManager.enterLevel(++entityManager._level);
+	}   
 }
