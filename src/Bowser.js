@@ -28,8 +28,9 @@ Bowser.prototype.cx = 500;
 Bowser.prototype.cy = 483;
 Bowser.prototype.velX = 0;
 Bowser.prototype.velY = 0;
-Bowser.prototype.HP = 10;
+Bowser.prototype.HP = 1;
 Bowser.prototype.teljari = 200;
+Bowser.prototype.animationTeljari = 80;
 Bowser.prototype.initialized = false;
 Bowser.prototype.startBattle = false;
 Bowser.prototype.state = {
@@ -63,7 +64,9 @@ Bowser.prototype.update = function(du) {
 		this.cx += this.velX*du;
 	
 		// Check for death:
-		//if(this._isDeadNow) this.Die(); //return entityManager.KILL_ME_NOW;
+		if(this._isDeadNow) 
+			if(this.die() === "yolo") this.kill();
+		//return entityManager.KILL_ME_NOW;
 	
 		//update status
 		var dir;
@@ -73,7 +76,8 @@ Bowser.prototype.update = function(du) {
 			this._lastDir = dir;
 		}
 		this.teljari--;
-		if(this.teljari< 0) this.status = "idle"+dir;
+		if(this._isDeadNow) this.status = "die"+dir;
+		else if(this.teljari< 0) this.status = "idle"+dir;
 		else this.status = "takeDamage"+dir;
 		if(this.teljari < -200) this.teljari = 0;
 		
@@ -86,6 +90,11 @@ Bowser.prototype.update = function(du) {
 }
 
 
+Bowser.prototype.die = function(){
+	this.velX = 10;
+	if(this.animationTeljari < 0) return "yolo";
+    else {this.animationTeljari--; return "pleb";}
+}
 
 Bowser.prototype.getSize = function(){
     var size = {sizeX:140*this._scale,sizeY:140*this._scale};
