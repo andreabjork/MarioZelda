@@ -89,7 +89,7 @@ Block.prototype.activate = function (Char, direction) {
 		this.tryToBreak();
 	}
 	if(this.type === 2){
-		Char.takeHit();
+		if(Char instanceof Zelda) Char.takeHit();
 	}
 	if(this.type === 3 && direction === 1 && this.ammo > 0){
 		this._makeAnimation = true;

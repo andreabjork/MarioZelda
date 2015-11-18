@@ -116,6 +116,8 @@ Zelda.prototype.handleEnemyCollision = function() {
 }
 
 
+
+
 Zelda.prototype.handleCollisions = function(prevX, prevY, nextX, nextY) {
     this.handleEnemyCollision();
     this.updateProxBlocks(prevX, prevY, nextX, nextY);

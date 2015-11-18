@@ -18,9 +18,11 @@ function Projectile(descr) {
     this.setup(descr);
 	if(this.velX > 0)this.animation = makeSpellAnimation(this.radius/2);
 	else this.animation = makeSpellAnimation(-this.radius/2);
+
+    this.HP = 1;
 }
 
-Projectile.prototype = new Entity();
+Projectile.prototype = new Character();
 
 // Initial, inheritable, default values
 Projectile.prototype.friendly = false;  //override if Mario made it 
@@ -53,7 +55,9 @@ Projectile.prototype.update = function (du) {
 
     // Unregister
     spatialManager.unregister(this);
+    this.updateProxBlocks(this.cx, this.cy, this.cx+this.velX*du, this.cy+this.velY*du);
     this.animation.update(du);
+
     // hér á eftir að útbúa handler fyrir rotation sem og manage hvað
     // og hvenær projectilið drepur sig... best kannski bara þegar það 
     //er out of screen
@@ -71,6 +75,9 @@ Projectile.prototype.update = function (du) {
         return entityManager.KILL_ME_NOW;
     }
 	
+    this.handlePartialCollision(nextX,this.cy,"x")
+
+    if(this._isDeadNow) return entityManager.KILL_ME_NOW;	
     // select random colour
 	var randIndex = Math.floor(Math.random()*this.particleColors.length);
 	var randColour = this.particleColors[randIndex];
@@ -80,7 +87,7 @@ Projectile.prototype.update = function (du) {
 	
 	//generateParticle
 	entityManager.generateParticle(this.cx, this.cy, particleDir, 1, 0.7, this.radius*2, randColour);
-	
+
     this.cx += this.velX * du;
     this.cy += this.velY * du;
 
@@ -95,10 +102,6 @@ Projectile.prototype.getPos = function () {
 
 Projectile.prototype.getSize = function () {
     return {sizeX: 2, sizeY: 2};
-};
-
-Projectile.prototype.takeProjectileHit = function () {
-    // Must-do
 };
 
 Projectile.prototype.render = function (ctx) {

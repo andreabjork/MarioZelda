@@ -21,6 +21,8 @@ function Character(descr) {
     this._isAlive = true;
 
 };
+
+Character.prototype.HP = 1;
 // This comes later on when Entity has been implemented: 
 Character.prototype = new Entity();
 
@@ -94,7 +96,7 @@ Character.prototype.putToGround = function(groundY) {
     this.cy = groundY -this.getSize().sizeY/2 + 1; // character centre coordinate on ground.
 }
 
-Character.prototype.handlePartialCollision = function(charX,charY,axis){
+Character.prototype.handlePartialCollision = function(charX,charY,axis,callback){
     var bEdge,lEdge,rEdge,tEdge;
     var standingOnSomething = false;
     var walkingIntoSomething = false;
@@ -102,6 +104,28 @@ Character.prototype.handlePartialCollision = function(charX,charY,axis){
         var hitEntities = this.findHitEntities(charX, charY);
         for(var hit in hitEntities) {
             var hitEntity = hitEntities[hit];
+
+            if(this instanceof Projectile) {
+                if(hitEntity instanceof Block && !hitEntity._isPassable) {
+                    console.log("hit unpassable block");
+                    console.log("hp of bullet");
+                    console.log(this.HP);
+                    console.log("is dead now");
+                    console.log(this._isDeadNow);
+                    this.takeHit();
+                    console.log("hp of bullet");
+                    console.log(this.HP);
+                    console.log("is dead now");
+                    console.log(this._isDeadNow);
+                }else if(hitEntity instanceof Enemy) {
+                    console.log("hit enemy");
+                    this.takeHit();
+                    hitEntity.takeHit();
+                }
+
+                return;
+            }
+
             // Lots of vars for type of collision: top, bottom, same column, same row, going by zelda center coordinate, left coordinate, right, etc.
             var charCoords = entityManager._world[0].getBlockCoords(this.cx, this.cy); //This is going by char's center, which is her lower half. Upper half needs to be in i, j-1.
             var charCoordsLeft = entityManager._world[0].getBlockCoords(this.cx-this.getSize().sizeX/2, this.cy); //This is going by char's bottom left corner
@@ -120,6 +144,7 @@ Character.prototype.handlePartialCollision = function(charX,charY,axis){
             tEdge = charBelow && sameCol;
             bEdge = charAbove && sameCol;
 
+            // Bad fix to make Character decide what happens to it's subclasses (Enemy, Zelda, Projectile)
             if(hitEntity instanceof Block) {
                 var dir = 0; //direction of hit
                 if(!hitEntity._isPassable) {
@@ -141,9 +166,7 @@ Character.prototype.handlePartialCollision = function(charX,charY,axis){
                         dir = 1;
                     }
                 }
-
                 hitEntity.activate(this, dir);
-
             }else if(hitEntity instanceof Portal && this instanceof Zelda) {
                 if(this.animationTimer === 0){
 					g_audio.portal.play();
