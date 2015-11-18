@@ -344,7 +344,7 @@ Zelda.prototype.transend = function(){
 	this.velX = 0;
 	this.velY = 0;
 	
-	if(this.animationTimer === 0){console.log("Yolo"); 
-	entityManager.enterLevel(++entityManager._level);
+	if(this.animationTimer === 0){ 
+	   entityManager.enterLevel(++entityManager._level);
 	}   
 }

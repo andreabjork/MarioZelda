@@ -119,11 +119,9 @@ function processDiagnostics() {
     if (eatKey(KEY_RESET)) entityManager.resetAll();
 
     if (eatKey(KEY_LEVEL1)) {
-        console.log("entering level 1");
         if (!g_menuScreenOn && !g_deathScreenOn) entityManager.enterLevel(1);
     };
     if (eatKey(KEY_LEVEL2)) {
-        console.log("entering level 2");
         if (!g_menuScreenOn && !g_deathScreenOn) entityManager.enterLevel(2);
     };
     if (eatKey(KEY_LEVEL3)) {
