@@ -204,6 +204,7 @@ function requestPreloads() {
         marioTest: "res/images/mario.png",
         zeldaSpriteSheet: "res/images/zeldass.png",
         enemySpriteSheet: "res/images/enemyss.png",
+		bowserSpriteSheet: "res/images/Patt_Sheet.png",
         spellSpriteSheet: "res/images/spellss.png",
 		defaultBlock: "res/images/blockPlaceholder.png",
         background: "res/images/background.jpg",
@@ -241,6 +242,21 @@ function makeZeldaAnimation(scale) {
     zelda.magicLeft = new Animation(g_images.zeldaSpriteSheet,320,51,48,6,100,-scale);
 
     return zelda;
+};
+
+function makeBowserAnimation(scale) {
+    var bowser = {};
+	//image, frameY, frameWidth, frameHeight, numFrames, interval, scale
+    bowser.idleRight = new Animation(g_images.bowserSpriteSheet,0,200,200,3,600,scale);
+    bowser.idleLeft = new Animation(g_images.bowserSpriteSheet,0,200,200,3,600,-scale);
+    bowser.attackRight = new Animation(g_images.bowserSpriteSheet,200,200,200,5,400,scale);
+    bowser.attackLeft = new Animation(g_images.bowserSpriteSheet,200,200,200,5,400,-scale);
+	bowser.takeDamageRight = new Animation(g_images.bowserSpriteSheet,400,200,200,4,400,scale);
+    bowser.takeDamageLeft = new Animation(g_images.bowserSpriteSheet,400,200,200,4,400,-scale);
+    bowser.dieRight = new Animation(g_images.bowserSpriteSheet,400,200,200,4,350,scale);
+    bowser.dieLeft = new Animation(g_images.bowserSpriteSheet,400,200,200,4,350,-scale);
+
+    return bowser;
 };
 
 function makeEnemyAnimation(scale) {
