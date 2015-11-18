@@ -75,9 +75,6 @@ function gatherInputs() {
 function updateSimulation(du) {
     
     processDiagnostics();
-    if (eatKey[KEY_SPACE] && g_menuScreenOn) {
-        var space = true;
-    }
     
     if (g_menuScreenOn) {
         if (keys[KEY_SPACE]) {
@@ -85,11 +82,13 @@ function updateSimulation(du) {
             g_textScreenOn = true;
             menuScreen = g_sprites.textScreen1;
             util.play(g_audio.patStory);
+			keys[KEY_SPACE] = false;
             return;
         }
     }
     if (g_textScreenOn) {
         if (keys[KEY_SPACE]) {
+			keys[KEY_SPACE] = false;
             if (g_textScreenOn) {
                 g_textScreenOn = false;
                 if (g_newGame) {
