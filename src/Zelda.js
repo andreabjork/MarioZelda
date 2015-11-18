@@ -54,7 +54,7 @@ Zelda.prototype.maxVelY = 6.5;
 Zelda.prototype.animationTimer = 0;
 Zelda.prototype.tempMaxJumpHeight = 0;
 Zelda.prototype.maxPushHeight = 120;
-Zelda.prototype.state = {jumping: false, pushing: false, offGround: false, casting: false, onGround: true, idle: true, facingRight: true, inWater: false}
+Zelda.prototype.state = {jumping: false, canJump: true, pushing: false, offGround: false, casting: false, onGround: true, idle: true, facingRight: true, inWater: false}
 Zelda.prototype.status = "idleRight";
 // idle, walkingRight, walkingLeft, runningRight, runningLeft, inAirRight, inAirLeft
 
@@ -64,7 +64,8 @@ Zelda.prototype.status = "idleRight";
 
 
 Zelda.prototype.handleJump = function () {
-    if(this.state['jumping'] && !this.state['inWater']) { return; }
+	if(!this.state['canJump']) return;
+    if(this.state['jumping'] && !this.state['inWater']) return;
     else if(this.state['inWater']) {
         this.velY = -1; 
         this.tempMaxJumpHeight = this.cy - 1;
@@ -161,7 +162,7 @@ Zelda.prototype.updateVelocity = function(du) {
     }
 
     // We can keep 'pushing' off ground to manage a higher jump so long as we're
-    // not too high in the air, i.e. 'offGround'. 
+    // not too high in the air, i.e. 'offGround'.
     this.state['pushing'] = keys[this.KEY_JUMP] && !this.state['offGround'];
     
     // To be able to change direction in midair:
@@ -220,9 +221,9 @@ Zelda.prototype.updateStatus = function() {
     var atMaxVel = (Math.abs(this.velX)>=(this.maxVelX*0.9))
     if(this.state['jumping']) nextStatus = "inAir"+dir;
     else if(this.state['casting']) nextStatus = "magic" + dir;
-    else if(this.velX === 0 && !this.state['pushing']) nextStatus = "idle"+(wasMovingLeft?"Left":dir);
-    else if(atMaxVel && !this.state['pushing'] && !this.state['inWater']) nextStatus = "running"+dir;
-    else if(!this.state['pushing']) nextStatus = "walking"+dir;
+    else if(this.velX === 0 && !this.state['jumping']) nextStatus = "idle"+(wasMovingLeft?"Left":dir);
+    else if(atMaxVel && !this.state['jumping'] && !this.state['inWater']) nextStatus = "running"+dir;
+    else if(!this.state['jumping']) nextStatus = "walking"+dir;
 
     // Update animation
     if(nextStatus!==this.status){
@@ -274,6 +275,8 @@ Zelda.prototype.update = function (du) {
 	//check left/right collisions first and then top/bottom
     if(this.handlePartialCollision(nextX,prevY,"x")) this.velX = 0;
 	bEdge = this.handlePartialCollision(prevX,nextY,"y");
+	
+	this.state['canJump'] = (!this.state['jumping'] && !keys[this.KEY_JUMP]);
 	
 	if(this.animationTimer > 0) this.transend();
 	
