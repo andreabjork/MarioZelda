@@ -157,7 +157,7 @@ window.addEventListener('keydown', function() {
                 initLevel();
             } else {
                 backgroundMusic.pause();
-                loop(g_audio.theme1);
+                util.playLoop(g_audio.theme1);
                 entityManager.enterLevel(1);
             }
         } 
@@ -165,7 +165,7 @@ window.addEventListener('keydown', function() {
             g_deathScreenOn = false;
             g_menuScreenOn = true;
             backgroundMusic.pause();
-            loop(g_audio.theme2);
+            util.playLoop(g_audio.theme2);
         }
     }
 });
@@ -313,7 +313,8 @@ function preloadDone() {
     
     main.init();
     
-    loop(g_audio.theme2);
+    backgroundMusic = g_audio.theme2;
+    util.playLoop(g_audio.theme2);
     
 };
 
@@ -326,19 +327,8 @@ function initLevel() {
     g_lvlLength = entityManager._world[0].blocks[13].length*(g_canvas.height/14) - g_canvas.width;
     
     backgroundMusic.pause();
-    loop(g_audio.theme1);
+    util.playLoop(g_audio.theme1);
 };
 
-function loop(music) {
-    try {
-        backgroundMusic = music;
-        backgroundMusic.currentTime = 0;
-        backgroundMusic.addEventListener('ended', function () {
-            this.currentTime = 0;
-            this.play();
-        });
-        backgroundMusic.play();
-    } catch(err) {}    
-}
 // Kick it off
 requestPreloads();

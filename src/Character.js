@@ -169,14 +169,14 @@ Character.prototype.handlePartialCollision = function(charX,charY,axis,callback)
                 hitEntity.activate(this, dir);
             }else if(hitEntity instanceof Portal && this instanceof Zelda) {
                 if(this.animationTimer === 0){
-					g_audio.portal.play();
+					util.play(g_audio.portal);
 					this.animationTimer = 70; 
 					this.transend();
 				}
             } else if(hitEntity instanceof Enemy && this instanceof Zelda) {
                 if(bEdge) {
                     console.log("colliding bottom edge!");
-                    g_audio.boop.play();
+                    util.play(g_audio.boop);
                     g_score.update(50);
                     hitEntity.takeHit();
                     this.velY = -3;

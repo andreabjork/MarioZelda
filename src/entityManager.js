@@ -199,7 +199,7 @@ update: function(du) {
                 if(c === 1) { // Zelda died! 
                     g_deathScreenOn = true;
                     backgroundMusic.pause();
-                    loop(g_audio.themeDeath);                 
+                    util.playLoop(g_audio.themeDeath);                 
                 }
             }
             else {

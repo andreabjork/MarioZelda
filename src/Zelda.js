@@ -243,7 +243,7 @@ Zelda.prototype.update = function (du) {
     if(keys[this.KEY_JUMP]) this.handleJump();
     // Handle casting:
     if(keys[this.KEY_CAST]) {
-        g_audio.zeldaShoot.play();
+        util.play(g_audio.zeldaShoot);
         this.handleCasting();
     }
 
@@ -287,15 +287,13 @@ Zelda.prototype.update = function (du) {
 
     // Check for death:
     if(this._isDeadNow) {
-        backgroundMusic.pause();
         if(Math.random() < 0.34){
-            g_audio.patIdiot.play();
+            util.play(g_audio.patIdiot);
         } else if(Math.random() < 0.5){
-            g_audio.patClown.play();
+            util.play(g_audio.patClown);
         } else {
-            g_audio.patFraud.play();
+            util.play(g_audio.patFraud);
         }
-        backgroundMusic.play();
         g_score.update(-500);
         if (this.life > 0) {
             this.life--;

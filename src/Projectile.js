@@ -69,7 +69,7 @@ Projectile.prototype.update = function (du) {
     if (hitEntity instanceof Enemy) {
         var canTakeHit = hitEntity.takeHit;
         if (canTakeHit) {
-            g_audio.boop.play();
+            util.play(g_audio.boop);
             g_score.update(50);
             hitEntity.takeHit();
         }

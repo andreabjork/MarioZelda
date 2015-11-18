@@ -126,6 +126,31 @@ strokeBox: function (ctx, x, y, w, h, style) {
     ctx.stroke();
     
     ctx.restore();
+},
+
+//=======
+// AUDIO
+//=======
+
+play: function (audio) {
+    audio.pause();
+    audio.currentTime = 0;
+    if (!g_isMuted) audio.play();
+},
+
+playLoop: function (audio) {
+    backgroundMusic.pause();
+    backgroundMusic = audio;
+    backgroundMusic.currentTime = 0;
+    if (!g_isMuted) {
+        try {
+            backgroundMusic.addEventListener('ended', function () {
+                this.currentTime = 0;
+                this.play();
+            });
+            backgroundMusic.play();
+        } catch(err) {}
+    };
 }
 
 };
