@@ -64,7 +64,10 @@ Projectile.prototype.update = function (du) {
     var hitEntity = this.findHitEntity(nextX, nextY);
     if (hitEntity instanceof Enemy) {
         var canTakeHit = hitEntity.takeHit;
-        if (canTakeHit) hitEntity.takeHit();
+        if (canTakeHit) {
+            g_audio.boop.play();
+            hitEntity.takeHit();
+        }
         return entityManager.KILL_ME_NOW;
     }
 	

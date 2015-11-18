@@ -153,6 +153,7 @@ Character.prototype.handlePartialCollision = function(charX,charY,axis){
             } else if(hitEntity instanceof Enemy && this instanceof Zelda) {
                 if(bEdge) {
                     console.log("colliding bottom edge!");
+                    g_audio.boop.play();
                     hitEntity.takeHit();
                     this.velY = -3;
                 } else {
