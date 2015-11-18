@@ -162,6 +162,7 @@ Character.prototype.handlePartialCollision = function(charX,charY,axis,callback)
                         if(tEdge && this.velY < 0  && axis === "y"){// && this.velY < 0) {
                             this.velY *= -1;
                             dir = 1;
+							this.state['offGround'] = true;
                         }
                     }
                     hitEntity.activate(this, dir);
