@@ -106,10 +106,17 @@ Character.prototype.handlePartialCollision = function(charX,charY,axis,callback)
             var hitEntity = hitEntities[hit];
 
             if(this instanceof Projectile) {
-                console.log("projectile");
                 if(hitEntity instanceof Block && !hitEntity._isPassable) {
                     console.log("hit unpassable block");
+                    console.log("hp of bullet");
+                    console.log(this.HP);
+                    console.log("is dead now");
+                    console.log(this._isDeadNow);
                     this.takeHit();
+                    console.log("hp of bullet");
+                    console.log(this.HP);
+                    console.log("is dead now");
+                    console.log(this._isDeadNow);
                 }else if(hitEntity instanceof Enemy) {
                     console.log("hit enemy");
                     this.takeHit();

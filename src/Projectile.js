@@ -18,6 +18,8 @@ function Projectile(descr) {
     this.setup(descr);
 	if(this.velX > 0)this.animation = makeSpellAnimation(this.radius/2);
 	else this.animation = makeSpellAnimation(-this.radius/2);
+
+    this.HP = 1;
 }
 
 Projectile.prototype = new Character();
@@ -64,8 +66,8 @@ Projectile.prototype.update = function (du) {
     var nextY = this.cy + this.velY*du;
 
     this.handlePartialCollision(nextX,this.cy,"x")
-    
-	
+
+    if(this._isDeadNow) return entityManager.KILL_ME_NOW;	
     // select random colour
 	var randIndex = Math.floor(Math.random()*this.particleColors.length);
 	var randColour = this.particleColors[randIndex];
@@ -90,10 +92,6 @@ Projectile.prototype.getPos = function () {
 
 Projectile.prototype.getSize = function () {
     return {sizeX: 2, sizeY: 2};
-};
-
-Projectile.prototype.takeProjectileHit = function () {
-    // Must-do
 };
 
 Projectile.prototype.render = function (ctx) {
