@@ -103,14 +103,7 @@ Zelda.prototype.handleCollision = function(hitEntity, axis) {
     var standingOnSomething;
     var walkingIntoSomething;
 
-    if(this instanceof Projectile) {
-        if(hitEntity instanceof Block && !hitEntity._isPassable) {
-            this.takeHit();
-        }else if(hitEntity instanceof Enemy) {
-            this.takeHit();
-            hitEntity.takeHit();
-        }
-    } else {
+
 
         // Lots of vars for type of collision: top, bottom, same column, same row, going by zelda center coordinate, left coordinate, right, etc.
         var charCoords = entityManager._world[0].getBlockCoords(this.cx, this.cy); //This is going by char's center, which is her lower half. Upper half needs to be in i, j-1.
@@ -155,13 +148,13 @@ Zelda.prototype.handleCollision = function(hitEntity, axis) {
             }
             hitEntity.activate(this, dir);
 
-        }else if(hitEntity instanceof Portal && this instanceof Zelda) {
+        }else if(hitEntity instanceof Portal) {
             if(this.animationTimer === 0){
                 util.play(g_audio.portal);
                 this.animationTimer = 70; 
                 this.transend();
             }
-        } else if(hitEntity instanceof Enemy && this instanceof Zelda) {
+        } else if(hitEntity instanceof Enemy) {
             if(bEdge) {
                 console.log("colliding bottom edge!");
                 util.play(g_audio.boop);
@@ -173,7 +166,7 @@ Zelda.prototype.handleCollision = function(hitEntity, axis) {
                 this.takeHit();
             }
         }
-    }
+    
 
     return {standingOnSomething: standingOnSomething, walkingIntoSomething: walkingIntoSomething};
 }
