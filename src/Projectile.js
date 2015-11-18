@@ -18,7 +18,7 @@ function Projectile(descr) {
     this.setup(descr);
 }
 
-Projectile.prototype = new Entity();
+Projectile.prototype = new Character();
 
 // Initial, inheritable, default values
 Projectile.prototype.friendly = false;  //override if Mario made it 
@@ -38,6 +38,7 @@ Projectile.prototype.update = function (du) {
 
     // Unregister
     spatialManager.unregister(this);
+    this.updateProxBlocks(this.cx, this.cy, this.cx+this.velX*du, this.cy+this.velY*du);
     
     // hér á eftir að útbúa handler fyrir rotation sem og manage hvað
     // og hvenær projectilið drepur sig... best kannski bara þegar það 
@@ -46,12 +47,14 @@ Projectile.prototype.update = function (du) {
     var nextX = this.cx + this.velX*du;
     var nextY = this.cy + this.velY*du;
 
+    this.handlePartialCollision(nextX,this.cy,"x")
+    /*
     var hitEntity = this.findHitEntity(nextX, nextY);
     if (hitEntity instanceof Enemy) {
         var canTakeHit = hitEntity.takeHit;
         if (canTakeHit) hitEntity.takeHit();
         return entityManager.KILL_ME_NOW;
-    }
+    }*/
     
     this.cx += this.velX * du;
     this.cy += this.velY * du;

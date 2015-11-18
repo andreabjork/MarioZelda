@@ -37,6 +37,33 @@ onGround: true,
 inWater: false
 };
 
+Enemy.prototype.handleEnemy = function(hitEntity, lEdge, rEdge, tEdge, bEdge, standingOnSomething, walkingIntoSomething) {
+    if(hitEntity instanceof Block) {
+        var dir = 0; //direction of hit
+        if(!hitEntity._isPassable) {
+            standingOnSomething = standingOnSomething || bEdge;
+            if(lEdge && this.velX < 0 && axis === "x") {
+                walkingIntoSomething = walkingIntoSomething || true;
+            }
+            if(rEdge && this.velX > 0 && axis === "x") {
+                walkingIntoSomething = walkingIntoSomething || true;
+            }
+            if(bEdge && this.velY > 0 && axis === "y") {
+                this.tempMaxJumpHeight = this.cy - this.maxPushHeight; 
+                var groundY = entityManager._world[0].getLocation((hitEntity.i), (hitEntity.j))[1] // block top y coordinate
+                this.putToGround(groundY);
+                dir = 4;
+            } 
+            if(tEdge && this.velY < 0  && axis === "y"){// && this.velY < 0) {
+                this.velY *= -1;
+                dir = 1;
+            }
+        }
+        hitEntity.activate(this, dir);
+    }
+}
+
+
 
 Enemy.prototype.update = function(du) {
 	spatialManager.unregister(this);
@@ -65,8 +92,8 @@ Enemy.prototype.update = function(du) {
     this.state['inWater'] = false;
 	
 	//check left/right collisions first and then top/bottomx
-    var walkingIntoSomething = this.handlePartialCollision(nextX,prevY,"x");
-	var standingOnSomething = this.handlePartialCollision(prevX,nextY,"y");
+    var walkingIntoSomething = this.handlePartialCollision(nextX,prevY,"x", this.handleEnemy);
+	var standingOnSomething = this.handlePartialCollision(prevX,nextY,"y", this.handleEnemy);
 	// update location
     this.cx += this.velX*du;
     this.cy += this.velY*du;
