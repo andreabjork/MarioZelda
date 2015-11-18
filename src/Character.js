@@ -150,7 +150,6 @@ Character.prototype.handlePartialCollision = function(charX,charY,axis){
 					this.animationTimer = 70; 
 					this.transend();
 				}
-			}
             } else if(hitEntity instanceof Enemy && this instanceof Zelda) {
                 if(bEdge) {
                     console.log("colliding bottom edge!");
@@ -161,7 +160,6 @@ Character.prototype.handlePartialCollision = function(charX,charY,axis){
                     this.takeHit();
                 }
             }
->>>>>>> origin/master
         }
     }
     if(axis === "x") return walkingIntoSomething;
