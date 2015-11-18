@@ -261,7 +261,9 @@ function imagePreloadDone() {
         theme2: "res/sounds/thema2.ogg",
         themeDeath: "res/sounds/daudi.ogg",
         zeldaShoot: "res/sounds/zelda-shot.mp3",
-        portal: "res/sounds/portal.mp3"
+        portal: "res/sounds/portal.ogg",
+        coin: "res/sounds/coin.ogg",
+        brick: "res/sounds/brick.ogg"
     }
     audioPreload(requiredAudio, g_audio, preloadDone);
 };
@@ -288,8 +290,8 @@ function preloadDone() {
     g_sprites.portal = new Sprite(g_images.portal);
     
     g_audio.theme1.volume = 0.8;
+    g_audio.coin.volume = 0.7;
     
-    entityManager.init();
     main.init();
     
     try {
@@ -304,6 +306,8 @@ function preloadDone() {
 };
 
 function initLevel() {
+    
+    entityManager.init();
     
     entityManager.enterLevel(1);
     

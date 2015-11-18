@@ -94,7 +94,10 @@ Block.prototype.activate = function (Char, direction) {
 	if(this.type === 3 && direction === 1 && this.ammo > 0){
 		this._makeAnimation = true;
 		this._AnimationCounter = 0;
-		g_score.update(20);
+		g_score.update(50);
+		g_audio.coin.pause();
+		g_audio.coin.currentTime = 0;
+		g_audio.coin.play();
 		this.ammo--;
 	}
 	if(this.type === 4) {// && direction === 4){
@@ -102,9 +105,13 @@ Block.prototype.activate = function (Char, direction) {
 	} 
 	
 	if(this.type === 7 && Char instanceof Zelda) {
+		if(this.ammo > 0) {
+			g_score.update(50);
+			g_audio.coin.pause();
+			g_audio.coin.currentTime = 0;
+			g_audio.coin.play();
+		} else this.sprite = g_sprites.blank;
 		this.ammo--;
-		if(this.ammo > 0) g_score.update(50);
-		else this.sprite = g_sprites.blank;
 	}
 };
 
@@ -122,5 +129,8 @@ Block.prototype.tryToBreak = function(){
     	console.log("breaking!");
 		this._isDeadNow = true;
 		g_score.update(10);
+		g_audio.brick.pause();
+		g_audio.brick.currentTime = 0;
+		g_audio.brick.play();
 	}
 }
