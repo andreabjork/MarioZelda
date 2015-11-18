@@ -181,12 +181,16 @@ Zelda.prototype.updateVelocity = function(du) {
     if(!this.state['jumping'] && !(movingRight || movingLeft)) {
         this.velX = 0;
     }
+	
+
 
     // Start accelerating down as soon as we've "stopped state['pushing']"
     if(this.state['jumping'] && !this.state['pushing'] && this.velY < TERMINAL_VELOCITY) {
         if(!this.state['inWater'])this.velY += NOMINAL_GRAVITY*du;
         else this.velY += (NOMINAL_GRAVITY*du)/10;
-    } else if(!this.state['jumping']){
+    }else if(this.state['jumping'] && this.state['pushing']){
+		this.velY = -6;
+	}else if(!this.state['jumping']){
         this.velY = 0;
     }
 }
