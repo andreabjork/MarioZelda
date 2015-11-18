@@ -66,7 +66,7 @@ Character.prototype.takeHit = function () {
 
 Character.prototype.render = function (ctx) {
 	//console.log("rendering at: ("+this.cx+","+this.cy+")");
-    this.animation.renderAt(ctx, this.cx, this.cy);
+    this.animation.renderAt(ctx, this.cx, this.cy, this.rotation);
 };
 
 Character.prototype.getPos = function(){
@@ -161,9 +161,12 @@ Character.prototype.handlePartialCollision = function(charX,charY,axis,callback)
                 }
                 hitEntity.activate(this, dir);
             }else if(hitEntity instanceof Portal && this instanceof Zelda) {
-                g_audio.portal.play();
-                entityManager.enterLevel(++entityManager._level);
-            }else if(hitEntity instanceof Enemy && this instanceof Zelda) {
+                if(this.animationTimer === 0){
+					g_audio.portal.play();
+					this.animationTimer = 70; 
+					this.transend();
+				}
+            } else if(hitEntity instanceof Enemy && this instanceof Zelda) {
                 if(bEdge) {
                     console.log("colliding bottom edge!");
                     hitEntity.takeHit();

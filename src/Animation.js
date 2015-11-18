@@ -44,9 +44,10 @@ Animation.prototype.reset = function(){
 	this.frameTimeLeft = this.interval;
 }
 
-Animation.prototype.renderAt = function(ctx,cx,cy){
+Animation.prototype.renderAt = function(ctx,cx,cy,rot){
+	if (rot === undefined) rot = 0;
 	var frame = this.sprites[this.frameNum];
-	frame.drawCentredAt(ctx,cx,cy,0);
+	frame.drawCentredAt(ctx,cx,cy,rot);
 };
 
 Animation.prototype.loadSprites = function(y,w,h,n,s){

@@ -27,7 +27,7 @@ Enemy.prototype = new Character();
 Enemy.prototype.cx = 500;
 Enemy.prototype.cy = 483;
 Enemy.prototype.velX = -1;
-Enemy.prototype.velY = 0;
+Enemy.prototype.velY = 1;
 Enemy.prototype.HP = 1;
 Enemy.prototype.initialized = false;
 Enemy.prototype.state = {
@@ -99,10 +99,11 @@ Enemy.prototype.update = function(du) {
     this.cy += this.velY*du;
 	
 	// Fall down
-	if(!standingOnSomething && this.velY < TERMINAL_VELOCITY){
+	if(!standingOnSomething && this.velY < TERMINAL_VELOCITY && !this.state['inWater']){
 		this.velY += NOMINAL_GRAVITY*du;
 	}
 	
+	if(this.state['inWater'] && standingOnSomething) this.velY = -1;
 	// Turn around
 	if(walkingIntoSomething){
 		this.velX *= -1;
@@ -122,14 +123,15 @@ Enemy.prototype.update = function(du) {
 		dir = (this.velX > 0 ? "Right" : "Left");
 		this._lastDir = dir;
 	}
-	if(this.velY !== 0) this.status = "inAir"+dir;
+	if(this.velY !== 0 && !this.state['inWater']) this.status = "inAir"+dir;
 	else if(this.state.inWater) this.status = "swimming"+dir;
 	else this.status = "walking"+dir;
 	
 	this.animation = this.animations[this.status];
 	
 	this.animation.update(du);
-
+	
+	
 	spatialManager.register(this);
 }
 

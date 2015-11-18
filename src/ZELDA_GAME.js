@@ -120,20 +120,20 @@ function processDiagnostics() {
 
     if (eatKey(KEY_LEVEL1)) {
         console.log("entering level 1");
-        entityManager.enterLevel(1);
+        if (!g_menuScreenOn && !g_deathScreenOn) entityManager.enterLevel(1);
     };
     if (eatKey(KEY_LEVEL2)) {
         console.log("entering level 2");
-        entityManager.enterLevel(2);
+        if (!g_menuScreenOn && !g_deathScreenOn) entityManager.enterLevel(2);
     };
     if (eatKey(KEY_LEVEL3)) {
-        entityManager.enterLevel(3);
+        if (!g_menuScreenOn && !g_deathScreenOn) entityManager.enterLevel(3);
     };
     if (eatKey(KEY_LEVEL4)) {
-        entityManager.enterLevel(4);
+        if (!g_menuScreenOn && !g_deathScreenOn) entityManager.enterLevel(4);
     };
     if (eatKey(KEY_LEVEL5)) {
-        entityManager.enterLevel(5);
+        if (!g_menuScreenOn && !g_deathScreenOn) entityManager.enterLevel(5);
     };
 }
 
@@ -204,6 +204,7 @@ function requestPreloads() {
         marioTest: "res/images/mario.png",
         zeldaSpriteSheet: "res/images/zeldass.png",
         enemySpriteSheet: "res/images/enemyss.png",
+        spellSpriteSheet: "res/images/spellss.png",
 		defaultBlock: "res/images/blockPlaceholder.png",
         background: "res/images/background.jpg",
         spikes: "res/images/spikes.png",
@@ -255,13 +256,19 @@ function makeEnemyAnimation(scale) {
     return enemy;
 };
 
+function makeSpellAnimation(scale) {
+    return new Animation(g_images.spellSpriteSheet,0,15,10,5,100, scale);
+};
+
 function imagePreloadDone() {
     var requiredAudio = {
         theme1: "res/sounds/thema1.ogg",
         theme2: "res/sounds/thema2.ogg",
         themeDeath: "res/sounds/daudi.ogg",
         zeldaShoot: "res/sounds/zelda-shot.mp3",
-        portal: "res/sounds/portal.mp3"
+        portal: "res/sounds/portal.ogg",
+        coin: "res/sounds/coin.ogg",
+        brick: "res/sounds/brick.ogg"
     }
     audioPreload(requiredAudio, g_audio, preloadDone);
 };
@@ -288,8 +295,8 @@ function preloadDone() {
     g_sprites.portal = new Sprite(g_images.portal);
     
     g_audio.theme1.volume = 0.8;
+    g_audio.coin.volume = 0.7;
     
-    entityManager.init();
     main.init();
     
     try {
@@ -304,6 +311,8 @@ function preloadDone() {
 };
 
 function initLevel() {
+    
+    entityManager.init();
     
     entityManager.enterLevel(1);
     

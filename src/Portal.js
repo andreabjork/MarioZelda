@@ -1,7 +1,7 @@
 function Portal(descr) {
     this.setup(descr);
 //    console.log("is this happening");
-    this._scale = 3;
+    this._scale = 2;
     this.sprite = g_sprites.portal;
 };
 
@@ -21,8 +21,9 @@ Portal.prototype.update = function(du) {
 };
 
 Portal.prototype.collide = function(Zelda) {
-    if(Zelda.name === 'zelda') {
-		entityManager.enterLevel(entityManager._level);
+    if(Zelda.name === 'zelda' && Zelda.animationTimer === 0) {
+		Zelda.animationTimer = 40; 
+		Zelda.transend();
 	}
 };
 

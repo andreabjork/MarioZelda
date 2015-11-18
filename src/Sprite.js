@@ -10,7 +10,7 @@
 0        1         2         3         4         5         6         7         8
 12345678901234567890123456789012345678901234567890123456789012345678901234567890
 */
-
+var g_acid = false;
 
 // Construct a "sprite" from the given `image`,
 //
@@ -27,7 +27,10 @@ Sprite.prototype.drawAt = function (ctx, x, y) {
 };
 
 Sprite.prototype.drawCentredAt = function (ctx, cx, cy, rotation) {
-    if (rotation === undefined) rotation = 0;
+    var defaultRotation = 0;
+	if(g_acid) defaultRotation = Math.random()*Math.PI;
+	
+	if (rotation === undefined) rotation = defaultRotation;
     
     var w = this.width,
         h = this.height;
@@ -38,8 +41,7 @@ Sprite.prototype.drawCentredAt = function (ctx, cx, cy, rotation) {
     ctx.scale(this.scale, Math.abs(this.scale));
     // drawImage expects "top-left" coords, so we offset our destination
     // coords accordingly, to draw our sprite centred at the origin
-    this.drawAt(ctx,-w/2, -h/2);
-    
+    this.drawAt(ctx,-w/2, -h/2);  
     ctx.restore();
 };  
 
