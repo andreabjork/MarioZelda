@@ -146,6 +146,10 @@ generateEnemy : function(descr) {
     this._enemies.push(new Enemy(descr));
 },
 
+generateBOWSER : function(descr) {
+    this._enemies.push(new Bowser	(descr));
+},
+	
 generateBoss : function(descr) {
     this._enemies.push(new Boss(descr))
 },
