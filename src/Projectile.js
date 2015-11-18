@@ -70,6 +70,7 @@ Projectile.prototype.update = function (du) {
         var canTakeHit = hitEntity.takeHit;
         if (canTakeHit) {
             g_audio.boop.play();
+            g_score.update(50);
             hitEntity.takeHit();
         }
         return entityManager.KILL_ME_NOW;

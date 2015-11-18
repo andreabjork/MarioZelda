@@ -275,7 +275,7 @@ function imagePreloadDone() {
         theme2: "res/sounds/thema2.ogg",
         themeDeath: "res/sounds/daudi.ogg",
         victoryTheme: "res/sounds/victory.ogg",
-        zeldaShoot: "res/sounds/zelda-shot.mp3",
+        zeldaShoot: "res/sounds/zelda-shot.ogg",
         portal: "res/sounds/portal.ogg",
         coin: "res/sounds/coin.ogg",
         brick: "res/sounds/brick.ogg",

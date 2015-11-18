@@ -177,6 +177,7 @@ Character.prototype.handlePartialCollision = function(charX,charY,axis,callback)
                 if(bEdge) {
                     console.log("colliding bottom edge!");
                     g_audio.boop.play();
+                    g_score.update(50);
                     hitEntity.takeHit();
                     this.velY = -3;
                 } else {
