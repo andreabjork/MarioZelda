@@ -234,8 +234,8 @@ function makeZeldaAnimation(scale) {
     zelda.runningLeft = new Animation(g_images.zeldaSpriteSheet,44,33,43,4,100,-scale);
     zelda.inAirRight = new Animation(g_images.zeldaSpriteSheet,89,31,44,2,100,scale);
     zelda.inAirLeft = new Animation(g_images.zeldaSpriteSheet,89,31,44,2,100,-scale);
-    zelda.idleRight = new Animation(g_images.zeldaSpriteSheet,135,30,42,1,10,scale);
-    zelda.idleLeft = new Animation(g_images.zeldaSpriteSheet,135,30,42,1,10,-scale);
+    zelda.idleRight = new Animation(g_images.zeldaSpriteSheet,510,19,42,1,1,scale);
+    zelda.idleLeft = new Animation(g_images.zeldaSpriteSheet,510,19,42,1,1,-scale);
     zelda.magicRight = new Animation(g_images.zeldaSpriteSheet,320,51,48,6,100,scale);
     zelda.magicLeft = new Animation(g_images.zeldaSpriteSheet,320,51,48,6,100,-scale);
 
