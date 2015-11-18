@@ -20,10 +20,11 @@ Score.prototype.render = function(ctx){
 	ctx.font="Bold 15px Arial";
     ctx.fillText('Score: ' + this.score, g_canvas.width-100, 20);
 	ctx.fillText('Lives: ', 20, 25);
-	for (var i = 0; i < entityManager._character[0].life; i++) {
-		ctx.drawImage(g_images.zeldaSpriteSheet, 0, 135, 28, 178-135, 65 + i*30, 10, 28, 178-135);
+	if (entityManager._character[0]) {
+		for (var i = 0; i < entityManager._character[0].life; i++) {
+			ctx.drawImage(g_images.zeldaSpriteSheet, 0, 135, 28, 178-135, 65 + i*30, 10, 28, 178-135);
+		}
 	}
-	
 	ctx.restore();
 }
 
