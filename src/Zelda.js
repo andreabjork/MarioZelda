@@ -181,12 +181,16 @@ Zelda.prototype.updateVelocity = function(du) {
     if(!this.state['jumping'] && !(movingRight || movingLeft)) {
         this.velX = 0;
     }
+	
+
 
     // Start accelerating down as soon as we've "stopped state['pushing']"
     if(this.state['jumping'] && !this.state['pushing'] && this.velY < TERMINAL_VELOCITY) {
         if(!this.state['inWater'])this.velY += NOMINAL_GRAVITY*du;
         else this.velY += (NOMINAL_GRAVITY*du)/10;
-    } else if(!this.state['jumping']){
+    }else if(this.state['jumping'] && this.state['pushing']){
+		this.velY = -6;
+	}else if(!this.state['jumping']){
         this.velY = 0;
     }
 }
@@ -239,6 +243,7 @@ Zelda.prototype.update = function (du) {
     if(keys[this.KEY_JUMP]) this.handleJump();
     // Handle casting:
     if(keys[this.KEY_CAST]) {
+        util.play(g_audio.zeldaShoot);
         this.handleCasting();
     }
 
@@ -282,6 +287,14 @@ Zelda.prototype.update = function (du) {
 
     // Check for death:
     if(this._isDeadNow) {
+        if(Math.random() < 0.34){
+            util.play(g_audio.patIdiot);
+        } else if(Math.random() < 0.5){
+            util.play(g_audio.patClown);
+        } else {
+            util.play(g_audio.patFraud);
+        }
+        g_score.update(-500);
         if (this.life > 0) {
             this.life--;
             this._isDeadNow = false;

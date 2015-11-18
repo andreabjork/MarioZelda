@@ -65,6 +65,17 @@ Projectile.prototype.update = function (du) {
     var nextX = this.cx + this.velX*du;
     var nextY = this.cy + this.velY*du;
 
+    var hitEntity = this.findHitEntity(nextX, nextY);
+    if (hitEntity instanceof Enemy) {
+        var canTakeHit = hitEntity.takeHit;
+        if (canTakeHit) {
+            util.play(g_audio.boop);
+            g_score.update(50);
+            hitEntity.takeHit();
+        }
+        return entityManager.KILL_ME_NOW;
+    }
+	
     this.handlePartialCollision(nextX,this.cy,"x")
 
     if(this._isDeadNow) return entityManager.KILL_ME_NOW;	

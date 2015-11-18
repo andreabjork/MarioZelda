@@ -89,7 +89,9 @@ Enemy.prototype.update = function(du) {
     }
 	
     // Check for death:
-    if(this._isDeadNow) return entityManager.KILL_ME_NOW;
+    if(this._isDeadNow) {
+		return entityManager.KILL_ME_NOW;
+	}
 	
 	//update status
 	var dir;
