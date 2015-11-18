@@ -289,6 +289,28 @@ Zelda.prototype.update = function (du) {
     //var blocks = entityManager._world[0].findBlocks(this);
 
 	spatialManager.unregister(this);
+	
+	//update blocks in proximity
+    this.updateProxBlocks(this.cx, this.cy, this.cx+this.velX*du, this.cy+this.velY*du);
+	
+    // Check for death:
+    if(this._isDeadNow) {
+        if(Math.random() < 0.34){
+            util.play(g_audio.patIdiot);
+        } else if(Math.random() < 0.5){
+            util.play(g_audio.patClown);
+        } else {
+            util.play(g_audio.patFraud);
+        }
+        g_score.update(-500);
+        if (this.life > 0) {
+            this.life--;
+            this._isDeadNow = false;
+            entityManager.enterLevel(entityManager._level);
+        } else {
+            return entityManager.KILL_ME_NOW;            
+        }      
+    };
 
 	// Handle state['jumping']:
     if(keys[this.KEY_JUMP]) this.handleJump();
@@ -309,10 +331,6 @@ Zelda.prototype.update = function (du) {
 
     // Update speed/location and handle jumps/collisions
     this.updateVelocity(du);
-
-    //this.handleCollisions(this.cx, this.cy, this.cx+this.velX*du, this.cy+this.velY*du);
-    this.updateProxBlocks(this.cx, this.cy, this.cx+this.velX*du, this.cy+this.velY*du);
-    //
 
     var nextX = this.cx+this.velX*du;
     var nextY = this.cy+this.velY*du;
@@ -337,25 +355,6 @@ Zelda.prototype.update = function (du) {
     if(this.cy > g_canvas.height + 42){
         this._isDeadNow = true;
     }
-
-    // Check for death:
-    if(this._isDeadNow) {
-        if(Math.random() < 0.34){
-            util.play(g_audio.patIdiot);
-        } else if(Math.random() < 0.5){
-            util.play(g_audio.patClown);
-        } else {
-            util.play(g_audio.patFraud);
-        }
-        g_score.update(-500);
-        if (this.life > 0) {
-            this.life--;
-            this._isDeadNow = false;
-            entityManager.enterLevel(entityManager._level);
-        } else {
-            return entityManager.KILL_ME_NOW;            
-        }      
-    };
 
     // Finally, update status:
     this.updateStatus();

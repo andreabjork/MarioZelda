@@ -56,6 +56,7 @@ Projectile.prototype.update = function (du) {
     // Unregister
     spatialManager.unregister(this);
     this.updateProxBlocks(this.cx, this.cy, this.cx+this.velX*du, this.cy+this.velY*du);
+    if(this._isDeadNow) return entityManager.KILL_ME_NOW;
     this.animation.update(du);
 
     // hér á eftir að útbúa handler fyrir rotation sem og manage hvað
@@ -77,8 +78,7 @@ Projectile.prototype.update = function (du) {
     }
 	
     this.handlePartialCollision(nextX,this.cy,"x")
-
-    if(this._isDeadNow) return entityManager.KILL_ME_NOW;	
+	
     // select random colour
 	var randIndex = Math.floor(Math.random()*this.particleColors.length);
 	var randColour = this.particleColors[randIndex];
