@@ -64,8 +64,7 @@ Zelda.prototype.status = "idleRight";
 
 
 Zelda.prototype.handleJump = function () {
-	if(!this.state['canJump']) return;
-    if(this.state['jumping'] && !this.state['inWater']) return;
+    if((!this.state['canJump'] || this.state['jumping']) && !this.state['inWater']) return;
     else if(this.state['inWater']) {
         this.velY = -1; 
         this.tempMaxJumpHeight = this.cy - 1;
