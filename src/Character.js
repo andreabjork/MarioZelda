@@ -104,88 +104,9 @@ Character.prototype.handlePartialCollision = function(charX,charY,axis,callback)
         var hitEntities = this.findHitEntities(charX, charY);
         for(var hit in hitEntities) {
             var hitEntity = hitEntities[hit];
-
-            if(this instanceof Projectile) {
-                if(hitEntity instanceof Block && !hitEntity._isPassable) {
-                    console.log("hit unpassable block");
-                    console.log("hp of bullet");
-                    console.log(this.HP);
-                    console.log("is dead now");
-                    console.log(this._isDeadNow);
-                    this.takeHit();
-                    console.log("hp of bullet");
-                    console.log(this.HP);
-                    console.log("is dead now");
-                    console.log(this._isDeadNow);
-                }else if(hitEntity instanceof Enemy) {
-                    console.log("hit enemy");
-                    this.takeHit();
-                    hitEntity.takeHit();
-                }
-            } else {
-
-                // Lots of vars for type of collision: top, bottom, same column, same row, going by zelda center coordinate, left coordinate, right, etc.
-                var charCoords = entityManager._world[0].getBlockCoords(this.cx, this.cy); //This is going by char's center, which is her lower half. Upper half needs to be in i, j-1.
-                var charCoordsLeft = entityManager._world[0].getBlockCoords(this.cx-this.getSize().sizeX/2, this.cy); //This is going by char's bottom left corner
-                var charCoordsRight = entityManager._world[0].getBlockCoords(this.cx+this.getSize().sizeX/2, this.cy); //This is going by char's bottom right corner
-                var hitCoords = (hitEntity instanceof Block ? [hitEntity.i, hitEntity.j] : entityManager._world[0].getBlockCoords(hitEntity.cx+this.getSize().sizeX/2, hitEntity.cy));
-
-                var charAbove = (hitCoords[0] > charCoords[0]); // char block coordinates lower because y-axis points down.
-                var charBelow = (hitCoords[0] < charCoords[0]);
-                var charToLeft = (hitCoords[1] > charCoords[1]); // char column coords must be lower.
-                var charToRight = (hitCoords[1] < charCoords[1]);
-                var sameCol = (hitCoords[1] == charCoordsLeft[1] || hitCoords[1] == charCoordsRight[1]);
-                var sameRow = (hitCoords[0] == charCoords[0] || hitCoords[0] == charCoords[0]-1) || this.state['jumping'];
-
-                lEdge = charToRight && sameRow;
-                rEdge = charToLeft && sameRow;
-                tEdge = charBelow && sameCol;
-                bEdge = charAbove && sameCol;
-
-                // Bad fix to make Character decide what happens to it's subclasses (Enemy, Zelda, Projectile)
-                if(hitEntity instanceof Block) {
-                    var dir = 0; //direction of hit
-                    if(!hitEntity._isPassable) {
-                        standingOnSomething = standingOnSomething || bEdge;
-                        if(lEdge && this.velX < 0 && axis === "x") {
-    						walkingIntoSomething = walkingIntoSomething || true;
-                        }
-                        if(rEdge && this.velX > 0 && axis === "x") {
-    						walkingIntoSomething = walkingIntoSomething || true;
-                        }
-                        if(bEdge && this.velY > 0 && axis === "y") {
-                            this.tempMaxJumpHeight = this.cy - this.maxPushHeight; 
-                            var groundY = entityManager._world[0].getLocation((hitEntity.i), (hitEntity.j))[1] // block top y coordinate
-                            this.putToGround(groundY);
-                            dir = 4;
-                        } 
-                        if(tEdge && this.velY < 0  && axis === "y"){// && this.velY < 0) {
-                            this.velY *= -1;
-                            dir = 1;
-							this.state['offGround'] = true;
-                        }
-                    }
-                    hitEntity.activate(this, dir);
-
-                }else if(hitEntity instanceof Portal && this instanceof Zelda) {
-                    if(this.animationTimer === 0){
-    					util.play(g_audio.portal);
-    					this.animationTimer = 70; 
-    					this.transend();
-    				}
-                } else if(hitEntity instanceof Enemy && this instanceof Zelda) {
-                    if(bEdge) {
-                        console.log("colliding bottom edge!");
-                        util.play(g_audio.boop);
-                        g_score.update(50);
-                        hitEntity.takeHit();
-                        this.velY = -3;
-                    } else {
-                        console.log("colliding elsewhere");
-                        this.takeHit();
-                    }
-                }
-            }
+            var collisionVars =  this.handleCollision(hitEntity, axis);
+            standingOnSomething = standingOnSomething || collisionVars.standingOnSomething;
+            walkingIntoSomething = walkingIntoSomething || collisionVars.walkingIntoSomething;           
         }
     }
     if(axis === "x") return walkingIntoSomething;
