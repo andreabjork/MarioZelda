@@ -119,11 +119,9 @@ function processDiagnostics() {
     if (eatKey(KEY_RESET)) entityManager.resetAll();
 
     if (eatKey(KEY_LEVEL1)) {
-        console.log("entering level 1");
         if (!g_menuScreenOn && !g_deathScreenOn) entityManager.enterLevel(1);
     };
     if (eatKey(KEY_LEVEL2)) {
-        console.log("entering level 2");
         if (!g_menuScreenOn && !g_deathScreenOn) entityManager.enterLevel(2);
     };
     if (eatKey(KEY_LEVEL3)) {
@@ -258,13 +256,15 @@ function makeBowserAnimation(scale) {
 	//image, frameY, frameWidth, frameHeight, numFrames, interval, scale
     bowser.idleRight = new Animation(g_images.bowserSpriteSheet,0,200,200,3,600,scale);
     bowser.idleLeft = new Animation(g_images.bowserSpriteSheet,0,200,200,3,600,-scale);
-    bowser.attackRight = new Animation(g_images.bowserSpriteSheet,200,200,200,5,400,scale);
-    bowser.attackLeft = new Animation(g_images.bowserSpriteSheet,200,200,200,5,400,-scale);
+    bowser.attackRight = new Animation(g_images.bowserSpriteSheet,200,199,200,5,400,scale);
+    bowser.attackLeft = new Animation(g_images.bowserSpriteSheet,200,199,200,5,400,-scale);
 	bowser.takeDamageRight = new Animation(g_images.bowserSpriteSheet,400,200,200,4,400,scale);
     bowser.takeDamageLeft = new Animation(g_images.bowserSpriteSheet,400,200,200,4,400,-scale);
-    bowser.dieRight = new Animation(g_images.bowserSpriteSheet,400,200,200,4,350,scale);
-    bowser.dieLeft = new Animation(g_images.bowserSpriteSheet,400,200,200,4,350,-scale);
+    bowser.dieRight = new Animation(g_images.bowserSpriteSheet,600,200,200,4,350,scale);
+    bowser.dieLeft = new Animation(g_images.bowserSpriteSheet,600,200,200,4,350,-scale);
 
+	console.log(bowser); 
+	
     return bowser;
 };
 

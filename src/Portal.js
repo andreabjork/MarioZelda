@@ -13,7 +13,6 @@ Portal.prototype.update = function(du) {
     spatialManager.unregister(this);
 	
     if(this.isColliding()) {
-    	console.log("this is colliding with something");
     }
 	
 	spatialManager.register(this);

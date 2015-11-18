@@ -381,16 +381,22 @@ Zelda.prototype.update = function (du) {
 Zelda.prototype.updateViewport = function(){
 	var acid = 0;
 	if(g_acid) acid = Math.random()*20 - 10;
-    var nextView = this.cx - g_canvas.width/2 + acid;
+    var nextViewX = this.cx - g_canvas.width/2 + acid;
     var lvlLength = entityManager._world[0].blocks[13].length*(g_canvas.height/14) - g_canvas.width;
-    if (nextView < 0) {
+    if (nextViewX < 0) {
         g_viewPort.x = 0;
-    } else if (nextView > lvlLength) {
+    } else if (nextViewX > lvlLength) {
         g_viewPort.x = lvlLength;
     } else {
-        g_viewPort.x = nextView;
+        g_viewPort.x = nextViewX;
     }
-    g_viewPort.y = 0;
+	
+    var nextViewY = this.cy - g_canvas.height/2 + acid;
+	if (nextViewY > 0) {
+        g_viewPort.y = 0;
+    } else {
+        g_viewPort.y = nextViewY;
+    }
 }
 
 Zelda.prototype.transend = function(){
@@ -399,7 +405,7 @@ Zelda.prototype.transend = function(){
 	this.velX = 0;
 	this.velY = 0;
 	
-	if(this.animationTimer === 0){console.log("Yolo"); 
-	entityManager.enterLevel(++entityManager._level);
+	if(this.animationTimer === 0){ 
+	   entityManager.enterLevel(++entityManager._level);
 	}   
 }

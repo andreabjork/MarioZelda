@@ -125,9 +125,7 @@ Block.prototype.collide = function ( Char , hitValue) {
 };
 
 Block.prototype.tryToBreak = function(){
-	console.log("trying to break");
     if(this._isBreakable) {
-    	console.log("breaking!");
 		this._isDeadNow = true;
 		g_score.update(10);
 		g_audio.brick.pause();

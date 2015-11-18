@@ -99,5 +99,4 @@ Entity.prototype.wrapPosition = function () {
 };
 
 Entity.prototype.takeHit = function () {
-    console.log("hitting something that can't die")
 };

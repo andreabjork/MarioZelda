@@ -105,13 +105,11 @@ init: function() {
     for(var i = 0; i < g_NUMBER_OF_CLOUDS; i++) {
         this.generateObject('cloud');
     }
-    console.log(this._categories[0]);
 },
 
 
 
 fireBullet: function(cx, cy, velX, velY, rotation) {
-    console.log("firing");
     this._bullets.push(new Projectile({
         cx   : cx,
         cy   : cy,
