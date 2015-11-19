@@ -109,14 +109,14 @@ init: function() {
 
 
 
-fireBullet: function(cx, cy, velX, velY, rotation) {
+fireBullet: function(cx, cy, velX, velY, rotation, shooter) {
     this._bullets.push(new Projectile({
         cx   : cx,
         cy   : cy,
         velX : velX,
         velY : velY,
-
-        rotation : rotation
+        rotation : rotation,
+        shooter : shooter
     }));
 },
 

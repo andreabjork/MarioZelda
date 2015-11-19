@@ -258,8 +258,10 @@ function requestPreloads() {
         marioTest: "res/images/mario.png",
         zeldaSpriteSheet: "res/images/zeldass.png",
         enemySpriteSheet: "res/images/enemyss.png",
+        enemy2SpriteSheet: "res/images/enemyss2.png",
 		bowserSpriteSheet: "res/images/Patt_Sheet.png",
         spellSpriteSheet: "res/images/spellss.png",
+        spell2SpriteSheet: "res/images/spellss2.png",
 		defaultBlock: "res/images/blockPlaceholder.png",
         background: "res/images/background.jpg",
         spikes: "res/images/spikes.png",
@@ -328,8 +330,25 @@ function makeEnemyAnimation(scale) {
     return enemy;
 };
 
-function makeSpellAnimation(scale) {
+function makeShootingEnemyAnimation(scale) {
+    var enemy = {};
+    enemy.walkingRight = new Animation(g_images.enemy2SpriteSheet,0,20,20,2,80, scale);
+    enemy.walkingLeft = new Animation(g_images.enemy2SpriteSheet,0,20,20,2,80,-scale);
+    enemy.inAirRight = new Animation(g_images.enemy2SpriteSheet,20,20,20,1,1,scale);
+    enemy.inAirLeft = new Animation(g_images.enemy2SpriteSheet,20,20,20,1,1,-scale);
+    enemy.swimmingRight = new Animation(g_images.enemy2SpriteSheet,40,20,20,2,80,scale);
+    enemy.swimmingLeft = new Animation(g_images.enemy2SpriteSheet,40,20,20,2,80,-scale);
+    enemy.death = new Animation(g_images.enemy2SpriteSheet,60,20,20,1,50,scale);
+
+    return enemy;
+};
+
+function makeZeldaSpellAnimation(scale) {
     return new Animation(g_images.spellSpriteSheet,0,15,10,5,100, scale);
+};
+
+function makeEnemySpellAnimation(scale) {
+    return new Animation(g_images.spell2SpriteSheet,0,15,10,5,100, scale);
 };
 
 function imagePreloadDone() {

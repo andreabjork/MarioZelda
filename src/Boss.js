@@ -3,7 +3,7 @@ function Boss(descr) {
 	this.setup(descr)
     // Default sprite, if not otherwise specified
     this._scale = 2.5;
-	this.animations = makeEnemyAnimation(this._scale);
+	this.animations = makeShootingEnemyAnimation(this._scale);
 	this.animation = this.animations['walkingRight'];
 };
 
@@ -34,5 +34,6 @@ Boss.prototype.cast = function () {
     entityManager.fireBullet(
        this.cx + dX * launchDist, this.cy + dY,
        bulletVel, 0,
-       0);
+       0,
+       this);
 };

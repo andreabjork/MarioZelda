@@ -16,13 +16,43 @@
 function Projectile(descr) {
     // Common inherited setup logic from Entity
     this.setup(descr);
-	if(this.velX > 0)this.animation = makeSpellAnimation(this.radius/2);
-	else this.animation = makeSpellAnimation(-this.radius/2);
-
+    if(this.shooter instanceof Zelda) {
+	   if(this.velX > 0)this.animation = makeZeldaSpellAnimation(this.radius/2);
+	   else this.animation = makeZeldaSpellAnimation(-this.radius/2);
+       this.particleColors = [
+            "#C716D8",
+            "#EC6CF9",
+            "#E802FF",
+            "#910B9E",
+            "#6F1A77",
+            "#54A2FF",
+            "#59D6F1",
+            "#1F8FA7",
+            "#03CAF5",
+            "#035BF5",
+            "#15408C" // Hardcoded because random colors with a certain theme are hard man!
+            ];
+    }if(this.shooter instanceof Enemy) {
+       if(this.velX > 0)this.animation = makeEnemySpellAnimation(this.radius/2);
+       else this.animation = makeEnemySpellAnimation(-this.radius/2);
+       this.particleColors = [
+            "#3ffe3f",
+            "#189618",
+            "#bcd9bc",
+            "#75de36",
+            "#54be14",
+            "#91be14",
+            "#57720a",
+            "#fdfc08",
+            "#e1fd08",
+            "#f3ff96",
+            "#18601e"
+            ]; 
+   }
     this.HP = 1;
 }
 
-Projectile.prototype = new Character();
+Projectile.prototype = new Character(); // Lol remember to change name of Character class... turns out it's useful for more things than just a character.
 
 // Initial, inheritable, default values
 Projectile.prototype.friendly = false;  //override if Mario made it 
@@ -32,19 +62,6 @@ Projectile.prototype.cx = 200;
 Projectile.prototype.cy = 200;
 Projectile.prototype.velX = 1;
 Projectile.prototype.velY = 1;
-Projectile.prototype.particleColors = [
-"#C716D8",
-"#EC6CF9",
-"#E802FF",
-"#910B9E",
-"#6F1A77",
-"#54A2FF",
-"#59D6F1",
-"#1F8FA7",
-"#03CAF5",
-"#035BF5",
-"#15408C"
-]; // Hardcoded because random colors with a certain theme are hard man!
 
 //
 
@@ -59,23 +76,9 @@ Projectile.prototype.update = function (du) {
     if(this._isDeadNow) return entityManager.KILL_ME_NOW;
     this.animation.update(du);
 
-    // hér á eftir að útbúa handler fyrir rotation sem og manage hvað
-    // og hvenær projectilið drepur sig... best kannski bara þegar það 
-    //er out of screen
-
     var nextX = this.cx + this.velX*du;
     var nextY = this.cy + this.velY*du;
 
-    var hitEntity = this.findHitEntity(nextX, nextY);
-    if (hitEntity instanceof Enemy) {
-        var canTakeHit = hitEntity.takeHit;
-        if (canTakeHit) {
-            util.play(g_audio.boop);
-            g_score.update(50);
-            hitEntity.takeHit();
-        }
-        return entityManager.KILL_ME_NOW;
-    }
 	
     this.handlePartialCollision(nextX,this.cy,"x")
 	
@@ -117,7 +120,10 @@ Projectile.prototype.handleCollision = function(hitEntity, axis) {
 
     if(hitEntity instanceof Block && !hitEntity._isPassable) {
         this.takeHit();
-    }else if(hitEntity instanceof Enemy) {
+    }else if(hitEntity instanceof Enemy && this.shooter instanceof Zelda) {
+        this.takeHit();
+        hitEntity.takeHit();
+    }else if(hitEntity instanceof Zelda && this.shooter instanceof Boss) {
         this.takeHit();
         hitEntity.takeHit();
     }

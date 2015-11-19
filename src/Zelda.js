@@ -90,7 +90,8 @@ Zelda.prototype.handleCasting = function () {
         entityManager.fireBullet(
            this.cx + dX + launchDist, this.cy + dY,
            bulletVel, 0,
-           0);
+           0,
+           this); // this is for shooter
     }
 };
 
