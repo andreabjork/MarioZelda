@@ -32,7 +32,7 @@ function Projectile(descr) {
             "#035BF5",
             "#15408C" // Hardcoded because random colors with a certain theme are hard man!
             ];
-    }if(this.shooter instanceof Enemy) {
+    }else if(this.shooter instanceof Enemy) {
        if(this.velX > 0)this.animation = makeEnemySpellAnimation(this.radius/2);
        else this.animation = makeEnemySpellAnimation(-this.radius/2);
        this.particleColors = [
@@ -123,7 +123,7 @@ Projectile.prototype.handleCollision = function(hitEntity, axis) {
     }else if(hitEntity instanceof Enemy && this.shooter instanceof Zelda) {
         this.takeHit();
         hitEntity.takeHit();
-    }else if(hitEntity instanceof Zelda && this.shooter instanceof Boss) {
+    }else if(hitEntity instanceof Zelda && this.shooter instanceof Shooter) {
         this.takeHit();
         hitEntity.takeHit();
     }

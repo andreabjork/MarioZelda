@@ -148,8 +148,8 @@ generateBOWSER : function(descr) {
     this._enemies.push(new Bowser(descr));
 },
 	
-generateBoss : function(descr) {
-    this._enemies.push(new Boss(descr))
+generateShooter : function(descr) {
+    this._enemies.push(new Shooter(descr))
 },
 
 generateLevel : function(descr) {

@@ -156,14 +156,16 @@ Zelda.prototype.handleCollision = function(hitEntity, axis) {
                 this.transend();
             }
         } else if(hitEntity instanceof Enemy) {
+            console.log("enemy coordinates "+hitCoords[0]+"  "+hitCoords[1]);
+            console.log("zelda left coordinates "+charCoordsLeft[0]+"  "+charCoordsLeft[1]);
+            console.log("zelda right coordinates "+charCoordsRight[0]+"  "+charCoordsRight[1]);
             if(bEdge) {
-                console.log("colliding bottom edge!");
+                console.log("ENEMY SHOULD DIE");
                 util.play(g_audio.boop);
                 g_score.update(50);
                 hitEntity.takeHit();
                 this.velY = -3;
             } else {
-                console.log("colliding elsewhere");
                 this.takeHit();
             }
         }
