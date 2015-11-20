@@ -116,14 +116,14 @@ Block.prototype.activate = function (Char, direction) {
 	}
 };
 
-
+/*
 Block.prototype.collide = function ( Char , hitValue) {
     // this function is to let blocks interact with characters, f.ex. water/spikes
 	// if they are just solid and collidable return the top value, and if not,
 	// interact with character and then return (will finish description when this is ready)stuff stuff
 	return hitValue;
 };
-
+*/
 Block.prototype.tryToBreak = function(){
     if(this._isBreakable) {
 		this._isDeadNow = true;

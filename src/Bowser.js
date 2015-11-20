@@ -100,3 +100,15 @@ Bowser.prototype.getSize = function(){
     var size = {sizeX:140*this._scale,sizeY:140*this._scale};
     return size;
 }
+
+//Bowser collission logic
+Bowser.prototype.handleCollision = function(hitEntity, axis) {
+
+        if(hitEntity instanceof Block){
+        } else if(hitEntity instanceof Zelda) {
+            if(!this._isDeadNow) hitEntity.takeHit();
+        }
+    
+
+    return {standingOnSomething: false, walkingIntoSomething: false};
+}
