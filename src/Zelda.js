@@ -142,6 +142,7 @@ Zelda.prototype.handleCollision = function(hitEntity, axis) {
                 } 
                 if(tEdge && this.velY < 0  && axis === "y"){// && this.velY < 0) {
                     this.velY *= -1;
+					this.velY = Math.max(this.velY,5);
                     dir = 1;
                     this.state['offGround'] = true;
                 }
