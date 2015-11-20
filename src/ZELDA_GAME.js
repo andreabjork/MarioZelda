@@ -77,7 +77,6 @@ function updateSimulation(du) {
     processDiagnostics();
     
     if (g_menuScreenOn) {
-		console.log("AT MENU");
 		menuScreen = g_sprites.menuBar;
         if (eatKey(KEY_SPACE)) {
 			g_menuScreenOn = false;
@@ -93,7 +92,6 @@ function updateSimulation(du) {
         }
     }
     if (g_textScreenOn) {
-		console.log("AT STORY");
 		menuScreen = g_sprites.textScreen1;
         if (eatKey(KEY_SPACE)) {
 			if (g_newGame) {
@@ -116,20 +114,15 @@ function updateSimulation(du) {
     }
     
     if (g_deathScreenOn) {
-		console.log("AT DEATH");
         if (eatKey(KEY_SPACE)) {
             g_deathScreenOn = false;
             g_menuScreenOn = true;
 			menuScreen = g_sprites.menuBar;
             backgroundMusic.pause();
             util.playLoop(g_audio.theme2);
-			console.log("resetting spatialManager");
-			util.resetSpatialManager();
-			console.dir(spatialManager);
 			
-			console.log("resetting entityManager");
+			util.resetSpatialManager();
 			util.resetEntityManager();
-			console.dir(entityManager);
 			
 			
 			g_newGame = true;

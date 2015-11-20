@@ -156,9 +156,9 @@ Zelda.prototype.handleCollision = function(hitEntity, axis) {
                 this.transend();
             }
         } else if(hitEntity instanceof Enemy) {
-            console.log("enemy coordinates "+hitCoords[0]+"  "+hitCoords[1]);
-            console.log("zelda left coordinates "+charCoordsLeft[0]+"  "+charCoordsLeft[1]);
-            console.log("zelda right coordinates "+charCoordsRight[0]+"  "+charCoordsRight[1]);
+            //console.log("enemy coordinates "+hitCoords[0]+"  "+hitCoords[1]);
+            //console.log("zelda left coordinates "+charCoordsLeft[0]+"  "+charCoordsLeft[1]);
+            //console.log("zelda right coordinates "+charCoordsRight[0]+"  "+charCoordsRight[1]);
             if(bEdge) {
                 util.play(g_audio.boop);
                 hitEntity.takeHit();
