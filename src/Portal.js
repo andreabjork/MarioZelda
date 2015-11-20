@@ -1,6 +1,5 @@
 function Portal(descr) {
     this.setup(descr);
-//    console.log("is this happening");
     this._scale = 2;
     this.sprite = g_sprites.portal;
 };

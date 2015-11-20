@@ -112,11 +112,6 @@ function preloadDone() {
                             celWidth, celHeight) 
         g_sprites.push(sprite);
     }
-    
-    // Remove any superfluous ones from the end
-    //g_sprites.splice(numCels);
-    
-    console.dir(g_sprites);
 }
 
 function callback(){

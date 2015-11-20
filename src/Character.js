@@ -66,7 +66,6 @@ Character.prototype.takeHit = function () {
 };
 
 Character.prototype.render = function (ctx) {
-	//console.log("rendering at: ("+this.cx+","+this.cy+")");
     this.animation.renderAt(ctx, this.cx, this.cy, this.rotation);
 };
 

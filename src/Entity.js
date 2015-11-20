@@ -24,12 +24,6 @@ functions... shared data properties are potentially quite confusing.
 
 function Entity() {
 
-/*
-    // Diagnostics to check inheritance stuff
-    this._entityProperty = true;
-    console.dir(this);
-*/  
-
 };
 
 Entity.prototype.setup = function (descr) {
@@ -39,7 +33,7 @@ Entity.prototype.setup = function (descr) {
     }
     
     // Get my (unique) spatial ID
-    this._spatialID = spatialManager.getNewSpatialID(this);
+    this._spatialID = spatialManager.getNewSpatialID();
     
     
     // I am not dead yet!

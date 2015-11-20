@@ -76,7 +76,7 @@ Zelda.prototype.handleJump = function () {
 };
 
 Zelda.prototype.handleCasting = function () {
-    if(this.state['casting']) return;
+    if(this.state['casting'] || this.state['jumping'] || this.state['inWater']) return;
     else {
         this.state['casting'] = true;
         var dX = (this.state["facingRight"] ? 1 : -1 );
@@ -109,7 +109,7 @@ Zelda.prototype.handleCollision = function(hitEntity, axis) {
         var charCoords = entityManager._world[0].getBlockCoords(this.cx, this.cy); //This is going by char's center, which is her lower half. Upper half needs to be in i, j-1.
         var charCoordsLeft = entityManager._world[0].getBlockCoords(this.cx-this.getSize().sizeX/2, this.cy); //This is going by char's bottom left corner
         var charCoordsRight = entityManager._world[0].getBlockCoords(this.cx+this.getSize().sizeX/2, this.cy); //This is going by char's bottom right corner
-        var hitCoords = (hitEntity instanceof Block ? [hitEntity.i, hitEntity.j] : entityManager._world[0].getBlockCoords(hitEntity.cx+this.getSize().sizeX/2, hitEntity.cy));
+        var hitCoords = (hitEntity instanceof Block ? [hitEntity.i, hitEntity.j] : entityManager._world[0].getBlockCoords(hitEntity.cx, hitEntity.cy));
 
         var charAbove = (hitCoords[0] > charCoords[0]); // char block coordinates lower because y-axis points down.
         var charBelow = (hitCoords[0] < charCoords[0]);
@@ -149,6 +149,7 @@ Zelda.prototype.handleCollision = function(hitEntity, axis) {
             hitEntity.activate(this, dir);
 
         }else if(hitEntity instanceof Portal) {
+			// This happens when we jump in a portal
             if(this.animationTimer === 0){
                 util.play(g_audio.portal);
                 this.animationTimer = 70; 
@@ -156,18 +157,14 @@ Zelda.prototype.handleCollision = function(hitEntity, axis) {
             }
         } else if(hitEntity instanceof Bowser) {
             if(hitEntity.velX === 0) {
+				//If Bowser-Pat is moving he shouldn't hit us.
                 this.takeHit();
-            } else {
-				console.log("passing");
             }
         } else if(hitEntity instanceof Enemy) {
-            //console.log("enemy coordinates "+hitCoords[0]+"  "+hitCoords[1]);
-            //console.log("zelda left coordinates "+charCoordsLeft[0]+"  "+charCoordsLeft[1]);
-            //console.log("zelda right coordinates "+charCoordsRight[0]+"  "+charCoordsRight[1]);
             if(bEdge) {
                 util.play(g_audio.boop);
                 hitEntity.takeHit();
-                this.velY = -3;
+                this.velY = -4;
                 if(hitEntity instanceof Shooter) g_score.add(100);
                 else g_score.add(50);
             } else {
@@ -287,7 +284,6 @@ Zelda.prototype.updateStatus = function() {
     if(nextStatus!==this.status){
         this.status = nextStatus;
         this.animation = this.animations[this.status];
-        this.animation.reset();
     }    
 }
 
@@ -370,7 +366,6 @@ Zelda.prototype.update = function (du) {
     this.updateStatus();
     var animFinished = this.animation.update(du);
     if(this.state['casting'] && animFinished===1) {
-
         this.state['casting'] = false;
     }
 	

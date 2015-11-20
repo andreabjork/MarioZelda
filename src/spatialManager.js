@@ -41,9 +41,7 @@ _entities : [],
 
 // PUBLIC METHODS
 
-getNewSpatialID : function(thing) {
-	//console.log("Assigning spatial ID: "+this._nextSpatialID+" to ");
-	//console.log(thing);
+getNewSpatialID : function() {
 	return this._nextSpatialID++;
 },
 

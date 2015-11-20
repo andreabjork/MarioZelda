@@ -88,12 +88,12 @@ function updateSimulation(du) {
 				g_newGame = false;
 				initLevel();
 			}
-			return;
         }
+		return;
     }
     if (g_textScreenOn) {
 		menuScreen = g_sprites.textScreen1;
-        if (eatKey(KEY_SPACE)) {
+        if (eatKey(KEY_SPACE) && !g_textScreenLocked) {
 			if (g_newGame) {
 				g_newGame = false;
 				// Add listener to perform action when audio has finished playing
@@ -101,8 +101,10 @@ function updateSimulation(du) {
 					g_audio.patStory.addEventListener('ended', function () {
 						initLevel();
 						g_textScreenOn = false;
+						g_textScreenLocked = false;
 					});
 				} catch(err) {}
+				g_textScreenLocked = true;
 				util.play(g_audio.patStory);
 			} else {
 				g_textScreenOn = false;
@@ -110,8 +112,8 @@ function updateSimulation(du) {
 				util.playLoop(g_audio.theme1);
 				entityManager.enterLevel(1);
 			}
-			return;
         }
+		return;
     }
     
     if (g_deathScreenOn) {
@@ -171,7 +173,7 @@ var KEY_LEVEL6 = keyCode('6');
 // í Diagnostics svosem "spawna óvin"
 
 function processDiagnostics() {
-
+	var playingGame = !(g_menuScreenOn || g_textScreenOn || g_deathScreenOn || g_winScreenOn);
     if (eatKey(KEY_MUTE)) {
         if (g_isMuted) {
             backgroundMusic.play();
@@ -186,22 +188,23 @@ function processDiagnostics() {
 
     if (eatKey(KEY_RESET)) entityManager.resetAll();
 
-    if (eatKey(KEY_LEVEL1)) {
+	// Cheat into levels
+    if (eatKey(KEY_LEVEL1) && playingGame) {
         if (!g_menuScreenOn && !g_deathScreenOn) entityManager.enterLevel(1);
     };
-    if (eatKey(KEY_LEVEL2)) {
+    if (eatKey(KEY_LEVEL2) && playingGame) {
         if (!g_menuScreenOn && !g_deathScreenOn) entityManager.enterLevel(2);
     };
-    if (eatKey(KEY_LEVEL3)) {
+    if (eatKey(KEY_LEVEL3) && playingGame) {
         if (!g_menuScreenOn && !g_deathScreenOn) entityManager.enterLevel(3);
     };
-    if (eatKey(KEY_LEVEL4)) {
+    if (eatKey(KEY_LEVEL4) && playingGame) {
         if (!g_menuScreenOn && !g_deathScreenOn) entityManager.enterLevel(4);
     };
-    if (eatKey(KEY_LEVEL5)) {
+    if (eatKey(KEY_LEVEL5) && playingGame) {
         if (!g_menuScreenOn && !g_deathScreenOn) entityManager.enterLevel(5);
     };
-	if (eatKey(KEY_LEVEL6)) {
+	if (eatKey(KEY_LEVEL6) && playingGame) {
         if (!g_menuScreenOn && !g_deathScreenOn) entityManager.enterLevel(6);
     };
 }
@@ -217,6 +220,7 @@ var g_newGame = true;
 var g_firstTry = true;
 var g_menuScreenOn = true;
 var g_textScreenOn = false;
+var g_textScreenLocked = false;
 var g_deathScreenOn = false;
 var g_winScreenOn = false;
 var menuScreen;
@@ -326,8 +330,6 @@ function makeBowserAnimation(scale) {
     bowser.takeDamageLeft = new Animation(g_images.bowserSpriteSheet,400,200,200,4,150,-scale);
     bowser.dieRight = new Animation(g_images.bowserSpriteSheet,600,200,200,4,350,scale);
     bowser.dieLeft = new Animation(g_images.bowserSpriteSheet,600,200,200,4,350,-scale);
-
-	console.log(bowser); 
 	
     return bowser;
 };

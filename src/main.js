@@ -44,7 +44,7 @@ main.iter = function (frameTime) {
     this._debugRender(g_ctx);
     
     // Request the next iteration if needed
-    if (!this._isGameOver) this._requestNextIteration();
+    this._requestNextIteration();
 };
 
 main._updateClocks = function (frameTime) {
@@ -58,31 +58,10 @@ main._updateClocks = function (frameTime) {
 };
 
 main._iterCore = function (dt) {
-    
-    // Handle QUIT
-    if (requestedQuit()) {
-        this.gameOver();
-        return;
-    }
-    
     gatherInputs();
     update(dt);
     render(g_ctx);
 };
-
-main._isGameOver = false;
-
-main.gameOver = function () {
-    this._isGameOver = true;
-    console.log("gameOver: quitting...");
-};
-
-// Simple voluntary quit mechanism
-//
-var KEY_QUIT = 'Q'.charCodeAt(0);
-function requestedQuit() {
-    return keys[KEY_QUIT];
-}
 
 // Shim for Firefox and Safari
 window.requestAnimationFrame = 

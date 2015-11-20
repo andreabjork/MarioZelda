@@ -36,9 +36,11 @@ Animation.prototype.updateFrameNum = function(du){
 }
 
 Animation.prototype.update = function (du) {
+	// returns a constant that can be used to time transitions
 	if(this.updateFrameNum(du)) return this.TRANSITION_OPPORTUNITY;
 };
 
+// reset animation
 Animation.prototype.reset = function(){
 	this.frameNum = 0;
 	this.frameTimeLeft = this.interval;
@@ -62,7 +64,6 @@ Animation.prototype.loadSprites = function(y,w,h,n,s){
 		sprite.drawAt = function(ctx,x,y){
 			ctx.drawImage(this.image, this.sx, this.sy, this.width, this.height, x, y, this.width, this.height);
 		};
-		//console.dir(sprite);
 		sprites.push(sprite);
 	};
 	return sprites;
