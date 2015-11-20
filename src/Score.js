@@ -30,13 +30,24 @@ Score.prototype.render = function(ctx){
 	ctx.save();
 	
 	ctx.fillStyle = "white";
-	ctx.font="Bold 15px Arial";
-    ctx.fillText('Score: ' + this.score, g_canvas.width-100, 20);
-	ctx.fillText('Lives: ', 20, 25);
-	if (entityManager._character[0]) {
-		for (var i = 0; i < entityManager._character[0].life; i++) {
-			ctx.drawImage(g_images.zeldaSpriteSheet, 0, 135, 28, 178-135, 65 + i*30, 10, 28, 178-135);
-		}
+	if (entityManager._level != 6) {
+		ctx.font="Bold 15px Arial";
+		ctx.fillText('Score: ' + this.score, g_canvas.width-100, 20);
+		ctx.fillText('Lives: ', 20, 25);
+		if (entityManager._character[0]) {
+			for (var i = 0; i < entityManager._character[0].life; i++) {
+				ctx.drawImage(g_images.zeldaSpriteSheet, 0, 135, 28, 178-135, 65 + i*30, 10, 28, 178-135);
+			};
+		};
+	} else {
+		ctx.font="Bold 30px Arial";
+		ctx.fillText('Score: ' + this.score, g_canvas.width-200, 80);
+		ctx.fillText('Lives: ', 60, 80);
+		if (entityManager._character[0]) {
+			for (var i = 0; i < entityManager._character[0].life; i++) {
+				ctx.drawImage(g_images.zeldaSpriteSheet, 0, 135, 28, 178-135, 145 + i*30, 50, 28, 178-135);
+			};
+		};
 	}
 	ctx.restore();
 }

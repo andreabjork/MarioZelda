@@ -95,6 +95,7 @@ enterLevel: function(lvl) {
     for(var i = 0; i < g_NUMBER_OF_CLOUDS; i++) {
         this.generateObject('cloud');
     }
+    if (entityManager._level === 6) util.playLoop(g_audio.victoryTheme);
     this.deferredSetup();
 },
 
