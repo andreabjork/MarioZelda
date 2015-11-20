@@ -155,6 +155,12 @@ Zelda.prototype.handleCollision = function(hitEntity, axis) {
                 this.animationTimer = 70; 
                 this.transend();
             }
+        } else if(hitEntity instanceof Bowser) {
+            if(hitEntity.velX === 0) {
+                this.takeHit();
+            } else {
+				console.log("passing");
+            }
         } else if(hitEntity instanceof Enemy) {
             //console.log("enemy coordinates "+hitCoords[0]+"  "+hitCoords[1]);
             //console.log("zelda left coordinates "+charCoordsLeft[0]+"  "+charCoordsLeft[1]);

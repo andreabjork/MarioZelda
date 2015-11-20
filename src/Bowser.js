@@ -26,9 +26,10 @@ Bowser.prototype = new Enemy();
 // Initial, inheritable, default values
 Bowser.prototype.cx = 500;
 Bowser.prototype.cy = 483;
+Bowser.prototype.rotation = 0;
 Bowser.prototype.velX = 0;
 Bowser.prototype.velY = 0;
-Bowser.prototype.HP = 1;
+Bowser.prototype.HP = 3;
 Bowser.prototype.teljari = 200;
 Bowser.prototype.shotCoolDown = 100;
 Bowser.prototype.animationTeljari = 80;
@@ -71,7 +72,9 @@ Bowser.prototype.update = function(du) {
 		if(this._isDeadNow) 
 			if(this.die() === "yolo") this.kill();
 		//return entityManager.KILL_ME_NOW;
-	
+		
+		this.rotation += this.velX / 100;
+		
 		//update status
 		var dir;
 		if(this.velX === 0) dir = this._lastDir || "Right";
@@ -79,11 +82,8 @@ Bowser.prototype.update = function(du) {
 			dir = (this.velX > 0 ? "Right" : "Left");
 			this._lastDir = dir;
 		}
-		this.teljari--;
-		if(this._isDeadNow) this.status = "die"+dir;
-		else if(this.teljari< 0) this.status = "idle"+dir;
-		else this.status = "takeDamage"+dir;
-		if(this.teljari < -200) this.teljari = 0;
+		
+		if(this.state['dieing'])
 		
 		this.animation = this.animations[this.status];
 	
@@ -100,11 +100,12 @@ Bowser.prototype.cast = function () {
 		this.state['attacking'] = true;
 		var posZ = entityManager.giveMeZelda().getPos();
 		var velX = (posZ.posX - this.cx)/100;
-		var velY = (posZ.posY - (this.cy))/50;
-		if(velY > -1) velY = -1;
-		if(velY < -3.5) velY = -3.5;
+		var velY = (posZ.posY - (this.cy))/45;
+		if(velY > -1.5) velY = -1.5;
+		if(velY < -4.2) velY = -4.2;
 		if(velX < -1.7) velX = -1.7;
 		if(velX > 1.2) velX = 1.2;
+		util.play(g_audio.patRedB);
 		entityManager.fireRedBull(
 			this.cx, this.cy,
 			velX, velY,
@@ -126,10 +127,19 @@ Bowser.prototype.getSize = function(){
 
 Bowser.prototype.handleSpecificEnemyAction = function(du) {
 	this.shotCoolDown -= du;
-	console.log("step0");
 	if(this.shotCoolDown <= 0) {
 		this.cast();
 		this.shotCoolDown = 250;
+	}
+}
+
+Bowser.prototype.takeHit = function() {
+	if(entityManager.giveMeZelda()){
+		var posZ = entityManager.giveMeZelda().getPos();
+		var temp = (posZ.posX - this.cx);
+		if(temp > 0) {this.HP--; this.state['takedamage'] = true;}
+		else util.play(g_audio.patClown);
+		if(this.HP <= 0) {this._isDeadNow = true; this.state['takedamage'] = true; }
 	}
 }
 
@@ -139,7 +149,7 @@ Bowser.prototype.handleCollision = function(hitEntity, axis) {
         if(hitEntity instanceof Block){
             hitEntity.tryToBreak();
         } else if(hitEntity instanceof Zelda) {
-            if(!this._isDeadNow) hitEntity.takeHit();
+            
         }
     
     return {standingOnSomething: false, walkingIntoSomething: false};

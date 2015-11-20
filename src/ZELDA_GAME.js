@@ -355,7 +355,8 @@ function imagePreloadDone() {
         patClown: "res/sounds/Patt_clown.ogg",
         patIdiot: "res/sounds/Patt_idiot.ogg",
         patFraud: "res/sounds/Patt_uselessFraud.ogg",
-        patStory: "res/sounds/Patt_stories.ogg"
+        patStory: "res/sounds/Patt_stories.ogg",
+		patRedB: "res/sounds/Patt_redBull.ogg"
     }
     audioPreload(requiredAudio, g_audio, preloadDone);
 };

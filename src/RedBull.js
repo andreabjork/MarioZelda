@@ -59,7 +59,7 @@ RedBull.prototype.update = function (du) {
     if(this._isDeadNow) return entityManager.KILL_ME_NOW;
     
 	
-	this.velY += 0.02;
+	this.velY += 0.025;
 	
     var nextX = this.cx + this.velX*du;
     var nextY = this.cy + this.velY*du;
