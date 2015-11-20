@@ -123,6 +123,8 @@ Projectile.prototype.handleCollision = function(hitEntity, axis) {
     }else if(hitEntity instanceof Enemy && this.shooter instanceof Zelda) {
         this.takeHit();
         hitEntity.takeHit();
+        if(hitEntity instanceof Shooter) g_score.add(100);
+        else g_score.add(50);
     }else if(hitEntity instanceof Zelda && this.shooter instanceof Shooter) {
         this.takeHit();
         hitEntity.takeHit();

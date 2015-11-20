@@ -160,11 +160,11 @@ Zelda.prototype.handleCollision = function(hitEntity, axis) {
             console.log("zelda left coordinates "+charCoordsLeft[0]+"  "+charCoordsLeft[1]);
             console.log("zelda right coordinates "+charCoordsRight[0]+"  "+charCoordsRight[1]);
             if(bEdge) {
-                console.log("ENEMY SHOULD DIE");
                 util.play(g_audio.boop);
-                g_score.update(50);
                 hitEntity.takeHit();
                 this.velY = -3;
+                if(hitEntity instanceof Shooter) g_score.add(100);
+                else g_score.add(50);
             } else {
                 this.takeHit();
             }
@@ -305,7 +305,7 @@ Zelda.prototype.update = function (du) {
         } else {
             util.play(g_audio.patFraud);
         }
-        g_score.update(-500);
+        g_score.half();
         if (this.life > 0) {
             this.life--;
             this._isDeadNow = false;

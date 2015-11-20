@@ -7,9 +7,22 @@ function Score(descr) {
 
 //update Score as a multiple of the combo
 //generated in g_ball.update
-Score.prototype.update = function(x){
+Score.prototype.add = function(x){
 	this.score = this.score + x;
 }
+
+//update Score as a multiple of the combo
+//generated in g_ball.update
+Score.prototype.half = function(){
+	this.score = Math.ceil(this.score/2);
+}
+
+
+//reset to initial score,life and level
+Score.prototype.reset = function (){
+	this.score = 0;
+}
+
 
 //render score
 Score.prototype.render = function(ctx){
@@ -28,7 +41,3 @@ Score.prototype.render = function(ctx){
 	ctx.restore();
 }
 
-//reset to initial score,life and level
-Score.prototype.reset = function (){
-	this.score = 0;
-}
