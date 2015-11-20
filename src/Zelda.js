@@ -32,7 +32,6 @@ function Zelda(descr) {
 // INHERIT FROM CHARACTER:
 Zelda.prototype = new Character();
 
-
 // Keys
 Zelda.prototype.KEY_LEFT   = 37; //Left-arrow key code
 Zelda.prototype.KEY_RIGHT  = 39; //Right-arrow key code
