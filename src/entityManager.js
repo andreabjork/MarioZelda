@@ -151,6 +151,11 @@ generateEnemy : function(descr) {
     this._enemies.push(new Enemy(descr));
 },
 
+generatePrince : function(descr) {
+	//not a real enemy but hey
+    this._enemies.push(new Prince(descr));
+},
+
 generateBOWSER : function(descr) {
     this._enemies.push(new Bowser(descr));
 },

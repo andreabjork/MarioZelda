@@ -160,7 +160,10 @@ Zelda.prototype.handleCollision = function(hitEntity, axis) {
 				//If Bowser-Pat is moving he shouldn't hit us.
                 this.takeHit();
             }
-        } else if(hitEntity instanceof Enemy) {
+        } else if(hitEntity instanceof Prince){
+			// Do nothing, this is our prince!
+		}else if(hitEntity instanceof Enemy) {
+			// check to see if we jumped on his head
             if(bEdge) {
                 util.play(g_audio.boop);
                 hitEntity.takeHit();
@@ -168,6 +171,7 @@ Zelda.prototype.handleCollision = function(hitEntity, axis) {
                 if(hitEntity instanceof Shooter) g_score.add(100);
                 else g_score.add(50);
             } else {
+				// if not it hurts
                 this.takeHit();
             }
         }
