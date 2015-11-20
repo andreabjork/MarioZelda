@@ -76,18 +76,22 @@ Bowser.prototype.update = function(du) {
 		this.rotation += this.velX / 100;
 		
 		//update status
-		var dir;
-		if(this.velX === 0) dir = this._lastDir || "Right";
-		else{
-			dir = (this.velX > 0 ? "Right" : "Left");
-			this._lastDir = dir;
-		}
+		var posZ = entityManager.giveMeZelda().getPos();
+		var dir = (((posZ.posX - this.cx)>=0)?"Right":"Left");
 		
-		if(this.state['dieing'])
+		if(this.hp <= 0) this.status = "die"+dir;
+		else if(this.state['takedamage']) this.status = "takeDamage"+dir;
+		else if(this.state['attacking']) this.status = "attack"+dir;
+		else this.status = "idle"+dir;
 		
 		this.animation = this.animations[this.status];
-	
-		this.animation.update(du);
+		
+		var TRANSITION_OPPORTUNITY = Animation.prototype.TRANSITION_OPPORTUNITY;
+		var ANIMATION_STATUS = this.animation.update(du);
+		if(ANIMATION_STATUS === TRANSITION_OPPORTUNITY){
+			this.state['takedamage'] = false;
+			this.state['attacking'] = false;
+		}
 		
 		this.handleSpecificEnemyAction(du);
 		
@@ -139,7 +143,7 @@ Bowser.prototype.takeHit = function() {
 		var temp = (posZ.posX - this.cx);
 		if(temp > 0) {this.HP--; this.state['takedamage'] = true;}
 		else util.play(g_audio.patClown);
-		if(this.HP <= 0) {this._isDeadNow = true; this.state['takedamage'] = true; }
+		if(this.HP <= 0) {this._isDeadNow = true; this.state['die'] = true; }
 	}
 }
 
