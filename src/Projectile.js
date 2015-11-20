@@ -120,7 +120,9 @@ Projectile.prototype.handleCollision = function(hitEntity, axis) {
 
     if(hitEntity instanceof Block && !hitEntity._isPassable) {
         this.takeHit();
-    }else if(hitEntity instanceof Enemy && this.shooter instanceof Zelda) {
+    }else if(hitEntity instanceof Prince){
+		// He's invulnerable
+	}else if(hitEntity instanceof Enemy && this.shooter instanceof Zelda) {
         this.takeHit();
         hitEntity.takeHit();
         if(hitEntity instanceof Shooter) g_score.add(100);
