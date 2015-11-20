@@ -129,6 +129,18 @@ function updateSimulation(du) {
 			g_newGame = true;
 			return;
         }
+	}
+	if (g_winScreenOn) {
+        if (eatKey(KEY_SPACE)) {
+            g_winScreenOn = false;
+            g_menuScreenOn = true;
+			menuScreen = g_sprites.winBar;
+			util.resetSpatialManager();
+			util.resetEntityManager();
+			util.play(g_audio.patRubbish);
+			g_newGame = true;
+			return;
+        }
     }
     
     entityManager.update(du); 
@@ -153,6 +165,7 @@ var KEY_LEVEL2 = keyCode('2');
 var KEY_LEVEL3 = keyCode('3');
 var KEY_LEVEL4 = keyCode('4');
 var KEY_LEVEL5 = keyCode('5');
+var KEY_LEVEL6 = keyCode('6');
 
 // hér má bæta við lykklum fyrir tests ásamt falli fyrir neðan 
 // í Diagnostics svosem "spawna óvin"
@@ -188,6 +201,9 @@ function processDiagnostics() {
     if (eatKey(KEY_LEVEL5)) {
         if (!g_menuScreenOn && !g_deathScreenOn) entityManager.enterLevel(5);
     };
+	if (eatKey(KEY_LEVEL6)) {
+        if (!g_menuScreenOn && !g_deathScreenOn) entityManager.enterLevel(6);
+    };
 }
 
 
@@ -202,6 +218,7 @@ var g_firstTry = true;
 var g_menuScreenOn = true;
 var g_textScreenOn = false;
 var g_deathScreenOn = false;
+var g_winScreenOn = false;
 var menuScreen;
 
 function renderSimulation(ctx) {
@@ -226,7 +243,9 @@ function renderSimulation(ctx) {
         ctx.restore();
         
         if (g_deathScreenOn) g_sprites.deathScreen.drawAt(ctx, 0, 0, g_canvas.width, g_canvas.height);       
-        g_score.render(ctx);
+        if (g_winScreenOn) g_sprites.winBar.drawAt(ctx, 0, 0, g_canvas.width, g_canvas.height);       
+		g_score.render(ctx);
+		
     }
 };
 
@@ -243,6 +262,7 @@ function requestPreloads() {
 
     var requiredImages = {
         menuBar: "res/images/menuBar.jpg",
+		winBar: "res/images/win_Screen.jpg",
         textScreen1: "res/images/textScreen1.png",
         deathScreen: "res/images/deathScreen.png",
         marioTest: "res/images/mario.png",
@@ -294,12 +314,12 @@ function makeZeldaAnimation(scale) {
 function makeBowserAnimation(scale) {
     var bowser = {};
 	//image, frameY, frameWidth, frameHeight, numFrames, interval, scale
-    bowser.idleRight = new Animation(g_images.bowserSpriteSheet,0,200,200,3,600,scale);
-    bowser.idleLeft = new Animation(g_images.bowserSpriteSheet,0,200,200,3,600,-scale);
-    bowser.attackRight = new Animation(g_images.bowserSpriteSheet,200,199,200,5,400,scale);
-    bowser.attackLeft = new Animation(g_images.bowserSpriteSheet,200,199,200,5,400,-scale);
-	bowser.takeDamageRight = new Animation(g_images.bowserSpriteSheet,400,200,200,4,400,scale);
-    bowser.takeDamageLeft = new Animation(g_images.bowserSpriteSheet,400,200,200,4,400,-scale);
+    bowser.idleRight = new Animation(g_images.bowserSpriteSheet,0,200,200,3,400,scale);
+    bowser.idleLeft = new Animation(g_images.bowserSpriteSheet,0,200,200,3,400,-scale);
+    bowser.attackRight = new Animation(g_images.bowserSpriteSheet,200,199,200,5,150,scale);
+    bowser.attackLeft = new Animation(g_images.bowserSpriteSheet,200,199,200,5,150,-scale);
+	bowser.takeDamageRight = new Animation(g_images.bowserSpriteSheet,400,200,200,4,150,scale);
+    bowser.takeDamageLeft = new Animation(g_images.bowserSpriteSheet,400,200,200,4,150,-scale);
     bowser.dieRight = new Animation(g_images.bowserSpriteSheet,600,200,200,4,350,scale);
     bowser.dieLeft = new Animation(g_images.bowserSpriteSheet,600,200,200,4,350,-scale);
 
@@ -357,7 +377,8 @@ function imagePreloadDone() {
         patIdiot: "res/sounds/Patt_idiot.ogg",
         patFraud: "res/sounds/Patt_uselessFraud.ogg",
         patStory: "res/sounds/Patt_stories.ogg",
-		patRedB: "res/sounds/Patt_redBull.ogg"
+		patRedB: "res/sounds/Patt_redBull.ogg",
+		patRubbish: "res/sounds/Patt_rubbish.ogg"
     }
     audioPreload(requiredAudio, g_audio, preloadDone);
 };
@@ -365,6 +386,7 @@ function imagePreloadDone() {
 function preloadDone() {
 
     g_sprites.menuBar = new Sprite(g_images.menuBar);
+	g_sprites.winBar = new Sprite(g_images.winBar);
     g_sprites.textScreen1 = new Sprite(g_images.textScreen1);
     g_sprites.deathScreen = new Sprite(g_images.deathScreen);
     g_sprites.marioTest  = new Sprite(g_images.marioTest);

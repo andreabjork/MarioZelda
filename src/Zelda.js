@@ -325,8 +325,10 @@ Zelda.prototype.update = function (du) {
     if(keys[this.KEY_JUMP]) this.handleJump();
     // Handle casting:
     if(keys[this.KEY_CAST]) {
-        util.play(g_audio.zeldaShoot);
-        this.handleCasting();
+		if(!this.state['jumping'] && !this.state['inWater']){
+			util.play(g_audio.zeldaShoot);
+			this.handleCasting();
+		}
     }
 
     //Handles if Zelda is in water

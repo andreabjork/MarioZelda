@@ -44,6 +44,8 @@ RedBull.prototype.cx = 200;
 RedBull.prototype.cy = 200;
 RedBull.prototype.velX = 1;
 RedBull.prototype.velY = 1;
+RedBull.prototype.fade = 0;
+RedBull.prototype.fadeTimer = 20;
 
 //
 
@@ -64,7 +66,8 @@ RedBull.prototype.update = function (du) {
     var nextX = this.cx + this.velX*du;
     var nextY = this.cy + this.velY*du;
 
-	
+	if(this.fadeTimer < 0) this.fade = 1;
+	else this.fadeTimer -= du;
     this.handlePartialCollision(nextX,this.cy,"x")
 	
     // select random colour
@@ -75,7 +78,7 @@ RedBull.prototype.update = function (du) {
 	var particleDir = Math.random()*Math.PI*2;
 	
 	//generateParticle
-	entityManager.generateParticle(this.cx, this.cy, particleDir, 1, 0.7, this.radius*2, randColour);
+	if(this.fadeTimer < 0)entityManager.generateParticle(this.cx, this.cy, particleDir, 1, 0.7, this.radius*2, randColour);
 
     this.cx += this.velX * du;
     this.cy += this.velY * du;
@@ -95,8 +98,10 @@ RedBull.prototype.getSize = function () {
 };
 
 RedBull.prototype.render = function (ctx) {
+	g_ctx.globalAlpha = this.fade;
 	this.sprite.scale = this.scale;
     this.sprite.drawCentredAt(ctx, this.cx, this.cy,this.rotation);
+	g_ctx.globalAlpha = 1;
 };
 
 

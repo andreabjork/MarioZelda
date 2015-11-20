@@ -208,7 +208,11 @@ update: function(du) {
                 // remove the dead guy, and shuffle the others down to
                 // prevent a confusing gap from appearing in the array
                 aCategory.splice(i,1);
-                if(c === 1) { // Zelda died! 
+                if(c === 1 && this._level === 6) { // Zelda won! 
+					backgroundMusic.pause();
+                    g_winScreenOn = true;
+					
+				}else if(c === 1) { // Zelda died! 
                     g_deathScreenOn = true;
                     backgroundMusic.pause();
                     util.playLoop(g_audio.themeDeath);                 

@@ -70,14 +70,16 @@ Bowser.prototype.update = function(du) {
 	
 		// Check for death:
 		if(this._isDeadNow) 
-			if(this.die() === "yolo") this.kill();
+			if(this.die() === "yolo") return entityManager.KILL_ME_NOW;
 		//return entityManager.KILL_ME_NOW;
 		
 		this.rotation += this.velX / 100;
 		
 		//update status
-		var posZ = entityManager.giveMeZelda().getPos();
-		var dir = (((posZ.posX - this.cx)>=0)?"Right":"Left");
+		if(entityManager.giveMeZelda()){
+			var posZ = entityManager.giveMeZelda().getPos();
+			var dir = (((posZ.posX - this.cx)>=0)?"Right":"Left");
+		}else var dir = "Left"
 		
 		if(this.hp <= 0) this.status = "die"+dir;
 		else if(this.state['takedamage']) this.status = "takeDamage"+dir;
@@ -100,7 +102,7 @@ Bowser.prototype.update = function(du) {
 }
 
 Bowser.prototype.cast = function () {
-	if(entityManager.giveMeZelda()){
+	if(entityManager.giveMeZelda() && this.velX === 0){
 		this.state['attacking'] = true;
 		var posZ = entityManager.giveMeZelda().getPos();
 		var velX = (posZ.posX - this.cx)/100;
