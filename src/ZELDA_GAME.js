@@ -233,8 +233,11 @@ function renderSimulation(ctx) {
     
         var lvlLength;
         lvlLength = entityManager._world[0].blocks[13].length*(g_canvas.height/14) - g_canvas.width;
-        g_sprites.BG1.drawAt(ctx, 0,0, g_canvas.width, g_canvas.height);
-        g_sprites.BG2.drawAt(ctx, -(dx / lvlLength) * g_canvas.width ,g_canvas.height/2, g_canvas.width*2, g_canvas.height);
+        if (entityManager._level != 6) {
+            g_sprites.BG1.drawAt(ctx, 0,0, g_canvas.width, g_canvas.height);
+            g_sprites.BG2.drawAt(ctx, -(dx / lvlLength) * g_canvas.width ,g_canvas.height/2, g_canvas.width*2, g_canvas.height);
+        } else g_sprites.victoryScreen.drawAt(ctx, 0,0, g_canvas.width, g_canvas.height);
+        
         
         ctx.translate(-dx,-dy);
         entityManager.render(ctx);
@@ -265,6 +268,7 @@ function requestPreloads() {
 		winBar: "res/images/win_Screen.jpg",
         textScreen1: "res/images/textScreen1.png",
         deathScreen: "res/images/deathScreen.png",
+        victoryScreen: "res/images/victoryScreen.png",
         marioTest: "res/images/mario.png",
         zeldaSpriteSheet: "res/images/zeldass.png",
         enemySpriteSheet: "res/images/enemyss.png",
@@ -389,6 +393,7 @@ function preloadDone() {
 	g_sprites.winBar = new Sprite(g_images.winBar);
     g_sprites.textScreen1 = new Sprite(g_images.textScreen1);
     g_sprites.deathScreen = new Sprite(g_images.deathScreen);
+    g_sprites.victoryScreen = new Sprite(g_images.victoryScreen);
     g_sprites.marioTest  = new Sprite(g_images.marioTest);
     g_sprites.defaultBlock  = new Sprite(g_images.defaultBlock);
     g_sprites.background = new Sprite(g_images.background);

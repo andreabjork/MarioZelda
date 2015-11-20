@@ -409,5 +409,6 @@ Zelda.prototype.transend = function(){
 	
 	if(this.animationTimer === 0){ 
 	   entityManager.enterLevel(++entityManager._level);
+       if (entityManager._level === 6) util.playLoop(g_audio.victoryTheme);
 	}   
 }
