@@ -109,7 +109,6 @@ function updateSimulation(du) {
 			} else {
 				g_textScreenOn = false;
 				g_audio.theme1.volume=0.1;
-				util.playLoop(g_audio.theme1);
 				entityManager.enterLevel(1);
 			}
         }
@@ -275,6 +274,7 @@ function requestPreloads() {
         victoryScreen: "res/images/victoryScreen.png",
         marioTest: "res/images/mario.png",
         zeldaSpriteSheet: "res/images/zeldass.png",
+        princeSpriteSheet: "res/images/patss.png",
         enemySpriteSheet: "res/images/enemyss.png",
         enemy2SpriteSheet: "res/images/enemyss2.png",
 		bowserSpriteSheet: "res/images/Patt_Sheet.png",
@@ -317,6 +317,20 @@ function makeZeldaAnimation(scale) {
     zelda.magicLeft = new Animation(g_images.zeldaSpriteSheet,320,51,48,6,100,-scale);
 
     return zelda;
+};
+
+function makePrinceAnimation(scale) {
+    var prince = {};
+    prince.walkingRight = new Animation(g_images.princeSpriteSheet,0,130,150,27,50, scale);
+    prince.walkingLeft = new Animation(g_images.princeSpriteSheet,0,130,150,27,50,-scale);
+	// just in case of bugs
+    prince.inAirRight = new Animation(g_images.princeSpriteSheet,0,130,150,27,50, scale);
+    prince.inAirLeft = new Animation(g_images.princeSpriteSheet,0,130,150,27,50,-scale);
+    prince.swimmingRight = new Animation(g_images.princeSpriteSheet,0,130,150,27,50, scale);
+    prince.swimmingLeft = new Animation(g_images.princeSpriteSheet,0,130,150,27,50,-scale);
+	prince.death = new Animation(g_images.princeSpriteSheet,0,130,150,27,50, scale);
+
+    return prince;
 };
 
 function makeBowserAnimation(scale) {

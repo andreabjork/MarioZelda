@@ -142,6 +142,7 @@ Zelda.prototype.handleCollision = function(hitEntity, axis) {
                 } 
                 if(tEdge && this.velY < 0  && axis === "y"){// && this.velY < 0) {
                     this.velY *= -1;
+					this.velY = Math.max(this.velY,5);
                     dir = 1;
                     this.state['offGround'] = true;
                 }
@@ -160,7 +161,10 @@ Zelda.prototype.handleCollision = function(hitEntity, axis) {
 				//If Bowser-Pat is moving he shouldn't hit us.
                 this.takeHit();
             }
-        } else if(hitEntity instanceof Enemy) {
+        } else if(hitEntity instanceof Prince){
+			// Do nothing, this is our prince!
+		}else if(hitEntity instanceof Enemy) {
+			// check to see if we jumped on his head
             if(bEdge) {
                 util.play(g_audio.boop);
                 hitEntity.takeHit();
@@ -168,6 +172,7 @@ Zelda.prototype.handleCollision = function(hitEntity, axis) {
                 if(hitEntity instanceof Shooter) g_score.add(100);
                 else g_score.add(50);
             } else {
+				// if not it hurts
                 this.takeHit();
             }
         }
@@ -320,7 +325,8 @@ Zelda.prototype.update = function (du) {
     if(keys[this.KEY_JUMP]) this.handleJump();
     // Handle casting:
     if(keys[this.KEY_CAST]) {
-		if(!this.state['jumping'] && !this.state['inWater']){
+        if (entityManager._level === 6) entityManager.enterLevel(1);
+		else if(!this.state['jumping'] && !this.state['inWater']){
 			util.play(g_audio.zeldaShoot);
 			this.handleCasting();
 		}

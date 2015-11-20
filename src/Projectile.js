@@ -117,8 +117,9 @@ Projectile.prototype.handleCollision = function(hitEntity, axis) {
     var bEdge,lEdge,rEdge,tEdge;
     var standingOnSomething;
     var walkingIntoSomething;
-
-    if(hitEntity instanceof Block && !hitEntity._isPassable) {
+	if(hitEntity instanceof Prince){
+		//Nothing, prince shouldn't die!
+    }else if(hitEntity instanceof Block && !hitEntity._isPassable) {
         this.takeHit();
     }else if(hitEntity instanceof Enemy && this.shooter instanceof Zelda) {
         this.takeHit();
