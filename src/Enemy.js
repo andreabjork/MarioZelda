@@ -172,7 +172,6 @@ Enemy.prototype.handleCollision = function(hitEntity, axis) {
                 }
             }
             hitEntity.activate(this, dir);
-
         }
     return {standingOnSomething: standingOnSomething, walkingIntoSomething: walkingIntoSomething};
 }

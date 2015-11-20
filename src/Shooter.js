@@ -13,7 +13,6 @@ Shooter.prototype.shotCoolDown = 100;
 
 Shooter.prototype.handleSpecificEnemyAction = function(du) {
 	this._lastDir = (this.velX > 0 ? "Right" : "Left");
-	console.log("direection "+this._lastDir);
 	this.shotCoolDown -= du;
 	if(this.shotCoolDown <= 0) {
 		this.cast();
@@ -22,8 +21,7 @@ Shooter.prototype.handleSpecificEnemyAction = function(du) {
 }
 
 Shooter.prototype.cast = function () {
-	console.log("casting");
-    this.state['casting'] = true;
+	this.state['casting'] = true;
     var dX = (this._lastDir === "Right" ? 1 : -1 );
     var dY = 0;//Math.cos(this.rotation);
     var launchDist = this.getSize().sizeX/2;

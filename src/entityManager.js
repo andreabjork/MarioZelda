@@ -111,6 +111,17 @@ fireBullet: function(cx, cy, velX, velY, rotation, shooter) {
     }));
 },
 
+fireRedBull: function(cx, cy, velX, velY, rotation, shooter) {
+    this._bullets.push(new RedBull({
+        cx   : cx,
+        cy   : cy,
+        velX : velX,
+        velY : velY,
+        rotation : rotation,
+        shooter : shooter
+    }));
+},
+
 generateParticle : function(x,y,angle,avgVel,maxAlpha,maxR,fillStyle){
 	var r = Math.random()*maxR;
 	var vel = avgVel + (0.5*avgVel - Math.random()*avgVel); // +- 50% velocity from avgVel
@@ -125,6 +136,10 @@ generateParticle : function(x,y,angle,avgVel,maxAlpha,maxR,fillStyle){
 		alpha: alpha
 	});
     this._particles.push(particle);
+},
+
+giveMeZelda : function(descr) {
+    return this._character[0];
 },
 
 generateCharacter : function(descr) {

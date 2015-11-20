@@ -30,6 +30,7 @@ Bowser.prototype.velX = 0;
 Bowser.prototype.velY = 0;
 Bowser.prototype.HP = 1;
 Bowser.prototype.teljari = 200;
+Bowser.prototype.shotCoolDown = 100;
 Bowser.prototype.animationTeljari = 80;
 Bowser.prototype.initialized = false;
 Bowser.prototype.startBattle = false;
@@ -37,7 +38,8 @@ Bowser.prototype.state = {
 	idle: true,
 	attacking: false,
 	die: true,
-	takeDamage: false
+	takeDamage: false,
+	inWater: false
 };
 
 
@@ -60,6 +62,8 @@ Bowser.prototype.update = function(du) {
 		
 		//check left/right collisions first and then top/bottomx
 		var walkingIntoSomething = this.handlePartialCollision(nextX,prevY,"x");
+		var standingOnSomething = this.handlePartialCollision(prevX,nextY,"y");
+	
 		// update location
 		this.cx += this.velX*du;
 	
@@ -84,13 +88,32 @@ Bowser.prototype.update = function(du) {
 		this.animation = this.animations[this.status];
 	
 		this.animation.update(du);
-	
+		
+		this.handleSpecificEnemyAction(du);
+		
 		spatialManager.register(this);
 	}
 }
 
+Bowser.prototype.cast = function () {
+	if(entityManager.giveMeZelda()){
+		this.state['attacking'] = true;
+		var posZ = entityManager.giveMeZelda().getPos();
+		var velX = (posZ.posX - this.cx)/100;
+		var velY = (posZ.posY - (this.cy))/50;
+		if(velY > -1) velY = -1;
+		if(velY < -3.5) velY = -3.5;
+		if(velX < -1.7) velX = -1.7;
+		if(velX > 1.2) velX = 1.2;
+		entityManager.fireRedBull(
+			this.cx, this.cy,
+			velX, velY,
+			0, this);
+	}
+};
 
 Bowser.prototype.die = function(){
+	this._isDeadNow = false;
 	this.velX = 10;
 	if(this.animationTeljari < 0) return "yolo";
     else {this.animationTeljari--; return "pleb";}
@@ -101,14 +124,23 @@ Bowser.prototype.getSize = function(){
     return size;
 }
 
+Bowser.prototype.handleSpecificEnemyAction = function(du) {
+	this.shotCoolDown -= du;
+	console.log("step0");
+	if(this.shotCoolDown <= 0) {
+		this.cast();
+		this.shotCoolDown = 250;
+	}
+}
+
 //Bowser collission logic
 Bowser.prototype.handleCollision = function(hitEntity, axis) {
 
         if(hitEntity instanceof Block){
+            hitEntity.tryToBreak();
         } else if(hitEntity instanceof Zelda) {
             if(!this._isDeadNow) hitEntity.takeHit();
         }
     
-
     return {standingOnSomething: false, walkingIntoSomething: false};
 }

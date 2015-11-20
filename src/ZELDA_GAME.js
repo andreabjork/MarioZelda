@@ -265,7 +265,8 @@ function requestPreloads() {
         background2: "res/images/Hills1.png",
         coin: "res/images/Coin.png",
         blank: "res/images/blank.png",
-        portal: "res/images/Portal.png"
+        portal: "res/images/Portal.png",
+		redBull: "res/images/redBull.png"
     };
 
     imagesPreload(requiredImages, g_images, imagePreloadDone);
@@ -380,6 +381,7 @@ function preloadDone() {
     g_sprites.cloud3 = new Sprite(g_images.cloud3);
     g_sprites.coin = new Sprite(g_images.coin);
     g_sprites.portal = new Sprite(g_images.portal);
+    g_sprites.redBull = new Sprite(g_images.redBull);
     
     g_audio.theme1.volume = 0.8;
     g_audio.coin.volume = 0.7;
