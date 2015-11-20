@@ -41,11 +41,10 @@ _entities : [],
 
 // PUBLIC METHODS
 
-getNewSpatialID : function() {
-    // TODO: Horfa á mánudagsfyrirlesturinn hjá Patt og sjá hver er 
-	//		optimal leiðinn til að hafa leyst verkefni 9 (semsagt þetta skjal)
-	this._nextSpatialID++;
-	return this._nextSpatialID - 1;
+getNewSpatialID : function(thing) {
+	//console.log("Assigning spatial ID: "+this._nextSpatialID+" to ");
+	//console.log(thing);
+	return this._nextSpatialID++;
 },
 
 register: function(entity) {

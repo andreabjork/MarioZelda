@@ -94,24 +94,30 @@ Block.prototype.activate = function (Char, direction) {
 	if(this.type === 3 && direction === 1 && this.ammo > 0){
 		this._makeAnimation = true;
 		this._AnimationCounter = 0;
-		g_score.update(50);
+		g_score.add(50);
 		g_audio.coin.pause();
 		g_audio.coin.currentTime = 0;
 		util.play(g_audio.coin);
 		this.ammo--;
 		if(this.ammo === 1) this._isBreakable = true;
 	}
-	if(this.type === 4) {// && direction === 4){
+	if(this.type === 4) {
 		Char.state.inWater = true;
 	} 
 	
 	if(this.type === 7 && Char instanceof Zelda) {
 		if(this.ammo > 0) {
-			g_score.update(50);
+			g_score.add(10);
 			g_audio.coin.pause();
 			g_audio.coin.currentTime = 0;
 			util.play(g_audio.coin);
-		} else this.sprite = g_sprites.blank;
+		} else this.sprite = g_sprites.blank; 
+		// ^ This is a bad hack for coin blocks to be able to have that water-look
+		// behind a coin even after the coin has been caught. The result of this is that
+		// the space is still registered as a block after the coin is essentially "gone" and
+		// as such, it is checked by the spatial manager when Zelda or other character items are
+		// near it. This could be changed by making the coin an entity instead of a block and make
+		// it disappear altogether when they 'die' but we lack the time to do this.
 		this.ammo--;
 	}
 };
@@ -127,7 +133,7 @@ Block.prototype.collide = function ( Char , hitValue) {
 Block.prototype.tryToBreak = function(){
     if(this._isBreakable) {
 		this._isDeadNow = true;
-		g_score.update(10);
+		g_score.add(10);
 		g_audio.brick.pause();
 		g_audio.brick.currentTime = 0;
 		util.play(g_audio.brick);

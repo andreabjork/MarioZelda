@@ -76,7 +76,61 @@ function updateSimulation(du) {
     
     processDiagnostics();
     
-    entityManager.update(du);
+    if (g_menuScreenOn) {
+		menuScreen = g_sprites.menuBar;
+        if (eatKey(KEY_SPACE)) {
+			g_menuScreenOn = false;
+			if(g_firstTry){
+				g_firstTry = false;
+				g_textScreenOn = true;
+				menuScreen = g_sprites.textScreen1;
+			} else {
+				g_newGame = false;
+				initLevel();
+			}
+			return;
+        }
+    }
+    if (g_textScreenOn) {
+		menuScreen = g_sprites.textScreen1;
+        if (eatKey(KEY_SPACE)) {
+			if (g_newGame) {
+				g_newGame = false;
+				// Add listener to perform action when audio has finished playing
+				try {
+					g_audio.patStory.addEventListener('ended', function () {
+						initLevel();
+						g_textScreenOn = false;
+					});
+				} catch(err) {}
+				util.play(g_audio.patStory);
+			} else {
+				g_textScreenOn = false;
+				util.playLoop(g_audio.theme1);
+				entityManager.enterLevel(1);
+			}
+			return;
+        }
+    }
+    
+    if (g_deathScreenOn) {
+        if (eatKey(KEY_SPACE)) {
+            g_deathScreenOn = false;
+            g_menuScreenOn = true;
+			menuScreen = g_sprites.menuBar;
+            backgroundMusic.pause();
+            util.playLoop(g_audio.theme2);
+			
+			util.resetSpatialManager();
+			util.resetEntityManager();
+			
+			
+			g_newGame = true;
+			return;
+        }
+    }
+    
+    entityManager.update(du); 
 
 }
 
@@ -143,35 +197,16 @@ function processDiagnostics() {
 // GAME-SPECIFIC RENDERING
 var g_lvlLength;
 var g_newGame = true;
+var g_firstTry = true;
 var g_menuScreenOn = true;
+var g_textScreenOn = false;
 var g_deathScreenOn = false;
-
-window.addEventListener('keydown', function() {
-    if (keys[KEY_SPACE]) {
-        if (g_menuScreenOn) {
-            g_menuScreenOn = false;
-            if (g_newGame) {
-                g_newGame = false;
-                initLevel();
-            } else {
-                backgroundMusic.pause();
-                util.playLoop(g_audio.theme1);
-                entityManager.enterLevel(1);
-            }
-        } 
-        if (g_deathScreenOn) {
-            g_deathScreenOn = false;
-            g_menuScreenOn = true;
-            backgroundMusic.pause();
-            util.playLoop(g_audio.theme2);
-        }
-    }
-});
+var menuScreen;
 
 function renderSimulation(ctx) {
     
-    if (g_menuScreenOn) {
-        g_sprites.menuBar.drawAt(ctx, 0, 0, g_canvas.width, g_canvas.height);
+    if (g_menuScreenOn || g_textScreenOn) {
+        menuScreen.drawAt(ctx, 0, 0, g_canvas.width, g_canvas.height);
     } else {
         ctx.save();
 	
@@ -207,12 +242,15 @@ function requestPreloads() {
 
     var requiredImages = {
         menuBar: "res/images/menuBar.jpg",
+        textScreen1: "res/images/textScreen1.png",
         deathScreen: "res/images/deathScreen.png",
         marioTest: "res/images/mario.png",
         zeldaSpriteSheet: "res/images/zeldass.png",
         enemySpriteSheet: "res/images/enemyss.png",
+        enemy2SpriteSheet: "res/images/enemyss2.png",
 		bowserSpriteSheet: "res/images/Patt_Sheet.png",
         spellSpriteSheet: "res/images/spellss.png",
+        spell2SpriteSheet: "res/images/spellss2.png",
 		defaultBlock: "res/images/blockPlaceholder.png",
         background: "res/images/background.jpg",
         spikes: "res/images/spikes.png",
@@ -281,8 +319,25 @@ function makeEnemyAnimation(scale) {
     return enemy;
 };
 
-function makeSpellAnimation(scale) {
+function makeShootingEnemyAnimation(scale) {
+    var enemy = {};
+    enemy.walkingRight = new Animation(g_images.enemy2SpriteSheet,0,20,20,2,80, scale);
+    enemy.walkingLeft = new Animation(g_images.enemy2SpriteSheet,0,20,20,2,80,-scale);
+    enemy.inAirRight = new Animation(g_images.enemy2SpriteSheet,20,20,20,1,1,scale);
+    enemy.inAirLeft = new Animation(g_images.enemy2SpriteSheet,20,20,20,1,1,-scale);
+    enemy.swimmingRight = new Animation(g_images.enemy2SpriteSheet,40,20,20,2,80,scale);
+    enemy.swimmingLeft = new Animation(g_images.enemy2SpriteSheet,40,20,20,2,80,-scale);
+    enemy.death = new Animation(g_images.enemy2SpriteSheet,60,20,20,1,50,scale);
+
+    return enemy;
+};
+
+function makeZeldaSpellAnimation(scale) {
     return new Animation(g_images.spellSpriteSheet,0,15,10,5,100, scale);
+};
+
+function makeEnemySpellAnimation(scale) {
+    return new Animation(g_images.spell2SpriteSheet,0,15,10,5,100, scale);
 };
 
 function imagePreloadDone() {
@@ -298,7 +353,8 @@ function imagePreloadDone() {
         boop: "res/sounds/boop.ogg",
         patClown: "res/sounds/Patt_clown.ogg",
         patIdiot: "res/sounds/Patt_idiot.ogg",
-        patFraud: "res/sounds/Patt_uselessFraud.ogg"
+        patFraud: "res/sounds/Patt_uselessFraud.ogg",
+        patStory: "res/sounds/Patt_stories.ogg"
     }
     audioPreload(requiredAudio, g_audio, preloadDone);
 };
@@ -306,6 +362,7 @@ function imagePreloadDone() {
 function preloadDone() {
 
     g_sprites.menuBar = new Sprite(g_images.menuBar);
+    g_sprites.textScreen1 = new Sprite(g_images.textScreen1);
     g_sprites.deathScreen = new Sprite(g_images.deathScreen);
     g_sprites.marioTest  = new Sprite(g_images.marioTest);
     g_sprites.defaultBlock  = new Sprite(g_images.defaultBlock);
@@ -327,6 +384,8 @@ function preloadDone() {
     g_audio.theme1.volume = 0.8;
     g_audio.coin.volume = 0.7;
     
+    menuScreen = g_sprites.menuBar;
+    
     main.init();
     
     backgroundMusic = g_audio.theme2;
@@ -335,9 +394,7 @@ function preloadDone() {
 };
 
 function initLevel() {
-    
-    entityManager.init();
-    
+
     entityManager.enterLevel(1);
     
     g_lvlLength = entityManager._world[0].blocks[13].length*(g_canvas.height/14) - g_canvas.width;

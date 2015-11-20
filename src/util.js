@@ -8,6 +8,27 @@
 
 var util = {
 
+// RESETS
+// ======
+
+resetSpatialManager: function(){
+	spatialManager._nextSpatialID = 1;
+	spatialManager._entities = [];
+},
+
+resetEntityManager: function(){
+	entityManager._character = [];
+	entityManager._bullets = [];
+	entityManager._particles = [];
+	entityManager._world = [];
+	entityManager._collisionBlocks = [];
+	entityManager._enemies = [];
+	entityManager._objects = [];
+	entityManager._level = 1;
+	entityManager.deferredSetup();
+},
+
+
 
 // RANGES
 // ======
@@ -139,8 +160,8 @@ play: function (audio) {
 },
 
 playLoop: function (audio) {
-    backgroundMusic.pause();
     backgroundMusic = audio;
+    backgroundMusic.pause();
     backgroundMusic.currentTime = 0;
     if (!g_isMuted) {
         try {

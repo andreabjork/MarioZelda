@@ -44,6 +44,7 @@ Character.prototype.unregisterBlocks = function() {
 
 Character.prototype.updateProxBlocks = function(prevX, prevY, nextX, nextY) {
     this.unregisterBlocks();
+	if(this._isDeadNow) return;
     this.findProxBlocks(prevX, prevY, nextX, nextY);
     this.registerBlocks();
 }

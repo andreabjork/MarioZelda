@@ -47,6 +47,11 @@ Enemy.prototype.update = function(du) {
 	var margin = this.getSize().sizeX; //margin outside of viewport we want to update
 	if(this.cx+this.getSize().sizeX/2 < g_viewPort.x-margin ||
 	   this.cx-this.getSize().sizeX/2 > g_viewPort.x+g_canvas.width+margin) return;
+	   
+	
+
+	this.updateProxBlocks(this.cx, this.cy, this.cx+this.velX*du, this.cy+this.velY*du);
+    if(this._isDeadNow) return entityManager.KILL_ME_NOW;
 
 	//Handles if enemy is in water
     if(this.state['inWater']){
@@ -56,8 +61,6 @@ Enemy.prototype.update = function(du) {
         this.maxVelX = 3.9;
         this.maxVelY = 6.5;
     }
-
-	this.updateProxBlocks(this.cx, this.cy, this.cx+this.velX*du, this.cy+this.velY*du);
 	
 	var nextX = this.cx+this.velX*du;
     var nextY = this.cy+this.velY*du;
@@ -87,11 +90,6 @@ Enemy.prototype.update = function(du) {
 	if(this.cy > g_canvas.height){
         this._isDeadNow = true;
     }
-	
-    // Check for death:
-    if(this._isDeadNow) {
-		return entityManager.KILL_ME_NOW;
-	}
 	
 	//update status
 	var dir;
