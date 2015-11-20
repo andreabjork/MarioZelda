@@ -106,6 +106,7 @@ function updateSimulation(du) {
 				util.play(g_audio.patStory);
 			} else {
 				g_textScreenOn = false;
+				g_audio.theme1.volume=0.1;
 				util.playLoop(g_audio.theme1);
 				entityManager.enterLevel(1);
 			}
@@ -403,6 +404,8 @@ function initLevel() {
     g_lvlLength = entityManager._world[0].blocks[13].length*(g_canvas.height/14) - g_canvas.width;
     
     backgroundMusic.pause();
+	
+	g_audio.theme1.volume=0.1;
     util.playLoop(g_audio.theme1);
 };
 

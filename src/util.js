@@ -161,6 +161,7 @@ play: function (audio) {
 
 playLoop: function (audio) {
     backgroundMusic = audio;
+	backgroundMusic.volume = Math.min(backgroundMusic.volume,0.5);
     backgroundMusic.pause();
     backgroundMusic.currentTime = 0;
     if (!g_isMuted) {
