@@ -26,6 +26,8 @@ resetEntityManager: function(){
 	entityManager._objects = [];
 	entityManager._level = 1;
 	entityManager.deferredSetup();
+
+	g_score.reset();
 },
 
 
