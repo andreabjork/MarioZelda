@@ -77,39 +77,63 @@ function updateSimulation(du) {
     processDiagnostics();
     
     if (g_menuScreenOn) {
-        if (keys[KEY_SPACE]) {
-            g_menuScreenOn = false;
-            g_textScreenOn = true;
-            menuScreen = g_sprites.textScreen1;
-            util.play(g_audio.patStory);
-			keys[KEY_SPACE] = false;
-            return;
+		console.log("AT MENU");
+		menuScreen = g_sprites.menuBar;
+        if (eatKey(KEY_SPACE)) {
+			g_menuScreenOn = false;
+			if(g_firstTry){
+				g_firstTry = false;
+				g_textScreenOn = true;
+				menuScreen = g_sprites.textScreen1;
+			} else {
+				g_newGame = false;
+				initLevel();
+			}
+			return;
         }
     }
     if (g_textScreenOn) {
-        if (keys[KEY_SPACE]) {
-			keys[KEY_SPACE] = false;
-            if (g_textScreenOn) {
-                g_textScreenOn = false;
-                if (g_newGame) {
-                    g_newGame = false;
-                    initLevel();
-                } else {
-                    backgroundMusic.pause();
-                    util.playLoop(g_audio.theme1);
-                    entityManager.enterLevel(1);
-                }
-                return;
-            }
+		console.log("AT STORY");
+		menuScreen = g_sprites.textScreen1;
+        if (eatKey(KEY_SPACE)) {
+			if (g_newGame) {
+				g_newGame = false;
+				// Add listener to perform action when audio has finished playing
+				try {
+					g_audio.patStory.addEventListener('ended', function () {
+						initLevel();
+						g_textScreenOn = false;
+					});
+				} catch(err) {}
+				util.play(g_audio.patStory);
+			} else {
+				g_textScreenOn = false;
+				util.playLoop(g_audio.theme1);
+				entityManager.enterLevel(1);
+			}
+			return;
         }
     }
     
     if (g_deathScreenOn) {
-        if (keys[KEY_SPACE]) {
+		console.log("AT DEATH");
+        if (eatKey(KEY_SPACE)) {
             g_deathScreenOn = false;
             g_menuScreenOn = true;
+			menuScreen = g_sprites.menuBar;
             backgroundMusic.pause();
             util.playLoop(g_audio.theme2);
+			console.log("resetting spatialManager");
+			util.resetSpatialManager();
+			console.dir(spatialManager);
+			
+			console.log("resetting entityManager");
+			util.resetEntityManager();
+			console.dir(entityManager);
+			
+			
+			g_newGame = true;
+			return;
         }
     }
     
@@ -180,39 +204,11 @@ function processDiagnostics() {
 // GAME-SPECIFIC RENDERING
 var g_lvlLength;
 var g_newGame = true;
+var g_firstTry = true;
 var g_menuScreenOn = true;
 var g_textScreenOn = false;
 var g_deathScreenOn = false;
 var menuScreen;
-
-/*
-window.addEventListener('keydown', function() {
-    if (keys[KEY_SPACE]) {
-        if (g_menuScreenOn) {
-            g_menuScreenOn = false;
-            g_textScreenOn = true;
-            menuScreen = g_sprites.textScreen1;
-        } 
-        if (g_textScreenOn) {
-            g_textScreenOn = false;
-            if (g_newGame) {
-                g_newGame = false;
-                initLevel();
-            } else {
-                backgroundMusic.pause();
-                util.playLoop(g_audio.theme1);
-                entityManager.enterLevel(1);
-            }
-        }
-        if (g_deathScreenOn) {
-            g_deathScreenOn = false;
-            g_menuScreenOn = true;
-            backgroundMusic.pause();
-            util.playLoop(g_audio.theme2);
-        }
-    }
-});
-*/
 
 function renderSimulation(ctx) {
     
@@ -405,9 +401,7 @@ function preloadDone() {
 };
 
 function initLevel() {
-    
-    entityManager.init();
-    
+
     entityManager.enterLevel(1);
     
     g_lvlLength = entityManager._world[0].blocks[13].length*(g_canvas.height/14) - g_canvas.width;

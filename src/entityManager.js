@@ -57,7 +57,7 @@ KILL_ME_NOW : -1,
 // i.e. thing which need `this` to be defined.
 //
 deferredSetup : function () {
-    this._categories = [this._objects, this._character, this._world, this._collisionBlocks, this._bullets, this._particles, this._enemies];
+    this._categories = [this._objects, this._character, this._enemies, this._world, this._collisionBlocks, this._bullets, this._particles];
 },
 
 resetAll: function() {
@@ -77,6 +77,8 @@ resetAll: function() {
 
 enterLevel: function(lvl) {
     //this._character = [];
+    util.resetSpatialManager();
+	
     this._bullets = [];
     this._enemies = [];
     this._objects = [];
@@ -94,17 +96,6 @@ enterLevel: function(lvl) {
         this.generateObject('cloud');
     }
     this.deferredSetup();
-    spatialManager._entities = [];
-    spatialManager._nextSpatialID = 1;
-},
-
-init: function() {
-    this.generateCharacter();
-    //this.generateEnemy();
-    this.generateLevel({level: 1});
-    for(var i = 0; i < g_NUMBER_OF_CLOUDS; i++) {
-        this.generateObject('cloud');
-    }
 },
 
 
