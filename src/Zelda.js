@@ -324,7 +324,8 @@ Zelda.prototype.update = function (du) {
     if(keys[this.KEY_JUMP]) this.handleJump();
     // Handle casting:
     if(keys[this.KEY_CAST]) {
-		if(!this.state['jumping'] && !this.state['inWater']){
+        if (entityManager._level === 6) entityManager.enterLevel(1);
+		else if(!this.state['jumping'] && !this.state['inWater']){
 			util.play(g_audio.zeldaShoot);
 			this.handleCasting();
 		}

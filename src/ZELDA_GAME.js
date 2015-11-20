@@ -109,7 +109,6 @@ function updateSimulation(du) {
 			} else {
 				g_textScreenOn = false;
 				g_audio.theme1.volume=0.1;
-				util.playLoop(g_audio.theme1);
 				entityManager.enterLevel(1);
 			}
         }
